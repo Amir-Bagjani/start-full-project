@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import './config/languages/i18n';
+
 // Create a client
 export const queryClient = new QueryClient({
   defaultOptions: {

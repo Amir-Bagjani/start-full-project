@@ -1,10 +1,13 @@
 import { NavLink, Navigate, Outlet } from 'react-router-dom';
 import { user } from './user';
+import { useTranslation } from 'react-i18next';
 
 // const user: any = null;
 // const user = {name: "saeed"};
 
 export const AppLayout = () => {
+  const { t, i18n } = useTranslation();
+
   if (!!!user?.name) return <Navigate to='/login' />;
 
   return (
@@ -12,10 +15,10 @@ export const AppLayout = () => {
       <nav>
         <ul style={{ display: 'flex', gap: '0.5rem', listStyle: 'none' }}>
           <li>
-            <NavLink to='/'>Home</NavLink>
+            <NavLink to='/'>{t('Home')}</NavLink>
           </li>
           <li>
-            <NavLink to='/transfer'>Transfer</NavLink>
+            <NavLink to='/transfer'>{t('Transfer')}</NavLink>
           </li>
           <li>
             <NavLink to='/folder'>Folder</NavLink>
@@ -43,6 +46,11 @@ export const AppLayout = () => {
           </li>
         </ul>
       </nav>
+      <div>
+        <button onClick={() => i18n.changeLanguage('en')}>En</button>
+        <button onClick={() => i18n.changeLanguage('fa')}>Fa</button>
+        <button onClick={() => i18n.changeLanguage('ar')}>Ar</button>
+      </div>
       <Outlet />
     </div>
   );

@@ -187,7 +187,12 @@ export const routes = createBrowserRouter(
   createRoutesFromElements(
     <Route errorElement={<ErrorPage fallback={<div>Something went wrong</div>} />}>
       {routess.map((r, i) => (
-        <Route key={i} path={PathMap[r.layout]} element={LayoutMap[r.layout]}>
+        <Route
+          key={i}
+          // path='/'
+          // path={PathMap[r.layout]}
+          element={LayoutMap[r.layout]}
+        >
           {r.roles.includes(user?.role ?? 'admin') ? (
             <Route path={r.path} element={<Suspense fallback='Loading...'>{r.element}</Suspense>} />
           ) : (
