@@ -1,7 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { EnglishTr, PersianTr } from './locales';
-import { ArabicTr } from './locales/ArabicTr';
+import { ArabicTr, EnglishTr, PersianTr } from './locales';
 
 i18n.use(initReactI18next).init({
   lng: 'en',

@@ -1,7 +1,13 @@
+// import { Comone } from '@common';
 import React from 'react';
 
 const Adjustment = () => {
-  return <div>Adjustment</div>;
+  return (
+    <>
+      {/* <Comone /> */}
+      <div>Adjustment</div>;
+    </>
+  );
 };
 
 export default Adjustment;
