@@ -1,10 +1,12 @@
+import { useUser } from 'modules/common/hooks';
 import { Navigate, Outlet } from 'react-router-dom';
-import { user } from './user';
 
 // const user: any = null;
 // const user = {name: "saeed"};
 
-const AuthLayout = () => {
+export const AuthLayout = () => {
+  const { user } = useUser();
+
   if (!!user) return <Navigate to='/' />;
 
   return (
@@ -14,5 +16,3 @@ const AuthLayout = () => {
     </div>
   );
 };
-
-export default AuthLayout;

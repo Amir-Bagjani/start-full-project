@@ -1,12 +1,13 @@
 import { NavLink, Navigate, Outlet } from 'react-router-dom';
-import { user } from './user';
 import { useTranslation } from 'react-i18next';
+import { useUser } from 'modules/common/hooks';
 
 // const user: any = null;
 // const user = {name: "saeed"};
 
 export const AppLayout = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+  const { user, logout } = useUser();
 
   if (!!!user?.name) return <Navigate to='/login' />;
 
@@ -18,39 +19,16 @@ export const AppLayout = () => {
             <NavLink to='/'>{t('Home')}</NavLink>
           </li>
           <li>
-            <NavLink to='/transfer'>{t('Transfer')}</NavLink>
-          </li>
-          <li>
-            <NavLink to='/folder'>Folder</NavLink>
-          </li>
-          <li>
-            <NavLink to='/dashboard'>Dashboard</NavLink>
-          </li>
-          <li>
-            <NavLink to='/dashboard/report'>Report</NavLink>
-          </li>
-          <li>
-            <NavLink to='/dashboard/messages'>Messages</NavLink>
-          </li>
-          <li>
-            <NavLink to='/counter'>Counter</NavLink>
-          </li>
-          <li>
-            <NavLink to='/contract'>Contract</NavLink>
-          </li>
-          <li>
-            <NavLink to='/adjustment'>Adjustment</NavLink>
-          </li>
-          <li>
-            <NavLink to='/print'>Print</NavLink>
+            <NavLink to='/dashboar'>{t('Dashboard')}</NavLink>
           </li>
         </ul>
       </nav>
-      <div>
+      <button onClick={logout}>logout</button>
+      {/* <div>
         <button onClick={() => i18n.changeLanguage('en')}>En</button>
         <button onClick={() => i18n.changeLanguage('fa')}>Fa</button>
         <button onClick={() => i18n.changeLanguage('ar')}>Ar</button>
-      </div>
+      </div> */}
       <Outlet />
     </div>
   );
