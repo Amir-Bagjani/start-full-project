@@ -6,7 +6,7 @@ const DashboardPage = lazy(() => import(/* webpackPrefetch: true */ '../pages/Da
 
 export const dashboardPageRoutes: CustomRouteObject[] = [
   {
-    path: '/dashboar',
+    path: '/dashboard',
     element: <DashboardPage />,
     layout: 'App',
     roles: [ADMIN_R],

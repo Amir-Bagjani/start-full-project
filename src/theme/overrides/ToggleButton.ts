@@ -1,25 +1,29 @@
-import { alpha } from '@mui/material/styles';
-import { Theme } from '@mui/material/styles';
-import { CSSProperties } from 'react';
+import { alpha, Theme } from '@mui/material/styles';
 // ----------------------------------------------------------------------
 
-export default function ToggleButton(theme: Theme) {
-  const style = (color: CSSProperties['color']) => {
-    if (!color) return;
-    return {
-      props: { color },
-      style: {
-        '&:hover': {
-          borderColor: alpha(theme.palette[color].main, 0.48),
-          backgroundColor: alpha(theme.palette[color].main, theme.palette.action.hoverOpacity),
-        },
-        '&.Mui-selected': {
-          borderColor: alpha(theme.palette[color].main, 0.48),
-        },
-      },
-    };
-  };
+type PickedColors = Pick<
+  Theme['palette'],
+  'info' | 'success' | 'warning' | 'error' | 'primary' | 'secondary'
+>;
+type Color = keyof PickedColors;
 
+const style = (color: Color, theme: Theme) => {
+  if (!color) return;
+  return {
+    props: { color },
+    style: {
+      '&:hover': {
+        borderColor: alpha(theme.palette[color].main, 0.48),
+        backgroundColor: alpha(theme.palette[color].main, theme.palette.action.hoverOpacity),
+      },
+      '&.Mui-selected': {
+        borderColor: alpha(theme.palette[color].main, 0.48),
+      },
+    },
+  };
+};
+
+export default function ToggleButton(theme: Theme) {
   return {
     MuiToggleButton: {
       variants: [
@@ -31,12 +35,12 @@ export default function ToggleButton(theme: Theme) {
             },
           },
         },
-        style('primary'),
-        style('secondary'),
-        style('info'),
-        style('success'),
-        style('warning'),
-        style('error'),
+        style('primary', theme),
+        style('secondary', theme),
+        style('info', theme),
+        style('success', theme),
+        style('warning', theme),
+        style('error', theme),
       ],
     },
     MuiToggleButtonGroup: {

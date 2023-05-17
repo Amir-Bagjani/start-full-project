@@ -1,6 +1,12 @@
 import { Theme } from '@mui/material/styles';
 // ----------------------------------------------------------------------
-const styleContained = (color: string, theme: Theme) => ({
+type PickedColors = Pick<
+  Theme['palette'],
+  'info' | 'success' | 'warning' | 'error' | 'primary' | 'secondary'
+>;
+type Color = keyof PickedColors;
+
+const styleContained = (color: Color, theme: Theme) => ({
   props: { variant: 'contained', color },
   style: { boxShadow: theme.customShadows[color] },
 });
@@ -11,7 +17,7 @@ export default function ButtonGroup(theme: Theme) {
       variants: [
         {
           props: { variant: 'contained', color: 'inherit' },
-          style: { boxShadow: theme.customShadows.z8 },
+          style: { boxShadow: theme.customShadows.s8 },
         },
         styleContained('primary', theme),
         styleContained('secondary', theme),

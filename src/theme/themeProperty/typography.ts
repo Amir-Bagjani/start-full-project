@@ -1,12 +1,22 @@
 //utils
-import { Theme } from '@mui/material/styles';
+import { BREAK_POINTS } from './breakpoints';
 import { CustomTypography } from 'theme/models';
-import { pxToRem, responsiveFontSize } from 'theme/utils';
+
+export const pxToRem = (value: number) => `${value / 16}rem`;
+export const remToPx = (value: number) => `${Math.round(parseFloat(String(value)) * 16)}px`;
+
+export const responsiveFontSize = ({ sm, md, lg }: { sm: number; md: number; lg: number }) => {
+  return {
+    [`@media (min-width:${BREAK_POINTS.sm}px)`]: { fontSize: pxToRem(sm) },
+    [`@media (min-width:${BREAK_POINTS.md}px)`]: { fontSize: pxToRem(md) },
+    [`@media (min-width:${BREAK_POINTS.lg}px)`]: { fontSize: pxToRem(lg) },
+  };
+};
 
 const FONT_PRIMARY = 'Montserrat, Public Sans, Arial, sans-serif'; // Google Font
 // const FONT_SECONDARY = 'CircularStd, sans-serif'; // Local Font
 
-export const typography: CustomTypography = {
+export const typography = {
   fontFamily: FONT_PRIMARY,
   fontWeightLight: 200,
   fontWeightRegular: 400,
@@ -85,4 +95,4 @@ export const typography: CustomTypography = {
     fontWeight: 700,
     lineHeight: 1.5,
   },
-};
+} as CustomTypography;

@@ -1,10 +1,10 @@
 export type ColorPreset = {
   contrastText: string;
-  lighter: string;
+  lighter?: string;
   light: string;
   main: string;
   dark: string;
-  darker: string;
+  darker?: string;
   name: string;
 };
 

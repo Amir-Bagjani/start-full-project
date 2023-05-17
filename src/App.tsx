@@ -1,8 +1,12 @@
+import { useUser } from 'modules/common/hooks';
 import { RouterProvider } from 'react-router-dom';
-import { routes } from './routes/routes';
+import { getRoutes } from 'routes/routes';
+// import { routes } from './routes/routes';
 
 const App = () => {
-  return <RouterProvider router={routes} />;
+  const { user } = useUser();
+
+  return <RouterProvider router={getRoutes(user)} />;
 };
 
 export default App;

@@ -10,7 +10,7 @@ export default function Fab(theme: Theme) {
 
       styleOverrides: {
         root: {
-          boxShadow: theme.customShadows.z8,
+          boxShadow: theme.customShadows.s8,
           '&:hover': {
             boxShadow: 'none',
             backgroundColor: theme.palette.grey[400],

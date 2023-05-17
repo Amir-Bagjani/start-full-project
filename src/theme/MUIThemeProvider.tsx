@@ -7,11 +7,12 @@ import { CacheProvider } from '@emotion/react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useTheme } from '@mui/material';
 import {
+  shape,
+  shadows,
+  typography,
+  breakpoints,
   darkPalette,
   lightPalette,
-  breakpoints,
-  typography,
-  shadows,
   customShadows,
 } from './themeProperty';
 import { componentsOverride } from './overrides';
@@ -36,12 +37,7 @@ export const MUIThemeProvider = ({ children }: { children: ReactNode }) => {
         typography: { ...MuiTypography, ...typography },
         shadows: themeMode === 'light' ? shadows.light : shadows.dark,
         customShadows: themeMode === 'light' ? customShadows.light : customShadows.dark,
-        shape: {
-          borderRadius: 20,
-          searchBar: {
-            borderRadius: 50,
-          },
-        },
+        shape,
       }),
     [MuiTypography, themeMode],
   );

@@ -1,4 +1,5 @@
-import { Color, Theme, alpha } from '@mui/material';
+import { Palette, alpha } from '@mui/material';
+import { CustomPalette } from 'theme/models';
 // import { createGradient } from "./utils";
 
 export const COLORS = {
@@ -16,14 +17,14 @@ export const COLORS = {
     700: '#454F5B',
     800: '#212B36',
     900: '#161C24',
-    500_8: alpha('#919EAB', 0.08),
-    500_12: alpha('#919EAB', 0.12),
-    500_16: alpha('#919EAB', 0.16),
-    500_24: alpha('#919EAB', 0.24),
-    500_32: alpha('#919EAB', 0.32),
-    500_48: alpha('#919EAB', 0.48),
-    500_56: alpha('#919EAB', 0.56),
-    500_80: alpha('#919EAB', 0.8),
+    5008: alpha('#919EAB', 0.08),
+    50012: alpha('#919EAB', 0.12),
+    50016: alpha('#919EAB', 0.16),
+    50024: alpha('#919EAB', 0.24),
+    50032: alpha('#919EAB', 0.32),
+    50048: alpha('#919EAB', 0.48),
+    50056: alpha('#919EAB', 0.56),
+    50080: alpha('#919EAB', 0.8),
   },
   red: {
     50: '#ffe9ed',
@@ -189,7 +190,8 @@ export const primaryPalette = {
 
 // Theme["palette"]["grey"]
 // Color
-export const commonPalette: Theme['palette'] = {
+
+export const commonPalette = {
   common: { black: COLORS.black, white: COLORS.white },
   primary: { ...primaryPalette, contrastText: '#fff' },
   secondary: { ...secondaryPalette, contrastText: '#fff' },
@@ -209,7 +211,7 @@ export const commonPalette: Theme['palette'] = {
     hoverOpacity: 0.08,
     disabledOpacity: 0.48,
   },
-};
+} as CustomPalette;
 
 export const lightPalette = {
   ...commonPalette,

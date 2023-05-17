@@ -1,4 +1,4 @@
-import { CloseIcon } from './CustomIcons';
+import { CloseIcon } from 'assets/customIcons';
 import { Theme } from '@mui/material/styles';
 // ----------------------------------------------------------------------
 

@@ -1,5 +1,5 @@
-import { TreeViewCollapseIcon, TreeViewExpandIcon, TreeViewEndIcon } from './CustomIcons';
 import { Theme } from '@mui/material/styles';
+import { TreeViewCollapseIcon, TreeViewExpandIcon, TreeViewEndIcon } from 'assets/customIcons';
 // ----------------------------------------------------------------------
 
 export default function TreeView(theme: Theme) {

@@ -1,4 +1,4 @@
-import { InputSelectIcon } from './CustomIcons';
+import { InputSelectIcon } from 'assets/customIcons';
 import { Theme } from '@mui/material/styles';
 // ----------------------------------------------------------------------
 

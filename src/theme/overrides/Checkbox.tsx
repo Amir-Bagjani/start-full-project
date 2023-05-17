@@ -1,5 +1,5 @@
-import { CheckboxIcon, CheckboxCheckedIcon, CheckboxIndeterminateIcon } from './CustomIcons';
 import { Theme } from '@mui/material/styles';
+import { CheckboxIcon, CheckboxCheckedIcon, CheckboxIndeterminateIcon } from 'assets/customIcons';
 // ----------------------------------------------------------------------
 
 export default function Checkbox(theme: Theme) {

@@ -12,7 +12,7 @@ export const AuthLayout = () => {
   return (
     <div>
       <Outlet />
-      <footer>copywrit 2023</footer>
+      <footer>coptright 2023</footer>
     </div>
   );
 };

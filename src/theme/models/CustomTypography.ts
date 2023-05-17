@@ -1,3 +1,6 @@
+import { Typography } from '@mui/material/styles/createTypography';
+import { Override } from './utilits';
+
 type VariantTypography = {
   fontSize?: string;
   fontWeight?: number;
@@ -6,10 +9,7 @@ type VariantTypography = {
   textTransform?: any;
 };
 
-export type CustomTypography = {
-  fontSize?: number;
-  htmlFontSize?: number;
-  pxToRem?: (px: number) => string;
+type Typo = {
   fontFamily: string;
   fontWeightLight: number;
   fontWeightRegular: number;
@@ -29,3 +29,5 @@ export type CustomTypography = {
   button: VariantTypography;
   overline: VariantTypography;
 };
+
+export type CustomTypography = Override<Typography, Typo>;

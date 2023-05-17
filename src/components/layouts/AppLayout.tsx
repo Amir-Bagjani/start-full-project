@@ -19,7 +19,7 @@ export const AppLayout = () => {
             <NavLink to='/'>{t('Home')}</NavLink>
           </li>
           <li>
-            <NavLink to='/dashboar'>{t('Dashboard')}</NavLink>
+            <NavLink to='/dashboard'>{t('Dashboard')}</NavLink>
           </li>
         </ul>
       </nav>

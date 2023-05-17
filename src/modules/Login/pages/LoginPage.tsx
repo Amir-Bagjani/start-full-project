@@ -1,5 +1,4 @@
 import { useUser } from 'modules/common/hooks';
-import React from 'react';
 
 const LoginPage = () => {
   const { login } = useUser();
