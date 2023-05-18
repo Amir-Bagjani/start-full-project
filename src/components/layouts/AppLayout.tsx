@@ -1,9 +1,7 @@
 import { NavLink, Navigate, Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useUser } from 'modules/common/hooks';
-
-// const user: any = null;
-// const user = {name: "saeed"};
+import { ROUTES_NAME } from 'routes/routesName';
 
 export const AppLayout = () => {
   const { t } = useTranslation();
@@ -16,19 +14,17 @@ export const AppLayout = () => {
       <nav>
         <ul style={{ display: 'flex', gap: '0.5rem', listStyle: 'none' }}>
           <li>
-            <NavLink to='/'>{t('Home')}</NavLink>
+            <NavLink to={ROUTES_NAME.home}>{t('Home')}</NavLink>
           </li>
           <li>
-            <NavLink to='/dashboard'>{t('Dashboard')}</NavLink>
+            <NavLink to={ROUTES_NAME.dashboard}>{t('Dashboard')}</NavLink>
+          </li>
+          <li>
+            <NavLink to={ROUTES_NAME.expenses.base}>{t('Expenses')}</NavLink>
           </li>
         </ul>
       </nav>
       <button onClick={logout}>logout</button>
-      {/* <div>
-        <button onClick={() => i18n.changeLanguage('en')}>En</button>
-        <button onClick={() => i18n.changeLanguage('fa')}>Fa</button>
-        <button onClick={() => i18n.changeLanguage('ar')}>Ar</button>
-      </div> */}
       <Outlet />
     </div>
   );

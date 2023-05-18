@@ -5,10 +5,9 @@ import { SettingProvider } from 'context/SettingContext';
 
 import './utils/configuration/languages/i18n';
 import { MUIThemeProvider } from 'theme';
-// import { RouterProvider } from 'react-router-dom';
-// import { routes } from 'routes/routes';
+
 import { UserProvider } from 'context/UserContext';
-import App from 'App';
+import { RouteWrapper } from 'routes/RouteWrapper';
 
 // Create a client
 export const queryClient = new QueryClient({
@@ -27,8 +26,7 @@ root.render(
       <UserProvider>
         <SettingProvider>
           <MUIThemeProvider>
-            <App />
-            {/* <RouterProvider router={routes} /> */}
+            <RouteWrapper />
           </MUIThemeProvider>
         </SettingProvider>
       </UserProvider>
