@@ -15,13 +15,14 @@ export const useBrowserstorageState = <V>(
   key: string,
   initialValue: V | (() => V),
   storage?: 'localStorage' | 'sessionStorage',
+  chekValue?: (v: V) => V,
 ) => {
   const [value, setValue] = useState<V>(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
       const savedValue = GetStorageMap[storage ?? 'localStorage'](key);
 
       if (!!savedValue) {
-        return JSON.parse(savedValue);
+        return !!chekValue ? chekValue(JSON.parse(savedValue)) : JSON.parse(savedValue);
       } else {
         if (typeof initialValue === 'function') {
           return (initialValue as () => V)();
