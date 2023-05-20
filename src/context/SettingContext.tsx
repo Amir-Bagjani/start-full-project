@@ -8,7 +8,7 @@ import { useBrowserstorageState } from 'modules/common/hooks';
 //types
 import { PresetKey } from 'theme/models';
 import { DefaultSettingsType } from 'models';
-import { validationObject } from 'utils/helperFunctions';
+import { validationObject } from 'utils/helper';
 
 type UseCustomSetting = ReturnType<typeof useCustomSetting>;
 

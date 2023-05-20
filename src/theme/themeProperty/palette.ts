@@ -1,4 +1,4 @@
-import { Palette, alpha } from '@mui/material';
+import { alpha } from '@mui/material';
 import { CustomPalette } from 'theme/models';
 // import { createGradient } from "./utils";
 

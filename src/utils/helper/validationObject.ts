@@ -1,6 +1,5 @@
 export function validationObject(obj: Record<string, unknown>, schema: Record<string, unknown>) {
-  let key: keyof typeof obj;
-  for (key in schema) {
+  for (let key in schema) {
     if (!obj.hasOwnProperty(key)) {
       return false;
     }
