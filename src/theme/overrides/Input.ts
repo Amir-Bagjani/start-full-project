@@ -30,6 +30,7 @@ export default function Input(theme: Theme) {
     MuiFilledInput: {
       styleOverrides: {
         root: {
+          // borderRadius: '3px',
           backgroundColor: theme.palette.grey[500_12],
           '&:hover': {
             backgroundColor: theme.palette.grey[500_16],
@@ -53,6 +54,7 @@ export default function Input(theme: Theme) {
         root: {
           '& .MuiOutlinedInput-notchedOutline': {
             borderColor: theme.palette.grey[500_32],
+            // '& > legend > span': { fontSize:  },
           },
           '&.Mui-disabled': {
             '& .MuiOutlinedInput-notchedOutline': {

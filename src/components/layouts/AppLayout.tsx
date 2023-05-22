@@ -7,7 +7,7 @@ export const AppLayout = () => {
   const { t } = useTranslation();
   const { user, logout } = useUser();
 
-  if (!!!user?.name) return <Navigate to='/login' />;
+  if (!user) return <Navigate to='/login' />;
 
   return (
     <div>

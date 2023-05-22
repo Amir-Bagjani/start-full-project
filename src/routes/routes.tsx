@@ -1,9 +1,10 @@
-import { Route, Navigate, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import { Suspense } from 'react';
+import { Route, Navigate, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 
 //layoutes & pages
+import { AppLayout } from '../components/layouts';
+import { AuthLayout } from 'modules/common/components';
 import { PrintLayout } from 'components/layouts/PrintLayout';
-import { AppLayout, AuthLayout } from '../components/layouts';
 import ErrorBoundryPage from 'modules/ErrorBoundry/page/ErrorBoundryPage';
 
 //utils
@@ -48,7 +49,7 @@ export const getRoutes = (user: User | null) => {
                 element={<Suspense fallback='Loading...'>{r.element}</Suspense>}
               />
             ) : (
-              <Route element={<Navigate to='*' />} />
+              <Route path='*' element={<Navigate to='*' />} />
             )}
           </Route>
         ))}

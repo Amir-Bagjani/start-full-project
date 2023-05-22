@@ -19,6 +19,24 @@ declare module '@mui/material/styles' {
     palette: CustomPalette;
   }
 
+  //remove old keys for breakpoints and new keys
+  interface BreakpointOverrides {
+    xs: false;
+    sm: false;
+    md: false;
+    lg: false;
+    xl: false;
+    zero: true;
+    mobile: true;
+    tablet: true;
+    lgTablet: true;
+    smLaptop: true;
+    lgLaptop: true;
+    smdesktop: true;
+    mddesktop: true;
+    lgdesktop: true;
+  }
+
   //add lighter and darker property to palette
   interface PaletteColor {
     lighter?: string;

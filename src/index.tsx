@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Toaster } from 'react-hot-toast';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+//components
+import { RouteWrapper } from 'routes/RouteWrapper';
+import { UserProvider } from 'context/UserContext';
 import { SettingProvider } from 'context/SettingContext';
 
-import './utils/configuration/languages/i18n';
+//utils
 import { MUIThemeProvider } from 'theme';
-
-import { UserProvider } from 'context/UserContext';
-import { RouteWrapper } from 'routes/RouteWrapper';
+import './utils/configuration/languages/i18n';
 
 // Create a client
 export const queryClient = new QueryClient({
@@ -15,6 +19,7 @@ export const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
       refetchOnMount: false,
+      retry: 1,
     },
   },
 });
@@ -27,6 +32,8 @@ root.render(
         <SettingProvider>
           <MUIThemeProvider>
             <RouteWrapper />
+            <Toaster toastOptions={{ duration: 3000 }} />
+            <ReactQueryDevtools initialIsOpen={false} />
           </MUIThemeProvider>
         </SettingProvider>
       </UserProvider>

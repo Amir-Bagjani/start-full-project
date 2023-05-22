@@ -95,6 +95,7 @@ client.interceptors.response.use(
         } catch (refreshError) {
           isRefreshing = false;
           refreshSubscribers = [];
+
           // handle refresh token error
           TokenService.removeLocalAccessToken();
           alert('!!لطفا وارد حساب کاربری خود شوید');
@@ -103,6 +104,7 @@ client.interceptors.response.use(
         }
       } else {
         isRefreshing = false;
+
         // handle missing refresh token error
         TokenService.removeLocalAccessToken();
         alert('لطفا وارد حساب کاربری خود شوید');

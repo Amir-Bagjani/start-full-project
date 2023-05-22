@@ -1,11 +1,13 @@
 import { prefixer } from 'stylis';
-import { ReactNode, useMemo } from 'react';
+import { useTheme } from '@mui/material';
 import createCache from '@emotion/cache';
 import rtlPlugin from 'stylis-plugin-rtl';
+import { ReactNode, useMemo } from 'react';
 import { CssBaseline } from '@mui/material';
 import { CacheProvider } from '@emotion/react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { useTheme } from '@mui/material';
+
+//utils
 import {
   shape,
   shadows,

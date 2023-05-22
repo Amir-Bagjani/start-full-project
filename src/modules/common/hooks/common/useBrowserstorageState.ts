@@ -14,12 +14,12 @@ const SetStorageMap = {
 export const useBrowserstorageState = <V>(
   key: string,
   initialValue: V | (() => V),
-  storage?: 'localStorage' | 'sessionStorage',
+  storage: 'localStorage' | 'sessionStorage' = 'localStorage',
   chekValue?: (v: V) => V,
 ) => {
   const [value, setValue] = useState<V>(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
-      const savedValue = GetStorageMap[storage ?? 'localStorage'](key);
+      const savedValue = GetStorageMap[storage](key);
 
       if (!!savedValue) {
         return !!chekValue ? chekValue(JSON.parse(savedValue)) : JSON.parse(savedValue);
@@ -36,7 +36,7 @@ export const useBrowserstorageState = <V>(
   });
 
   useEffect(() => {
-    if (window.localStorage) SetStorageMap[storage ?? 'localStorage'](key, value);
+    if (window.localStorage) SetStorageMap[storage](key, value);
   }, [value, key, storage]);
 
   return [value, setValue] as [V, Dispatch<SetStateAction<V>>];

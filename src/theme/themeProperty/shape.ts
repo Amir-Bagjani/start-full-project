@@ -1,5 +1,5 @@
 export const shape = {
-  borderRadius: 20,
+  borderRadius: 8,
   searchBar: {
     borderRadius: 50,
   },

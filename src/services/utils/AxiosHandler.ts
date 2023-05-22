@@ -5,18 +5,27 @@ import { request } from './axiosRequest';
 import type { AxiosRequestConfig } from 'axios';
 
 export const AxiosHandler = {
-  get: async (url: string, config: AxiosRequestConfig = {}) =>
-    await request({ url, method: 'get', ...config }),
+  get: async <ServerResponse, ServerError>(url: string, config: AxiosRequestConfig = {}) =>
+    await request<ServerResponse, ServerError>({ url, method: 'get', ...config }),
 
-  post: async <Data>(url: string, data: Data, config: AxiosRequestConfig = {}) =>
-    await request({ url, method: 'post', data, ...config }),
+  post: async <ServerResponse, ServerError, Params>(
+    url: string,
+    data: Params,
+    config: AxiosRequestConfig = {},
+  ) => await request<ServerResponse, ServerError>({ url, method: 'post', data, ...config }),
 
-  delete: async (url: string, config: AxiosRequestConfig = {}) =>
-    await request({ url, method: 'delete', ...config }),
+  delete: async <ServerResponse, ServerError>(url: string, config: AxiosRequestConfig = {}) =>
+    await request<ServerResponse, ServerError>({ url, method: 'delete', ...config }),
 
-  put: async <Data>(url: string, data: Data, config: AxiosRequestConfig = {}) =>
-    await request({ url, method: 'put', data, ...config }),
+  put: async <ServerResponse, ServerError, Params>(
+    url: string,
+    data: Params,
+    config: AxiosRequestConfig = {},
+  ) => await request<ServerResponse, ServerError>({ url, method: 'put', data, ...config }),
 
-  patch: async <Data>(url: string, data: Data, config: AxiosRequestConfig = {}) =>
-    await request({ url, method: 'patch', data, ...config }),
+  patch: async <ServerResponse, ServerError, Params>(
+    url: string,
+    data: Params,
+    config: AxiosRequestConfig = {},
+  ) => await request<ServerResponse, ServerError>({ url, method: 'patch', data, ...config }),
 };

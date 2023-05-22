@@ -9,6 +9,11 @@ const chekValue = (value: number) => {
 const HomePage = () => {
   const [count, setCount] = useBrowserstorageState('kkeeyy', 0, 'localStorage', chekValue);
   // const { toggleStretch } = useSettings()
+  // const [v, setV] = useCookieState('werwe', 10);
+
+  // const f = useCallback((e: any) => {
+  //   setV(e);
+  // }, [setV]);
 
   return (
     <>

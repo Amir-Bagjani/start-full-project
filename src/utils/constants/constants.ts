@@ -1,6 +1,6 @@
 export const Constants = {
   AccessTokenName: 'cjtokennow',
-  UserStorageName: 'authenticate',
+  UserStorageName: 'user-auth',
   PublicFetchError: 'عملیات با خطا مواجه شد لطفا دوباره تلاش کنید.',
   PublicFetchSuccess: 'عملیات با موفقیت انجام شد.',
 } as const;

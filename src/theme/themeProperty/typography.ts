@@ -7,14 +7,13 @@ export const remToPx = (value: number) => `${Math.round(parseFloat(String(value)
 
 export const responsiveFontSize = ({ sm, md, lg }: { sm: number; md: number; lg: number }) => {
   return {
-    [`@media (min-width:${BREAK_POINTS.sm}px)`]: { fontSize: pxToRem(sm) },
-    [`@media (min-width:${BREAK_POINTS.md}px)`]: { fontSize: pxToRem(md) },
-    [`@media (min-width:${BREAK_POINTS.lg}px)`]: { fontSize: pxToRem(lg) },
+    [`@media (min-width:${BREAK_POINTS.mobile}px)`]: { fontSize: pxToRem(sm) },
+    [`@media (min-width:${BREAK_POINTS.lgTablet}px)`]: { fontSize: pxToRem(md) },
+    [`@media (min-width:${BREAK_POINTS.smLaptop}px)`]: { fontSize: pxToRem(lg) },
   };
 };
 
-const FONT_PRIMARY = 'Montserrat, Public Sans, Arial, sans-serif'; // Google Font
-// const FONT_SECONDARY = 'CircularStd, sans-serif'; // Local Font
+const FONT_PRIMARY = 'IRANSans, Public Sans, Arial, sans-serif';
 
 export const typography = {
   fontFamily: FONT_PRIMARY,

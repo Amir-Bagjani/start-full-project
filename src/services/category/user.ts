@@ -1,14 +1,20 @@
 import axios from 'axios';
+
+//utils
 import { AxiosHandler } from 'services/utils';
+
+//types
+import type { APIError } from 'models/APImodels';
+import type { LoginParams, LoginResponse } from 'services/models';
 
 class UserAPI {
   login = async (params: any) => {
-    return await AxiosHandler.post('/api/token/', params);
+    return await AxiosHandler.post<LoginResponse, APIError, LoginParams>('/api/token/', params);
   };
 
-  getMe = async (config: any) => {
-    return await AxiosHandler.get('/api/me/', config);
-  };
+  // getMe = async (config: any) => {
+  //   return await AxiosHandler.get('/api/me/', config);
+  // };
 
   getUser = async (params: any) => {
     const { userId, config = {} } = params;
@@ -25,6 +31,10 @@ class UserAPI {
 
   refresh = async (data: any) => {
     return await axios.post(`${process.env.REACT_APP_BASE_URL}api/token/refresh/`, data);
+  };
+
+  postRfreshToken = async (data: any) => {
+    return await axios.post('api/token/refresh/', data);
   };
 }
 
