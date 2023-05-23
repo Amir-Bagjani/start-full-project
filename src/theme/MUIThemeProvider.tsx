@@ -31,6 +31,8 @@ export const MUIThemeProvider = ({ children }: { children: ReactNode }) => {
 
   const { themeMode, chooseColor } = useSettings();
 
+  console.log(themeMode);
+
   const theme = useMemo(
     () =>
       createTheme({
@@ -53,8 +55,10 @@ export const MUIThemeProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <CacheProvider value={cacheRtl}>
-      <CssBaseline />
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
     </CacheProvider>
   );
 };

@@ -217,7 +217,7 @@ export const lightPalette = {
   ...commonPalette,
   divider: COLORS.grey[500_24],
   text: { primary: COLORS.grey[800], secondary: COLORS.grey[600], disabled: COLORS.grey[500] },
-  background: { paper: COLORS.white, default: COLORS.white, neutral: COLORS.grey[200] },
+  background: { paper: COLORS.white, default: COLORS.grey[200], neutral: COLORS.grey[200] },
   action: { active: COLORS.grey[600], ...commonPalette.common },
 };
 
@@ -225,6 +225,6 @@ export const darkPalette = {
   ...commonPalette,
   divider: COLORS.grey[500_16],
   text: { primary: COLORS.white, secondary: COLORS.grey[500], disabled: COLORS.grey[600] },
-  background: { paper: COLORS.grey[800], default: COLORS.grey[900], neutral: COLORS.grey[500_16] },
+  background: { paper: COLORS.grey[800], default: '#27374D', neutral: COLORS.grey[500_16] },
   action: { active: COLORS.grey[500], ...commonPalette.common },
 };
