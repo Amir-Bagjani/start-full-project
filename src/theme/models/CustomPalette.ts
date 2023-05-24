@@ -1,4 +1,5 @@
 import { Palette, TypeBackground } from '@mui/material/styles/createPalette';
+import { Override } from './utilits';
 
 export type GreyColor = {
   0: string;
@@ -35,8 +36,21 @@ type CustomBackground = TypeBackground & {
   neutral: string;
 };
 
-export interface CustomPalette extends Omit<Palette, 'grey' | 'action' | 'background'> {
-  grey: GreyColor;
-  action: CustomAction;
-  background: CustomBackground;
-}
+export type Gradient = {
+  primary: string;
+  info: string;
+  success: string;
+  warning: string;
+  error: string;
+  themeBase: string;
+};
+
+export type CustomPalette = Override<
+  Palette,
+  {
+    grey: GreyColor;
+    action: CustomAction;
+    background: CustomBackground;
+    gradient: Gradient;
+  }
+>;

@@ -41,6 +41,10 @@ export default function CssBaseline(theme: Theme) {
           display: 'block',
           maxWidth: '100%',
         },
+        a: {
+          textDecoration: 'none',
+          color: theme.palette.text.primary,
+        },
       },
     },
   };

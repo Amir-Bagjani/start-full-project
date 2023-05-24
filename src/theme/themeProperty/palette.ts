@@ -1,6 +1,7 @@
-import { alpha } from '@mui/material';
-import { CustomPalette } from 'theme/models';
-// import { createGradient } from "./utils";
+import { Theme, alpha } from '@mui/material/styles';
+
+import { createGradient } from 'theme/utils';
+import { CustomPalette, Gradient } from 'theme/models';
 
 export const COLORS = {
   black: '#000',
@@ -155,6 +156,13 @@ export const primaryPalette = {
   dark: COLORS.blue[800],
   darker: COLORS.blue[900],
 };
+export const primaryPaletteDark = {
+  lighter: COLORS.blue[100],
+  light: COLORS.blue[300],
+  main: COLORS.blue[500],
+  dark: COLORS.blue[800],
+  darker: COLORS.blue[900],
+};
 
 export const secondaryPalette = {
   lighter: COLORS.purple[200],
@@ -172,14 +180,6 @@ export const infoPalette = {
   darker: COLORS.azureBlue[800],
 };
 
-// const gradient = {
-//     primary: createGradient(primaryPalette.light, primaryPalette.main),
-//     info: createGradient(infoPalette.light, infoPalette.main),
-//     success: createGradient(successPalette.light, successPalette.main),
-//     warning: createGradient(warningPalette.light, warningPalette.main),
-//     error: createGradient(errorPalette.light, errorPalette.main),
-// };
-
 // const chartColor = {
 //     violet: ['#826AF9', '#9E86FF', '#D0AEFF', '#F7D2FF'],
 //     blue: ['#2D99FF', '#83CFFF', '#A5F3FF', '#CCFAFF'],
@@ -187,9 +187,6 @@ export const infoPalette = {
 //     yellow: ['#FFE700', '#FFEF5A', '#FFF7AE', '#FFF3D6'],
 //     red: ['#FF6C40', '#FF8F6D', '#FFBD98', '#FFF2D4'],
 // };
-
-// Theme["palette"]["grey"]
-// Color
 
 export const commonPalette = {
   common: { black: COLORS.black, white: COLORS.white },
@@ -213,18 +210,28 @@ export const commonPalette = {
   },
 } as CustomPalette;
 
-export const lightPalette = {
+export const lightPalette: any = {
   ...commonPalette,
+  mode: 'light',
   divider: COLORS.grey[500_24],
-  text: { primary: COLORS.grey[800], secondary: COLORS.grey[600], disabled: COLORS.grey[500] },
-  background: { paper: COLORS.white, default: COLORS.grey[200], neutral: COLORS.grey[200] },
+  text: { primary: COLORS.grey[700], secondary: COLORS.grey[600], disabled: COLORS.grey[500] },
+  background: { paper: COLORS.white, default: COLORS.grey[200], neutral: COLORS.grey[50] },
   action: { active: COLORS.grey[600], ...commonPalette.common },
 };
-
-export const darkPalette = {
+export const darkPalette: any = {
   ...commonPalette,
+  mode: 'dark',
   divider: COLORS.grey[500_16],
-  text: { primary: COLORS.white, secondary: COLORS.grey[500], disabled: COLORS.grey[600] },
-  background: { paper: COLORS.grey[800], default: '#27374D', neutral: COLORS.grey[500_16] },
+  text: { primary: COLORS.grey[300], secondary: COLORS.grey[500], disabled: COLORS.grey[600] },
+  background: { paper: '#2d2d2d', default: '#222222', neutral: '#505050' },
   action: { active: COLORS.grey[500], ...commonPalette.common },
 };
+
+export const gradientGen = (theme: Theme): Gradient => ({
+  primary: createGradient(primaryPalette.light, primaryPalette.dark),
+  info: createGradient(infoPalette.light, infoPalette.dark),
+  success: createGradient(successPalette.light, successPalette.dark),
+  warning: createGradient(warningPalette.light, warningPalette.dark),
+  error: createGradient(errorPalette.light, errorPalette.dark),
+  themeBase: createGradient(theme.palette.primary.light, theme.palette.primary.dark),
+});

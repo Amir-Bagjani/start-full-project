@@ -13,6 +13,7 @@ import {
   shadows,
   typography,
   breakpoints,
+  gradientGen,
   darkPalette,
   lightPalette,
   customShadows,
@@ -29,9 +30,7 @@ const cacheRtl = createCache({
 export const MUIThemeProvider = ({ children }: { children: ReactNode }) => {
   const { typography: MuiTypography } = useTheme();
 
-  const { themeMode, chooseColor } = useSettings();
-
-  console.log(themeMode);
+  const { themeMode, themeColorPresets, chooseColor } = useSettings();
 
   const theme = useMemo(
     () =>
@@ -43,10 +42,12 @@ export const MUIThemeProvider = ({ children }: { children: ReactNode }) => {
         customShadows: themeMode === 'light' ? customShadows.light : customShadows.dark,
         shape,
       }),
-    [MuiTypography, themeMode],
+    [MuiTypography, themeMode, themeColorPresets],
   );
 
   useMemo(() => {
+    //set gradient
+    theme.palette.gradient = gradientGen(theme);
     //set custom palette
     theme.palette.primary = chooseColor;
     //set override components

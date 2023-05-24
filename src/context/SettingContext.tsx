@@ -25,7 +25,7 @@ const checker = (value: DefaultSettingsType) => {
     typeof value === 'object' &&
     validationObject(value, {
       themeMode: ['light', 'dark'],
-      themeColorPresets: ['default', 'green', 'cyan', 'orange', 'red'],
+      themeColorPresets: ['default', 'green', 'cyan', 'orange', 'red', 'secondary'],
     })
   )
     return value;
@@ -44,7 +44,7 @@ const useCustomSetting = () => {
   const value = useMemo(
     () => ({
       ...settings,
-      chooseColor: colorPreset(settings.themeColorPresets),
+      chooseColor: colorPreset(settings.themeColorPresets, settings.themeMode),
 
       changeColor: (presetColor: PresetKey) => {
         setSettings((pre) => ({ ...pre, themeColorPresets: presetColor }));

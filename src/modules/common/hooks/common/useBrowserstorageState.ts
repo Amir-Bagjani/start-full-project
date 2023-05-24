@@ -19,16 +19,20 @@ export const useBrowserstorageState = <V>(
 ) => {
   const [value, setValue] = useState<V>(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
-      const savedValue = GetStorageMap[storage](key);
+      try {
+        const savedValue = GetStorageMap[storage](key);
 
-      if (!!savedValue) {
-        return !!chekValue ? chekValue(JSON.parse(savedValue)) : JSON.parse(savedValue);
-      } else {
-        if (typeof initialValue === 'function') {
-          return (initialValue as () => V)();
+        if (!!savedValue) {
+          return !!chekValue ? chekValue(JSON.parse(savedValue)) : JSON.parse(savedValue);
         } else {
-          return initialValue;
+          if (typeof initialValue === 'function') {
+            return (initialValue as () => V)();
+          } else {
+            return initialValue;
+          }
         }
+      } catch (r) {
+        return initialValue;
       }
     }
 

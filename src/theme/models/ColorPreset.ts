@@ -8,4 +8,4 @@ export type ColorPreset = {
   name: string;
 };
 
-export type PresetKey = 'default' | 'green' | 'cyan' | 'orange' | 'red';
+export type PresetKey = 'default' | 'green' | 'cyan' | 'orange' | 'red' | 'secondary';

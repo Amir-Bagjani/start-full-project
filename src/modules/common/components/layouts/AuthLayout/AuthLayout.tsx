@@ -29,7 +29,7 @@ export const AuthLayout = () => {
               sx={{
                 height: 5,
                 borderRadius: 5,
-                bgcolor: 'background.default',
+                bgcolor: 'common.white',
                 mt: 2,
                 width: 0.3,
                 mx: 'auto',
@@ -42,7 +42,7 @@ export const AuthLayout = () => {
               sx={{
                 height: 5,
                 borderRadius: 5,
-                bgcolor: 'background.default',
+                bgcolor: 'common.white',
                 my: 4,
                 width: 0.3,
                 mx: 'auto',
@@ -70,7 +70,8 @@ const ImgContainer = styled(Stack)(({ theme }: { theme: Theme }) => ({
   maxWidth: 350,
   padding: '1rem',
   position: 'relative',
-  background: theme.palette.primary.main,
+  // background: theme.palette.gradient.error,
+  background: theme.palette.gradient.themeBase,
   [theme.breakpoints.down('tablet')]: {
     display: 'none',
   },

@@ -1,4 +1,4 @@
-import { useBrowserstorageState } from 'modules/common/hooks';
+import { useBrowserstorageState, useSettings } from 'modules/common/hooks';
 import { APPLICATION_ROUTES } from 'routes/APPLICATION_ROUTES';
 
 const chekValue = (value: number) => {
@@ -8,7 +8,7 @@ const chekValue = (value: number) => {
 
 const HomePage = () => {
   const [count, setCount] = useBrowserstorageState('kkeeyy', 0, 'localStorage', chekValue);
-  // const { toggleStretch } = useSettings()
+  const { toggleTheme } = useSettings();
   // const [v, setV] = useCookieState('werwe', 10);
 
   // const f = useCallback((e: any) => {
@@ -19,7 +19,7 @@ const HomePage = () => {
     <>
       <div>HomePage</div>
       <button onClick={() => setCount((p) => p + 1)}>count - {count} </button>
-      {/* <button onClick={toggleStretch}>toggleStretch</button> */}
+      <button onClick={toggleTheme}>toggle theme</button>
       <pre dir='ltr'>{JSON.stringify(APPLICATION_ROUTES, null, 2)}</pre>
     </>
   );
