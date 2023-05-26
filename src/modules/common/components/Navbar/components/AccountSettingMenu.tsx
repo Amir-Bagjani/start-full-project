@@ -17,22 +17,23 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { MouseEvent, memo, useCallback, useState } from 'react';
 
-// import { IoExit, IoExitOutline } from 'react-icons/io5';
-
 //components
-import { MdLogout, MdScreenshotMonitor, MdRefresh } from 'react-icons/md';
 import { IoClose } from 'react-icons/io5';
+import { MdLogout, MdScreenshotMonitor, MdRefresh } from 'react-icons/md';
 
 //utils
+import { avatarNameGen } from '../utils';
 import { ROUTES_NAME } from 'routes/routesName';
-import { useModal, useSettings, useUser } from 'modules/common/hooks';
 import { ColorPresetSettings } from './ColorPresetSettings';
+import { useModal, useSettings, useUser } from 'modules/common/hooks';
+import { BackgroundPresetSettings } from './BackgroundPresetSettings';
+import { StretchSettings } from './StretchSettings';
 
 export const AccountSettingMenu = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { user, logout } = useUser();
-  const { resetSettings } = useSettings();
+  const { resetSettings, exitFullScreen } = useSettings();
 
   //theme settings
   const { isOpen, onToggle } = useModal();
@@ -86,7 +87,7 @@ export const AccountSettingMenu = () => {
             navigate(ROUTES_NAME.profile);
           }}
         >
-          <Avatar>A</Avatar>
+          <Avatar>{avatarNameGen(user)}</Avatar>
           {t('NavMenProfile')}
         </MenuItem>
         <Divider />
@@ -102,7 +103,12 @@ export const AccountSettingMenu = () => {
           {t('NavMenuSetting')}
         </MenuItem>
         <ToggleThemeMode />
-        <MenuItem onClick={logout}>
+        <MenuItem
+          onClick={() => {
+            logout();
+            exitFullScreen();
+          }}
+        >
           <ListItemIcon>
             <MdLogout size={24} />
           </ListItemIcon>
@@ -120,18 +126,20 @@ export const AccountSettingMenu = () => {
           keepMounted: true, // Better open performance on mobile.
         }}
       >
-        <Stack direction='row' spacing={0} p={2} alignItems='center'>
+        <Stack direction='row' spacing={-1} p={2} alignItems='center'>
+          <Typography variant='subtitle1' sx={{ marginInlineEnd: 'auto' }}>
+            {t('NavMenuSetting')}
+          </Typography>
+          <Tooltip title={t('NavbarRefresh')}>
+            <IconButton onClick={resetSettings}>
+              <MdRefresh />
+            </IconButton>
+          </Tooltip>
           <Tooltip title={t('NavbarExit')}>
             <IconButton onClick={onToggle}>
               <IoClose />
             </IconButton>
           </Tooltip>
-          <Tooltip title={t('NavbarRefresh')} sx={{ marginInlineEnd: 'auto' }}>
-            <IconButton onClick={resetSettings}>
-              <MdRefresh />
-            </IconButton>
-          </Tooltip>
-          <Typography variant='subtitle1'>{t('NavMenuSetting')}</Typography>
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
@@ -141,6 +149,20 @@ export const AccountSettingMenu = () => {
             {t('NavMenuColorPalette')}
           </Typography>
           <ColorPresetSettings />
+
+          <Divider sx={{ mb: 2 }} />
+
+          <Typography variant='subtitle2' mb={2}>
+            {t('NavMenDarkPalette')}
+          </Typography>
+          <BackgroundPresetSettings />
+
+          <Divider sx={{ mb: 2 }} />
+
+          <Typography variant='subtitle2' mb={2}>
+            {t('NavMenFullscreen')}
+          </Typography>
+          <StretchSettings />
         </Box>
       </CustomDrawer>
     </div>
@@ -152,15 +174,9 @@ const ToggleThemeMode = memo(() => {
   const { toggleTheme, themeMode } = useSettings();
 
   return (
-    <MenuItem
-      //  onClick={toggleTheme}
-      disableRipple
-      disableTouchRipple
-      disableGutters
-    >
+    <MenuItem onClick={toggleTheme} disableRipple disableTouchRipple disableGutters>
       <ListItemIcon sx={{ marginInlineStart: 1 }}>
-        {/* <MdScreenshotMonitor size={24} /> */}
-        <Switch checked={themeMode === 'dark'} onChange={toggleTheme} />
+        <Switch checked={themeMode === 'dark'} />
       </ListItemIcon>
       {t('NavMenuDark')}
     </MenuItem>
@@ -170,8 +186,7 @@ const ToggleThemeMode = memo(() => {
 const CustomDrawer = styled(Drawer)(({ theme }) => ({
   '& .MuiDrawer-paper': {
     boxSizing: 'border-box',
-    width: 290,
-    // right: 'unset !important',
+    width: 240,
     right: 0,
     left: 'unset',
     margin: theme.spacing(2),

@@ -180,6 +180,27 @@ export const infoPalette = {
   darker: COLORS.azureBlue[800],
 };
 
+export const lightBackground = {
+  paper: COLORS.white,
+  default: COLORS.grey[200],
+  neutral: COLORS.grey[50],
+};
+export const paleBlackBackground = {
+  paper: '#242526',
+  default: '#18191a',
+  neutral: '#3a3b3c',
+};
+export const blackBackground = {
+  paper: '#192734',
+  default: '#15202b',
+  neutral: '#22303c',
+};
+// export const deepBackground = {
+//   paper: '#292b2f',
+//   default: '#202225',
+//   neutral: '#2f3136',
+// };
+
 // const chartColor = {
 //     violet: ['#826AF9', '#9E86FF', '#D0AEFF', '#F7D2FF'],
 //     blue: ['#2D99FF', '#83CFFF', '#A5F3FF', '#CCFAFF'],
@@ -190,12 +211,13 @@ export const infoPalette = {
 
 export const commonPalette = {
   common: { black: COLORS.black, white: COLORS.white },
-  primary: { ...primaryPalette, contrastText: '#fff' },
-  secondary: { ...secondaryPalette, contrastText: '#fff' },
-  info: { ...infoPalette, contrastText: '#fff' },
-  success: { ...successPalette, contrastText: '#fff' },
-  warning: { ...warningPalette, contrastText: COLORS.grey[800] },
-  error: { ...errorPalette, contrastText: '#fff' },
+  primary: { ...primaryPalette, contrastText: COLORS.white },
+  secondary: { ...secondaryPalette, contrastText: COLORS.white },
+  info: { ...infoPalette, contrastText: COLORS.white },
+  success: { ...successPalette, contrastText: COLORS.white },
+  warning: { ...warningPalette, contrastText: COLORS.white },
+  error: { ...errorPalette, contrastText: COLORS.white },
+  background: lightBackground,
   grey: COLORS.grey,
   // gradient,
   // chartColor,
@@ -215,7 +237,6 @@ export const lightPalette: any = {
   mode: 'light',
   divider: COLORS.grey[500_24],
   text: { primary: COLORS.grey[700], secondary: COLORS.grey[600], disabled: COLORS.grey[500] },
-  background: { paper: COLORS.white, default: COLORS.grey[200], neutral: COLORS.grey[50] },
   action: { active: COLORS.grey[600], ...commonPalette.common },
 };
 export const darkPalette: any = {
@@ -223,7 +244,7 @@ export const darkPalette: any = {
   mode: 'dark',
   divider: COLORS.grey[500_16],
   text: { primary: COLORS.grey[300], secondary: COLORS.grey[500], disabled: COLORS.grey[600] },
-  background: { paper: '#2d2d2d', default: '#222222', neutral: '#505050' },
+  // background: { paper: '#2d2d2d', default: '#222222', neutral: '#505050' },
   action: { active: COLORS.grey[500], ...commonPalette.common },
 };
 

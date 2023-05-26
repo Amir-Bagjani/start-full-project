@@ -9,3 +9,11 @@ export type ColorPreset = {
 };
 
 export type PresetKey = 'default' | 'green' | 'cyan' | 'orange' | 'red' | 'secondary';
+
+export type BackgroundPreset = {
+  paper: string;
+  default: string;
+  neutral: string;
+};
+
+export type PresetBackground = 'default' | 'paleBlack' | 'black'; /**'deepBlack' */

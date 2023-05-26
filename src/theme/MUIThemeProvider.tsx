@@ -2,10 +2,10 @@ import { prefixer } from 'stylis';
 import { useTheme } from '@mui/material';
 import createCache from '@emotion/cache';
 import rtlPlugin from 'stylis-plugin-rtl';
-import { ReactNode, useMemo } from 'react';
+import { ReactNode, useRef } from 'react';
 import { CssBaseline } from '@mui/material';
 import { CacheProvider } from '@emotion/react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Theme, ThemeProvider, createTheme } from '@mui/material/styles';
 
 //utils
 import {
@@ -30,29 +30,27 @@ const cacheRtl = createCache({
 export const MUIThemeProvider = ({ children }: { children: ReactNode }) => {
   const { typography: MuiTypography } = useTheme();
 
-  const { themeMode, themeColorPresets, chooseColor } = useSettings();
+  const { themeMode, chooseColor, chooseBackground } = useSettings();
 
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: themeMode === 'light' ? lightPalette : darkPalette,
-        breakpoints,
-        typography: { ...MuiTypography, ...typography },
-        shadows: themeMode === 'light' ? shadows.light : shadows.dark,
-        customShadows: themeMode === 'light' ? customShadows.light : customShadows.dark,
-        shape,
-      }),
-    [MuiTypography, themeMode, themeColorPresets],
-  );
+  let { current: theme } = useRef({} as Theme);
 
-  useMemo(() => {
-    //set gradient
-    theme.palette.gradient = gradientGen(theme);
-    //set custom palette
-    theme.palette.primary = chooseColor;
-    //set override components
-    theme.components = componentsOverride(theme);
-  }, [chooseColor, theme]);
+  theme = createTheme({
+    palette: themeMode === 'light' ? lightPalette : darkPalette,
+    breakpoints,
+    typography: { ...MuiTypography, ...typography },
+    shadows: themeMode === 'light' ? shadows.light : shadows.dark,
+    customShadows: themeMode === 'light' ? customShadows.light : customShadows.dark,
+    shape,
+  });
+
+  //set background
+  theme.palette.background = chooseBackground;
+  //set custom palette
+  theme.palette.primary = chooseColor;
+  //set override components
+  theme.components = componentsOverride(theme);
+  //set gradient
+  theme.palette.gradient = gradientGen(theme);
 
   return (
     <CacheProvider value={cacheRtl}>

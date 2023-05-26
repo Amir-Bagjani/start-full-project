@@ -1,12 +1,12 @@
 import { ReactNode, createContext, useMemo } from 'react';
 
 //utils
-import { colorPreset } from 'theme/utils';
 import { DefaultSettings } from 'utils/configuration';
+import { backgroundPreset, colorPreset } from 'theme/utils';
 import { useBrowserstorageState } from 'modules/common/hooks';
 
 //types
-import { PresetKey } from 'theme/models';
+import { PresetBackground, PresetKey } from 'theme/models';
 import { DefaultSettingsType } from 'models';
 import { validationObject } from 'utils/helper';
 
@@ -17,7 +17,8 @@ export const SettingContext = createContext({} as UseCustomSetting);
 const initialState = {
   themeMode: DefaultSettings.themeMode,
   themeColorPresets: DefaultSettings.themeColorPresets,
-  // themeStretch: DefaultSettings.themeStretch,
+  backgroundPreset: DefaultSettings.backgroundPreset,
+  themeStretch: DefaultSettings.themeStretch,
 };
 
 const checker = (value: DefaultSettingsType) => {
@@ -26,6 +27,8 @@ const checker = (value: DefaultSettingsType) => {
     validationObject(value, {
       themeMode: ['light', 'dark'],
       themeColorPresets: ['default', 'green', 'cyan', 'orange', 'red', 'secondary'],
+      backgroundPreset: ['default', 'paleBlack', 'black', 'deepBlack'],
+      themeStretch: ['false', 'true'],
     })
   )
     return value;
@@ -44,26 +47,45 @@ const useCustomSetting = () => {
   const value = useMemo(
     () => ({
       ...settings,
-      chooseColor: colorPreset(settings.themeColorPresets, settings.themeMode),
 
+      chooseColor: colorPreset(settings.themeColorPresets, settings.themeMode),
       changeColor: (presetColor: PresetKey) => {
         setSettings((pre) => ({ ...pre, themeColorPresets: presetColor }));
       },
-      toggleTheme: () => {
-        setSettings((pre) => ({ ...pre, themeMode: pre.themeMode === 'light' ? 'dark' : 'light' }));
+
+      chooseBackground: backgroundPreset(settings.backgroundPreset),
+      changeBackground: (presetBackground: PresetBackground) => {
+        setSettings((pre) => ({
+          ...pre,
+          themeMode: presetBackground === 'default' ? 'light' : 'dark',
+          backgroundPreset: presetBackground,
+        }));
       },
+
+      toggleTheme: () => {
+        setSettings((pre) => ({
+          ...pre,
+          themeMode: pre.themeMode === 'light' ? 'dark' : 'light',
+          backgroundPreset: pre.themeMode === 'light' ? 'black' : 'default',
+        }));
+      },
+
+      toggleStretch: () => {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen();
+        } else if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+        setSettings((pre) => ({ ...pre, themeStretch: !pre.themeStretch }));
+      },
+      exitFullScreen: () => {
+        document.exitFullscreen();
+      },
+
       resetSettings: () => {
         setSettings(initialState);
+        document.exitFullscreen();
       },
-      // toggleStretch: () => {
-      //   if (!document.fullscreenElement) {
-      //     document.documentElement.requestFullscreen();
-      //     setSettings((pre) => ({ ...pre, themeStretch: true }));
-      //   } else if (document.exitFullscreen) {
-      //     document.exitFullscreen();
-      //     setSettings((pre) => ({ ...pre, themeStretch: false }));
-      //   }
-      // },
     }),
     [setSettings, settings],
   );

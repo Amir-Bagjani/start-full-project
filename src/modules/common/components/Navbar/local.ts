@@ -17,4 +17,8 @@ export const navbarLayoutLocal = {
   NavMenuLight: 'تم روشن',
   NavMenProfile: 'مشاهده پروفایل',
   NavMenuColorPalette: ' پالت رنگ',
+  NavMenDarkPalette: 'پالت رنگ پس زمینه',
+  NavMenFullscreen: 'ابعاد نمایش گر',
+  NavMenuFull: 'تمام صفحه',
+  NavMenuExitFull: 'خروج از تمام صفحه',
 };

@@ -26,17 +26,17 @@ export const queryClient = new QueryClient({
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <UserProvider>
-        <SettingProvider>
-          <MUIThemeProvider>
-            <RouteWrapper />
-            <Toaster toastOptions={{ duration: 3000 }} />
-            <ReactQueryDevtools initialIsOpen={false} />
-          </MUIThemeProvider>
-        </SettingProvider>
-      </UserProvider>
-    </QueryClientProvider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <UserProvider>
+      <SettingProvider>
+        <MUIThemeProvider>
+          <RouteWrapper />
+          <Toaster toastOptions={{ duration: 3000 }} />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </MUIThemeProvider>
+      </SettingProvider>
+    </UserProvider>
+  </QueryClientProvider>,
+  // </React.StrictMode>,
 );
