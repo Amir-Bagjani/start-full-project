@@ -71,7 +71,7 @@ const LoginPage = () => {
           size='medium'
           name='username'
           control={control}
-          label='نام کاربری'
+          label={t('LoginUsernamr')}
           shouldFocus
         />
         <TextBox.Form
@@ -79,7 +79,7 @@ const LoginPage = () => {
           name='password'
           variant='filled'
           control={control}
-          label='رمز عبور'
+          label={t('LoginPassword')}
           type='password'
         />
         <Button.Loading
@@ -90,7 +90,7 @@ const LoginPage = () => {
           fullWidth
           size='large'
         >
-          ورود
+          {t('LoginEnter')}
         </Button.Loading>
       </Stack>
     </Stack>

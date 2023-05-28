@@ -1,9 +1,13 @@
+import Cookies from 'js-cookie';
 import { Constants } from 'utils/constants';
+
+//types
+import { User } from 'models/User.type';
 
 //TODO: turn this class to function for improve performance
 
 class TokenServices {
-  #user: any;
+  #user: User | null;
   constructor() {
     this.#user = null;
   }
@@ -12,35 +16,32 @@ class TokenServices {
     return this.#user;
   }
 
-  setUser(user: any) {
+  setUser(user: User) {
     this.#user = user;
   }
 
+  logoutUser() {
+    this.#user = null;
+  }
+
   getRefreshToken() {
-    // const rtoken = this.#user?.refresh
-    const localstorageUser = localStorage.getItem(Constants.UserStorageName);
-    if (!!localstorageUser) {
-      const user = JSON.parse(localstorageUser);
-      return user ? user.refresh : null;
-    }
-    // return !!this.#user ? rtoken : null;
+    const rtoken = this.#user?.refresh;
+    return !!this.#user ? rtoken : null;
   }
 
   getLocalAccessToken() {
-    const token = localStorage.getItem(Constants.AccessTokenName);
-    // const token = JSON.parse(localStorage.getItem(Constants.AccessTokenName));
+    const token = Cookies.get(Constants.AccessTokenName);
     return token;
   }
 
-  setLocalAccessToken(token: any) {
-    localStorage.setItem(Constants.AccessTokenName, token);
-    // localStorage.setItem(Constants.AccessTokenName, JSON.stringify(token));
+  setLocalAccessToken(token: string) {
+    Cookies.set(Constants.AccessTokenName, token, { secure: true, sameSite: 'strict', path: '/' });
   }
 
   removeLocalAccessToken() {
-    localStorage.removeItem(Constants.AccessTokenName);
-    //TODO: should remove this line
-    localStorage.removeItem(Constants.UserStorageName);
+    Cookies.set(Constants.AccessTokenName, '');
+    Cookies.set(Constants.UserStorageName, '');
+    this.logoutUser();
   }
 }
 

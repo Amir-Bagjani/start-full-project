@@ -1,7 +1,7 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Cookies, { CookieAttributes } from 'js-cookie';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-export const useCookieState = <V>(
+export const useCookieState = <V extends unknown>(
   key: string,
   initialValue: V,
   options: CookieAttributes = { secure: true, sameSite: 'strict', path: '/' },

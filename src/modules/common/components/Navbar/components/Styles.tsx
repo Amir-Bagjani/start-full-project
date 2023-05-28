@@ -20,7 +20,7 @@ export const LogoImg = styled(Box, {
 })<LogoImgProps>(({ theme }) => ({
   width: 80,
   height: 80,
-  [theme.breakpoints.up('tablet')]: {
+  [theme.breakpoints.up(500)]: {
     top: '50%',
     right: '50%',
     position: 'absolute',
@@ -32,6 +32,9 @@ export const LogoSection = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(5),
+  [theme.breakpoints.down(500)]: {
+    display: 'none',
+  },
 }));
 
 export const ButtonSection = styled(Box)(({ theme }) => ({
