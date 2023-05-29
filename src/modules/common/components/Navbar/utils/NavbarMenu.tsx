@@ -1,13 +1,18 @@
 import { t } from 'i18next';
 import { Trans } from 'react-i18next';
-import { ROUTES_NAME } from 'routes/routesName';
-import { ADMIN_R, RECEIPTIONICT_R, REPORTER_R, ROLES } from 'utils/constants';
 
+//components
 import { HiHome } from 'react-icons/hi';
 import { AiFillSetting } from 'react-icons/ai';
 import { RiListSettingsFill } from 'react-icons/ri';
 import { BsFillInfoCircleFill } from 'react-icons/bs';
 import { MdMonetizationOn, MdOutlineUnfoldMore } from 'react-icons/md';
+
+//utils
+import { ROUTES_NAME } from 'routes/routesName';
+import { ADMIN_R, RECEIPTIONICT_R, REPORTER_R, ROLES } from 'utils/constants';
+
+//types
 import { RolesType } from 'models';
 
 type NavbarMenuType = {

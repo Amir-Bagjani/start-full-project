@@ -9,7 +9,7 @@ export function validationObject(obj: Record<string, unknown>, schema: Record<st
 
     if (Array.isArray(validation)) {
       // Array-based value comparison
-      if (!validation.includes(value)) return false;
+      if (!validation.includes(String(value))) return false;
     } else {
       // Single value comparison
       if (value !== validation) return false;

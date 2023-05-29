@@ -1,3 +1,4 @@
+import { homeLocal } from 'modules/Home/local';
 import { loginLocal } from 'modules/Login/locale';
 import { navbarLayoutLocal } from 'modules/common/components/Navbar/local';
 import { appLayoutLocal } from 'modules/common/components/layouts/AppLayout/local';
@@ -15,4 +16,5 @@ export const PersianTr = Object.assign(
   loginLocal,
   appLayoutLocal,
   navbarLayoutLocal,
+  homeLocal,
 );

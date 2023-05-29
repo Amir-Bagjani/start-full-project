@@ -9,6 +9,7 @@ export default function CssBaseline(theme: Theme) {
           margin: 0,
           padding: 0,
           boxSizing: 'border-box',
+          fontFamily: 'IRANSans, Courier, monospace',
         },
         html: {
           width: '100%',

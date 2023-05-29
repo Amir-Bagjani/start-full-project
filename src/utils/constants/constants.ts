@@ -3,6 +3,7 @@ export const Constants = {
   UserStorageName: 'user-auth',
   PublicFetchError: 'عملیات با خطا مواجه شد لطفا دوباره تلاش کنید.',
   PublicFetchSuccess: 'عملیات با موفقیت انجام شد.',
+  AppTitle: 'سامانه درمان رفاپ',
 } as const;
 
 export const InfoMessage = {
