@@ -50,7 +50,7 @@ export const NAVBAR_MENU: NavbarMenuType[] = [
   {
     id: 4,
     title: <Trans t={t}>BaseSettings</Trans>,
-    path: ROUTES_NAME.base,
+    path: ROUTES_NAME.base.base,
     icon: <RiListSettingsFill />,
     roles: [ADMIN_R],
   },

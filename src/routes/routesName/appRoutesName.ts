@@ -1,4 +1,5 @@
 export const baseRoute = '';
+export const baseAction = baseRoute + '/base';
 export const baseExpense = baseRoute + '/expense';
 export const baseComplaint = baseRoute + '/complaint';
 export const baseContract = baseRoute + '/contract';
@@ -22,11 +23,24 @@ export const ROUTES_NAME = {
   transfer: baseRoute + '/transfer',
   ticket: baseRoute + '/ticket',
   damage: baseRoute + '/damage',
-  base: '/base',
   help: '/help',
   report: '/report',
   importFile: '/import-file',
   profile: '/profile',
+  base: {
+    base: baseAction,
+    province: baseAction + '/province',
+    city: baseAction + '/city',
+    organization: baseAction + '/organization',
+    company: baseAction + '/company',
+    contracttype: baseAction + '/contracttype',
+    adjustertype: baseAction + '/adjustertype',
+    topic: baseAction + '/topic',
+    damagetype: baseAction + '/damagetype',
+    damagedocumenttype: baseAction + '/damagedocumenttype',
+    message: baseAction + '/message',
+    agency: baseAction + '/agency',
+  },
   expense: {
     base: baseExpense,
     dashboard: baseExpense + '/dashboard',

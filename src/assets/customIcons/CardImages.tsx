@@ -19,8 +19,36 @@ import { ReactComponent as FragileBroken } from 'assets/svg/fragile-broken.svg';
 import { ReactComponent as Admindashboard } from 'assets/svg/admindashboard.svg';
 import { ReactComponent as Customerservice } from 'assets/svg/customerservice.svg';
 import { ReactComponent as ChartMagnifyingGlass } from 'assets/svg/chart-magnifying-glass.svg';
+import { ReactComponent as Tower } from 'assets/svg/tower.svg';
+import { ReactComponent as City } from 'assets/svg/city.svg';
+import { ReactComponent as Organization } from 'assets/svg/organization.svg';
+import { ReactComponent as Teamwork } from 'assets/svg/teamwork.svg';
+import { ReactComponent as Sale } from 'assets/svg/sale.svg';
+import { ReactComponent as Help } from 'assets/svg/help.svg';
+import { ReactComponent as Agency } from 'assets/svg/agency.svg';
 // ----------------------------------------------------------------------
 
+export const AgencyCardIcon = (props: SvgIconProps) => (
+  <SvgIcon component={Agency} inheritViewBox {...props} />
+);
+export const HelpCardIcon = (props: SvgIconProps) => (
+  <SvgIcon component={Help} inheritViewBox {...props} />
+);
+export const SaleCardIcon = (props: SvgIconProps) => (
+  <SvgIcon component={Sale} inheritViewBox {...props} />
+);
+export const TeamworkCardIcon = (props: SvgIconProps) => (
+  <SvgIcon component={Teamwork} inheritViewBox {...props} />
+);
+export const OrganizationCardIcon = (props: SvgIconProps) => (
+  <SvgIcon component={Organization} inheritViewBox {...props} />
+);
+export const CityCardIcon = (props: SvgIconProps) => (
+  <SvgIcon component={City} inheritViewBox {...props} />
+);
+export const TowerCardIcon = (props: SvgIconProps) => (
+  <SvgIcon component={Tower} inheritViewBox {...props} />
+);
 export const AdmindashboardCardIcon = (props: SvgIconProps) => (
   <SvgIcon component={Admindashboard} inheritViewBox {...props} />
 );

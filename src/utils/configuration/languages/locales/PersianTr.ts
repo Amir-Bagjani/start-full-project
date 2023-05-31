@@ -1,4 +1,5 @@
 import { homeLocal } from 'modules/Home/local';
+import { baseLocal } from 'modules/Base/locale';
 import { loginLocal } from 'modules/Login/locale';
 import { expenseLocal } from 'modules/Expense/locale';
 import { navbarLayoutLocal } from 'modules/common/components/Navbar/local';
@@ -20,4 +21,5 @@ export const PersianTr = Object.assign(
   navbarLayoutLocal,
   homeLocal,
   expenseLocal,
+  baseLocal,
 );
