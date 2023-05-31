@@ -20,4 +20,7 @@ export const homeLocal = {
   StudentDamage: 'حوادث دانش آموزی',
   HomeDashboard: 'داشبورد',
   MainPage: 'صفحه اصلی',
+  InactiveAcc: 'حساب کاربری شما غیرفعال است. لطفا جهت فعالسازی حساب  با سازمان بیمه گر تماس بگیرید',
+  NotActiveContract: 'شما هنوز قرارداد فعالی ندارید',
+  NoAccessContract: 'دسترسی لازم درقرارداد داده نشده است',
 };

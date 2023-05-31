@@ -27,7 +27,7 @@ const checker = (value: DefaultSettingsType) => {
     validationObject(value, {
       themeMode: ['light', 'dark'],
       themeColorPresets: ['default', 'green', 'cyan', 'orange', 'red', 'secondary'],
-      backgroundPreset: ['default', 'paleBlack', 'black', 'deepBlack'],
+      backgroundPreset: ['default', 'paleBlack', 'black'],
       themeStretch: ['false', 'true'],
     })
   )
@@ -79,6 +79,7 @@ const useCustomSetting = () => {
         setSettings((pre) => ({ ...pre, themeStretch: !pre.themeStretch }));
       },
       exitFullScreen: () => {
+        if (document.fullscreenElement === null) return;
         document.exitFullscreen();
       },
 

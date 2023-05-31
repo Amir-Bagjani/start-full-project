@@ -11,6 +11,7 @@ export const PersianTr = Object.assign(
     Expenses: 'هزینه ها',
     refreshPageError: 'صفحه را رفرش کنید',
     SmWentWrong: 'اشتباهی پیش آمده است.',
+    EmptyState: 'موردی برای نمایش وجود ندارد',
   },
   authLayoutLocal,
   loginLocal,

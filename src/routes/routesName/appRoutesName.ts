@@ -5,6 +5,7 @@ export const baseContract = baseRoute + '/contract';
 
 export const ROUTES_NAME = {
   home: baseRoute,
+  notFound: baseRoute + '/not-found',
   dashboard: baseRoute + '/dashboard',
   login: baseRoute + '/login',
   adjuster: baseRoute + '/adjuster',
@@ -29,10 +30,10 @@ export const ROUTES_NAME = {
   expense: {
     base: baseExpense,
     dashboard: baseExpense + '/dashboard',
+    add: baseExpense + '/add',
 
-    detail: `${baseRoute}/expenses/:id`,
-    add: `${baseRoute}/expenses/add`,
-    print: `${baseRoute}/expenses/print/:ids`,
+    detail: `${baseRoute}/:id`,
+    print: `${baseRoute}/print/:ids`,
 
     navigateToDetail: (id: number) => `${baseRoute}/expenses/${id}`,
     navigateToPrint: (ids: number[]) => `${baseRoute}/expenses/print/${ids}`,

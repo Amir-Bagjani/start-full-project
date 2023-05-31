@@ -29,6 +29,7 @@ import {
   CustomMenuItem,
 } from './components/Styles';
 import { TfiMenu } from 'react-icons/tfi';
+import { Calender } from './components/Calender';
 import { AccountSettingMenu, HideOnScroll } from './components';
 
 //utils
@@ -120,7 +121,10 @@ export const Navbar = () => {
           </AppBar>
         </Box>
       </HideOnScroll>
-      <div style={{ height: 95, width: '100%' }} />
+      <Container sx={{ maxWidth: '1150px' }}>
+        <div style={{ height: 95, width: '100%' }} />
+        <Calender />
+      </Container>
 
       {/* mobile drawer */}
       <Box component='nav'>

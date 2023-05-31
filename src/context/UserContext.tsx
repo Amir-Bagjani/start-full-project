@@ -7,7 +7,7 @@ import { Constants } from 'utils/constants';
 //types
 import type { ReactNode } from 'react';
 import { User } from 'models/User.type';
-import { TokenService } from 'services/utils';
+// import { TokenService } from 'services/utils';
 
 type ProviderProps = { children: ReactNode };
 type UseCustomSetting = ReturnType<typeof useCustomUserContext>;
@@ -21,7 +21,7 @@ export const UserContext = createContext({} as UseCustomSetting);
 
 const useCustomUserContext = () => {
   const [user, setUser] = useCookieState<User | null>(Constants.UserStorageName, null);
-  const [, setUserToken] = useCookieState<string | null>(Constants.AccessTokenName, null);
+  // const [, setUserToken] = useCookieState<string | null>(Constants.AccessTokenName, null);
 
   // const { mutate, isLoading } = useRefreshTokenAPI();
 
@@ -39,16 +39,16 @@ const useCustomUserContext = () => {
       // loadingUser: isLoading,
       login: (u: User) => {
         setUser(u);
-        setUserToken(u.access);
-        TokenService.setUser(u);
+        // setUserToken(u.access);
+        // TokenService.setUser(u);
       },
       logout: () => {
         setUser(null);
-        setUserToken(null);
-        TokenService.logoutUser();
+        // setUserToken(null);
+        // TokenService.logoutUser();
       },
     }),
-    [setUser, setUserToken, user],
+    [setUser, user],
   );
 };
 

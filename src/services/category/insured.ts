@@ -1,4 +1,8 @@
+import { AxiosRequestConfig } from 'axios';
 import { AxiosHandler } from 'services/utils';
+
+import { APIError } from 'models/APImodels';
+import { InsuredResponse } from 'services/models/insured';
 
 class InsuredAPI {
   getInsurancePolicy = async (params: any) => {
@@ -25,6 +29,10 @@ class InsuredAPI {
     const new_params = new URLSearchParams(add_params).toString();
 
     return await AxiosHandler.get(`/darman/insured/?${new_params}`);
+  };
+
+  loadInsuredMe = async (config: AxiosRequestConfig = {}) => {
+    return await AxiosHandler.get<InsuredResponse, APIError>('/darman/insured/me', config);
   };
 }
 

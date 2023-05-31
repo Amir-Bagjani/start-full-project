@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
@@ -5,13 +6,21 @@ import { Box, Typography } from '@mui/material';
 //types
 import type { CardData } from 'modules/Home/utils/CARD_DATA';
 
+const item = {
+  hidden: { y: 0, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+};
+
 type CardProps = {
   data: CardData;
 };
 
 export const Card = ({ data }: CardProps) => {
   return (
-    <BoxContainer component={Link} to={data.path}>
+    <MotionBox component={Link} variants={item} to={data.path}>
       <IconContainer>{data.iconUrl}</IconContainer>
       <Typography
         sx={{
@@ -21,7 +30,7 @@ export const Card = ({ data }: CardProps) => {
       >
         {data.label}
       </Typography>
-    </BoxContainer>
+    </MotionBox>
   );
 };
 
@@ -38,7 +47,7 @@ const IconContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   flexDirection: 'column',
-  transition: theme.transitions.create('transform', {
+  transition: theme.transitions.create('all', {
     easing: theme.transitions.easing.easeInOut,
     duration: '0.4s',
   }),
@@ -64,7 +73,7 @@ const BoxContainer = styled(Box)<{ to: string }>(({ theme }) => ({
   }),
   cursor: 'pointer',
   '&:hover': {
-    transform: 'translateY(-0.5rem)',
+    transform: 'translateY(-0.5rem) !important',
     boxShadow: theme.customShadows.s20,
     '& > div': {
       backgroundColor: theme.palette.background.default,
@@ -73,3 +82,4 @@ const BoxContainer = styled(Box)<{ to: string }>(({ theme }) => ({
     },
   },
 }));
+const MotionBox = motion(BoxContainer);

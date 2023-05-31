@@ -2,10 +2,13 @@ import axios from 'axios';
 
 //utils
 import { APIs } from 'services/APIs';
-import { TokenService } from './TokenService';
+// import { TokenService } from './TokenService';
 
 //types
 import type { AxiosResponse, AxiosError, AxiosRequestConfig } from 'axios';
+import Cookies from 'js-cookie';
+import { Constants } from 'utils/constants';
+import { User } from 'models/User.type';
 
 /**
  * for multiple requests on a page that the interceptor do not trigger for each of them,
@@ -47,8 +50,12 @@ const client = axios.create({
 //set token in header
 client.interceptors.request.use(
   (config) => {
-    const token = TokenService.getLocalAccessToken();
-    if (token) config.headers['Authorization'] = `Bearer ${token}`;
+    let user = Cookies.get(Constants.UserStorageName);
+    // const token = TokenService.getLocalAccessToken();
+    if (!!user) {
+      let token = (JSON.parse(user) as User).access;
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => {
@@ -77,9 +84,11 @@ client.interceptors.response.use(
 
       originalRequest._retry = true;
       isRefreshing = true;
-      const refreshToken = TokenService.getRefreshToken();
+      // const refreshToken = TokenService.getRefreshToken();
+      let user = Cookies.get(Constants.UserStorageName);
 
-      if (refreshToken) {
+      if (user) {
+        let refreshToken = (JSON.parse(user) as User).refresh;
         try {
           const rs = await APIs.user.refresh({
             refresh: refreshToken,
@@ -87,7 +96,13 @@ client.interceptors.response.use(
 
           const { access } = rs.data;
 
-          TokenService.setLocalAccessToken(access);
+          // TokenService.setLocalAccessToken(access);
+          Cookies.set(Constants.UserStorageName, JSON.stringify(user), {
+            secure: true,
+            sameSite: 'strict',
+            path: '/',
+          });
+
           client.defaults.headers.common.Authorization = `Bearer ${access}`;
           onRefreshed(access);
           refreshSubscribers = [];
@@ -97,7 +112,8 @@ client.interceptors.response.use(
           refreshSubscribers = [];
 
           // handle refresh token error
-          TokenService.removeLocalAccessToken();
+          // TokenService.removeLocalAccessToken();
+          Cookies.remove(Constants.UserStorageName);
           alert('!!لطفا وارد حساب کاربری خود شوید');
           window.location.reload();
           // return Promise.reject(refreshError);
@@ -106,7 +122,8 @@ client.interceptors.response.use(
         isRefreshing = false;
 
         // handle missing refresh token error
-        TokenService.removeLocalAccessToken();
+        // TokenService.removeLocalAccessToken();
+        Cookies.remove(Constants.UserStorageName);
         alert('لطفا وارد حساب کاربری خود شوید');
         window.location.reload();
         // return Promise.reject(error);

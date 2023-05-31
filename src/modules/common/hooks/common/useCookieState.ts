@@ -7,7 +7,7 @@ export const useCookieState = <V extends unknown>(
   options: CookieAttributes = { secure: true, sameSite: 'strict', path: '/' },
 ) => {
   const [value, setValue] = useState<V>(() => {
-    if (typeof window !== 'undefined' && window.localStorage) {
+    if (typeof window !== 'undefined') {
       const savedValue = Cookies.get(key);
       if (!!savedValue) {
         return JSON.parse(savedValue);
@@ -25,6 +25,10 @@ export const useCookieState = <V extends unknown>(
 
   useEffect(() => {
     if (window.localStorage) {
+      if (!value) {
+        Cookies.remove(key);
+        return;
+      }
       Cookies.set(key, JSON.stringify(value), { ...options });
     }
   }, [value, key, options]);
