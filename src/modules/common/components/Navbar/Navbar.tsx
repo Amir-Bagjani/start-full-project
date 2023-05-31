@@ -121,7 +121,7 @@ export const Navbar = () => {
           </AppBar>
         </Box>
       </HideOnScroll>
-      <Container sx={{ maxWidth: '1150px' }}>
+      <Container sx={{ maxWidth: '1366px', paddingInlineStart: { zero: 5, tablet: 4.5 } }}>
         <div style={{ height: 95, width: '100%' }} />
         <Calender />
       </Container>

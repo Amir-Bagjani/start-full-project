@@ -70,7 +70,7 @@ const ImgContainer = styled(Stack)(({ theme }: { theme: Theme }) => ({
   maxWidth: 350,
   padding: '1rem',
   position: 'relative',
-  background: theme.palette.gradient.themeBase,
+  background: theme.palette.gradient.primary,
   [theme.breakpoints.down('tablet')]: {
     display: 'none',
   },

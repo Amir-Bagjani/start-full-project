@@ -3,11 +3,11 @@ import { useCallback } from 'react';
 import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, alpha } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 //components
-import { Button, TextBox } from 'modules/common/components';
+import { Button, DocumentTitle, TextBox } from 'modules/common/components';
 
 //utils
 import { useLoginAPI } from '../hooks';
@@ -16,6 +16,7 @@ import { useUser } from 'modules/common/hooks';
 
 //types
 import { LoginParams } from 'services/models';
+import { primaryPalette } from 'theme/themeProperty';
 
 const onError = () => {
   toast.error(t('LoginError'));
@@ -49,51 +50,60 @@ const LoginPage = () => {
   );
 
   return (
-    <Stack spacing={2} alignItems='center'>
-      <Box
-        component='img'
-        src='images/iranianLogo.svg'
-        alt='iranian-pooshesh'
-        sx={{ width: 100 }}
-      />
-      <Typography variant='subtitle1' color='primary'>
-        {t('LoginToSite')}
-      </Typography>
-      <Stack
-        sx={{ width: { zero: '95vw', mobile: 420 }, p: { zero: 1, mobile: 5 } }}
-        spacing={2}
-        component='form'
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-      >
-        <TextBox.Form
-          variant='filled'
-          size='medium'
-          name='username'
-          control={control}
-          label={t('LoginUsernamr')}
-          shouldFocus
+    <DocumentTitle title={t('LoginToSite') as string}>
+      <Stack spacing={2} alignItems='center'>
+        <Box
+          component='img'
+          src='images/iranianLogo.svg'
+          alt='iranian-pooshesh'
+          sx={{ width: 100 }}
         />
-        <TextBox.Form
-          size='medium'
-          name='password'
-          variant='filled'
-          control={control}
-          label={t('LoginPassword')}
-          type='password'
-        />
-        <Button.Loading
-          variant='contained'
-          sx={{ mt: 3, mb: 2 }}
-          loading={isLoading}
-          type='submit'
-          fullWidth
-          size='large'
+        <Typography variant='subtitle1' color={primaryPalette.main}>
+          {t('LoginToSite')}
+        </Typography>
+        <Stack
+          sx={{ width: { zero: '95vw', mobile: 420 }, p: { zero: 1, mobile: 5 } }}
+          spacing={2}
+          component='form'
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
         >
-          {t('LoginEnter')}
-        </Button.Loading>
+          <TextBox.Form
+            variant='filled'
+            size='medium'
+            name='username'
+            control={control}
+            label={t('LoginUsernamr')}
+            shouldFocus
+            color='info'
+          />
+          <TextBox.Form
+            size='medium'
+            name='password'
+            variant='filled'
+            control={control}
+            label={t('LoginPassword')}
+            type='password'
+            color='info'
+          />
+          <Button.Loading
+            variant='contained'
+            loading={isLoading}
+            type='submit'
+            fullWidth
+            size='large'
+            sx={{
+              bgcolor: primaryPalette.main,
+              '&:hover': { bgcolor: alpha(primaryPalette.main, 0.8) },
+              mt: 3,
+              mb: 2,
+            }}
+          >
+            {t('LoginEnter')}
+          </Button.Loading>
+        </Stack>
       </Stack>
-    </Stack>
+    </DocumentTitle>
   );
 };
 

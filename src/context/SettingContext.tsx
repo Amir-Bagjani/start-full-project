@@ -6,9 +6,9 @@ import { backgroundPreset, colorPreset } from 'theme/utils';
 import { useBrowserstorageState } from 'modules/common/hooks';
 
 //types
-import { PresetBackground, PresetKey } from 'theme/models';
 import { DefaultSettingsType } from 'models';
 import { validationObject } from 'utils/helper';
+import { PresetBackground, PresetKey } from 'theme/models';
 
 type UseCustomSetting = ReturnType<typeof useCustomSetting>;
 

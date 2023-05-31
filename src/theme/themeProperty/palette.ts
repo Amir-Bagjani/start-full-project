@@ -149,6 +149,13 @@ export const successPalette = {
   darker: COLORS.forestGreen[900],
 };
 
+export const defaultPalette = {
+  lighter: COLORS.blue[100],
+  light: COLORS.blue[300],
+  main: COLORS.blue[700],
+  dark: COLORS.blue[800],
+  darker: COLORS.blue[900],
+};
 export const primaryPalette = {
   lighter: COLORS.blue[100],
   light: COLORS.blue[300],
@@ -212,6 +219,7 @@ export const blackBackground = {
 export const commonPalette = {
   common: { black: COLORS.black, white: COLORS.white },
   primary: { ...primaryPalette, contrastText: COLORS.white },
+  default: { ...defaultPalette, contrastText: COLORS.white },
   secondary: { ...secondaryPalette, contrastText: COLORS.white },
   info: { ...infoPalette, contrastText: COLORS.white },
   success: { ...successPalette, contrastText: COLORS.white },

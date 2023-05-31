@@ -45,12 +45,12 @@ import { ROUTES_NAME } from 'routes/routesName';
 import { RolesType } from 'models';
 
 export type CardData = {
-  hide: boolean;
+  hide?: boolean;
   path: string;
   label: string;
-  key: keyof typeof CARD_DATA_KEY;
+  key?: keyof typeof CARD_DATA_KEY;
   iconUrl: ReactNode;
-  roles: RolesType[];
+  roles?: RolesType[];
 };
 
 export const CARD_DATA_KEY = {

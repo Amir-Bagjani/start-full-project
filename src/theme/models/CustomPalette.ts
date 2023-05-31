@@ -45,9 +45,21 @@ export type Gradient = {
   themeBase: string;
 };
 
+type DefaultPalette = Override<
+  Palette['primary'],
+  {
+    lighter: string;
+    light: string;
+    main: string;
+    dark: string;
+    darker: string;
+  }
+>;
+
 export type CustomPalette = Override<
   Palette,
   {
+    default: DefaultPalette;
     grey: GreyColor;
     action: CustomAction;
     background: CustomBackground;

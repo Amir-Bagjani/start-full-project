@@ -30,10 +30,17 @@ export const ROUTES_NAME = {
   expense: {
     base: baseExpense,
     dashboard: baseExpense + '/dashboard',
-    add: baseExpense + '/add',
+    costgroup: baseExpense + '/costgroup',
+    kperiod: baseExpense + '/kperiod',
+    expensetype: baseExpense + '/expensetype',
+    expensestatus: baseExpense + '/expensestatus',
+    costcentertype: baseExpense + '/costcentertype',
+    sampledescription: baseExpense + '/sampledescription',
+    expensedocumenttype: baseExpense + '/expensedocumenttype',
 
-    detail: `${baseRoute}/:id`,
-    print: `${baseRoute}/print/:ids`,
+    add: baseExpense + '/add',
+    detail: baseExpense + '/:id',
+    print: baseExpense + '/print/:ids',
 
     navigateToDetail: (id: number) => `${baseRoute}/expenses/${id}`,
     navigateToPrint: (ids: number[]) => `${baseRoute}/expenses/print/${ids}`,
