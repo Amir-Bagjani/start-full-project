@@ -23,6 +23,7 @@ import { MouseEvent, useCallback, useState } from 'react';
 import {
   LogoImg,
   CustomLink,
+  CalenderBox,
   LogoSection,
   CustomDrawer,
   RouteSection,
@@ -115,16 +116,18 @@ export const Navbar = () => {
                   <LogoImg component='img' alt='logo' src='/images/iranianLogo.svg' />
                 </LogoSection>
 
-                <AccountSettingMenu />
+                <Stack direction='row' spacing={3.5} alignItems='center'>
+                  <Box sx={{ display: { zero: 'none', lgLaptop: 'block' } }}>
+                    <Calender />
+                  </Box>
+                  <AccountSettingMenu />
+                </Stack>
               </Container>
             </Toolbar>
           </AppBar>
         </Box>
       </HideOnScroll>
-      <Container sx={{ maxWidth: '1366px', paddingInlineStart: { zero: 5, tablet: 4.5 } }}>
-        <div style={{ height: 95, width: '100%' }} />
-        <Calender />
-      </Container>
+      <div style={{ height: 95, width: '100%' }} />
 
       {/* mobile drawer */}
       <Box component='nav'>
@@ -147,7 +150,9 @@ export const Navbar = () => {
             <Typography variant='subtitle2' component='h2' sx={{ fontWeight: 900, mb: 3 }}>
               {t('NavbarBrand')}
             </Typography>
+
             <Divider />
+
             <List>
               {NAVBAR_MENU.map((i) => {
                 if (includedRole(i.roles)) {
@@ -210,7 +215,12 @@ export const Navbar = () => {
                 </Stack>
               </Collapse>
             </List>
+
             <Divider />
+
+            <CalenderBox>
+              <Calender />
+            </CalenderBox>
           </Box>
         </CustomDrawer>
       </Box>

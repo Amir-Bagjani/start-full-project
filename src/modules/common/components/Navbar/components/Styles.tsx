@@ -101,3 +101,16 @@ export const CustomMenuItem = styled('div')(() => ({
     color: 'inherit',
   },
 }));
+
+export const CalenderBox = styled('div')(({ theme }) =>
+  theme.unstable_sx({
+    bgcolor: 'background.paper',
+    m: 'auto',
+    width: 0.95,
+    borderRadius: (t) => t.shape.borderRadius,
+    display: 'grid',
+    placeContent: 'center',
+    my: 2,
+    height: 60,
+  }),
+);
