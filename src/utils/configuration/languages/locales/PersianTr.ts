@@ -5,6 +5,8 @@ import { expenseLocal } from 'modules/Expense/locale';
 import { navbarLayoutLocal } from 'modules/common/components/Navbar/local';
 import { appLayoutLocal } from 'modules/common/components/layouts/AppLayout/local';
 import { authLayoutLocal } from 'modules/common/components/layouts/AuthLayout/local';
+import { customModalLocale } from 'modules/common/components/CustomModal/locale';
+import { datepickerLocal } from 'modules/common/components/ui/DatePicker/locale';
 
 export const PersianTr = Object.assign(
   {
@@ -22,4 +24,6 @@ export const PersianTr = Object.assign(
   homeLocal,
   expenseLocal,
   baseLocal,
+  customModalLocale,
+  datepickerLocal,
 );

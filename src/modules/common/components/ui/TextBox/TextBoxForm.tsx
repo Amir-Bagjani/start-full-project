@@ -1,16 +1,12 @@
-import { Override } from 'theme/models';
 import { RootTextBox, TextBoxType } from './RootTextBox';
 import { UseControllerProps, useController } from 'react-hook-form';
 
-type TextBoxFormProps =
-  //  Override<
-  TextBoxType &
-    UseControllerProps<any> & {
-      shouldFocus?: Boolean;
-      disableError?: Boolean;
-      hideErrorMessage?: Boolean;
-    };
-// >;
+type TextBoxFormProps = TextBoxType &
+  UseControllerProps<any> & {
+    shouldFocus?: Boolean;
+    disableError?: Boolean;
+    hideErrorMessage?: Boolean;
+  };
 
 export const TextBoxForm = (props: TextBoxFormProps) => {
   const {

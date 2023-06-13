@@ -3,8 +3,9 @@ import { alpha, Theme } from '@mui/material/styles';
 // ----------------------------------------------------------------------
 
 export default function Backdrop(theme: Theme) {
-  const varLow = alpha(theme.palette.grey[900], 0.48);
-  const varHigh = alpha(theme.palette.grey[900], 1);
+  const color = theme.palette.mode === 'light' ? theme.palette.grey[800] : theme.palette.grey[700];
+  const varLow = alpha(color, 0.48);
+  const varHigh = alpha(color, 1);
 
   return {
     MuiBackdrop: {

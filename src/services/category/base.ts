@@ -1,5 +1,9 @@
 import { AxiosHandler } from 'services/utils';
 
+//types
+import { APIError } from 'models/APImodels';
+import { HelpMessageParams, HelpMessageResponse } from 'services/models/base';
+
 class BaseAPI {
   getAgency = async (params: any) => {
     const { province, name, city, page = 1 } = params;
@@ -24,8 +28,10 @@ class BaseAPI {
     return await AxiosHandler.get('/base/city/', params);
   };
 
-  getHelpMessage = async (params: any) => {
-    return await AxiosHandler.get(`/base/help/message/?query=${params.query}`);
+  getHelpMessage = async (params: HelpMessageParams) => {
+    return await AxiosHandler.get<HelpMessageResponse, APIError>(
+      `/base/help/message/?query=${params.query}`,
+    );
   };
 }
 

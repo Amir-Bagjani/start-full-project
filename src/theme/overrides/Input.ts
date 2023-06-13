@@ -2,6 +2,9 @@ import { Theme } from '@mui/material/styles';
 // ----------------------------------------------------------------------
 
 export default function Input(theme: Theme) {
+  const inputColor =
+    theme.palette.mode === 'light' ? theme.palette.grey[50056] : theme.palette.grey[50056];
+
   return {
     MuiInputBase: {
       styleOverrides: {
@@ -52,15 +55,27 @@ export default function Input(theme: Theme) {
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
+          '& .MuiOutlinedInput-input': {
+            '&::placeholder': {
+              color: inputColor,
+            },
+          },
           '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: theme.palette.grey[500_32],
-            // '& > legend > span': { fontSize:  },
+            borderColor: inputColor,
+            borderRadius: theme.shape.borderRadius * 0.5,
           },
           '&.Mui-disabled': {
             '& .MuiOutlinedInput-notchedOutline': {
               borderColor: theme.palette.action.disabledBackground,
             },
           },
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: inputColor,
         },
       },
     },

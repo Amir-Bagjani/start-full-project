@@ -5,9 +5,9 @@ const GetStorageMap = {
   sessionStorage: (key: string) => window.sessionStorage.getItem(key),
 };
 const SetStorageMap = {
-  localStorage: (key: string, value: any) =>
+  localStorage: <T>(key: string, value: T) =>
     window.localStorage.setItem(key, JSON.stringify(value)),
-  sessionStorage: (key: string, value: any) =>
+  sessionStorage: <T>(key: string, value: T) =>
     window.sessionStorage.setItem(key, JSON.stringify(value)),
 };
 

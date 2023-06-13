@@ -251,7 +251,7 @@ export const darkPalette: any = {
   ...commonPalette,
   mode: 'dark',
   divider: COLORS.grey[500_16],
-  text: { primary: COLORS.grey[400], secondary: COLORS.grey[600], disabled: COLORS.grey[700] },
+  text: { primary: COLORS.grey[400], secondary: COLORS.grey[500], disabled: COLORS.grey[700] },
   action: { active: COLORS.grey[500], ...commonPalette.common },
 };
 

@@ -1,7 +1,7 @@
 import { Dependant, UserInsurance } from '../user';
 
 export type InsuredResponse = {
-  id: 1361359039;
+  id: number;
   user: UserInsurance;
   dependants: Dependant[];
   is_active: boolean;
