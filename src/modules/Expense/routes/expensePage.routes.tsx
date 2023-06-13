@@ -1,11 +1,16 @@
 import { lazy } from 'react';
-import { ADMIN_R } from 'utils/constants';
-import { CustomRouteObject } from 'models';
+
+//utils
 import { ROUTES_NAME } from 'routes/routesName';
+import { ADMIN_R, ROLES } from 'utils/constants';
+
+//types
+import { CustomRouteObject } from 'models';
 
 const ExpenseDashboardPage = lazy(
   () => import(/* webpackPrefetch: true */ '../pages/ExpenseDashboardPage'),
 );
+const ExpensesPage = lazy(() => import(/* webpackPrefetch: true */ '../pages/ExpensesPage'));
 
 export const expensePageRoutes: CustomRouteObject[] = [
   {
@@ -13,5 +18,11 @@ export const expensePageRoutes: CustomRouteObject[] = [
     element: <ExpenseDashboardPage />,
     layout: 'App',
     roles: [ADMIN_R],
+  },
+  {
+    path: ROUTES_NAME.expense.base,
+    element: <ExpensesPage />,
+    layout: 'App',
+    roles: ROLES,
   },
 ];

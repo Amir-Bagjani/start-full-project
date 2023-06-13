@@ -5,6 +5,7 @@ export * from './Table';
 export * from './Navbar';
 export * from './layouts';
 export * from './Pagination';
+export * from './Breadcrumbs';
 export * from './CustomModal';
 export * from './DocumentTitle';
 export * from './NewDataGridTable';

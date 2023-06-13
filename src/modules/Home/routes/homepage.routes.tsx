@@ -10,6 +10,7 @@ export const homePageRoutes: CustomRouteObject[] = [
     path: ROUTES_NAME.home,
     element: <HomePage />,
     layout: 'App',
+    layoutProps: { hiddenBreadcrumbs: true },
     roles: ROLES,
   },
 ];

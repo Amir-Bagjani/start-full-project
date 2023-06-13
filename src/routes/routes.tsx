@@ -12,8 +12,9 @@ import { ROUTES_NAME } from './routesName';
 import { APPLICATION_ROUTES, LOGIN_ROUTES } from './APPLICATION_ROUTES';
 
 //types
-import { User } from 'models/User.type';
-import { CustomRouteObject } from 'models';
+import type { ComponentProps } from 'react';
+import type { User } from 'models/User.type';
+import type { CustomRouteObject } from 'models';
 
 const NotActiveContract = lazy(
   () => import(/* webpackPrefetch: true */ 'modules/Home/pages/NotActiveContract'),
@@ -22,18 +23,20 @@ const NotActiveContract = lazy(
 const PrintLayout = () => <></>;
 
 const LayoutMap = {
-  App: <AppLayout />,
-  Login: <AuthLayout />,
-  Print: <PrintLayout />,
+  App: (props: ComponentProps<typeof AppLayout> = {}) => <AppLayout {...props} />,
+  Login: (props = {}) => <AuthLayout {...props} />,
+  Print: (props = {}) => <PrintLayout {...props} />,
 };
 
 export const getRoutes = (user: User | null) => {
   if (!user) {
     return createBrowserRouter(
       createRoutesFromElements(
+        // TODO: create good fallback for error page
+        // TODO: make ErrorBoundryPage better in design and add some detail to it.
         <Route errorElement={<ErrorBoundryPage fallback={<div>{t('SmWentWrong')}</div>} />}>
           {LOGIN_ROUTES.map((r, i) => (
-            <Route key={i} element={LayoutMap[r.layout]}>
+            <Route key={i} element={LayoutMap[r.layout](r.layoutProps)}>
               <Route
                 path={r.path}
                 element={<Suspense fallback='Loading...'>{r.element}</Suspense>}
@@ -69,8 +72,9 @@ export const getRoutes = (user: User | null) => {
 
 const validRoutes = (routes: CustomRouteObject[], user: User) => {
   return routes.map((r, i) => (
-    <Route key={i} element={LayoutMap[r.layout]}>
+    <Route key={i} element={LayoutMap[r.layout](r.layoutProps)}>
       {r.roles.includes(user.role) && (r.extrCheck?.(user) ?? true) ? (
+        // TODO: change loading... with Loading Component
         <Route path={r.path} element={<Suspense fallback='Loading...'>{r.element}</Suspense>} />
       ) : (
         <Route path='*' element={<Navigate to={ROUTES_NAME.notFound} />} />
@@ -82,6 +86,7 @@ const validRoutes = (routes: CustomRouteObject[], user: User) => {
 const invalidRoutes = () => {
   return (
     <Route element={<AppLayout />}>
+      {/* TODO: add user profile route, guide route and some information about not active account to user */}
       <Route
         path={ROUTES_NAME.home}
         element={

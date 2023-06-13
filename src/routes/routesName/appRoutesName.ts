@@ -1,6 +1,6 @@
 export const baseRoute = '';
 export const baseAction = baseRoute + '/base';
-export const baseExpense = baseRoute + '/expense';
+export const baseExpense = baseRoute + '/expenses';
 export const baseComplaint = baseRoute + '/complaint';
 export const baseContract = baseRoute + '/contract';
 
@@ -56,8 +56,8 @@ export const ROUTES_NAME = {
     detail: baseExpense + '/:id',
     print: baseExpense + '/print/:ids',
 
-    navigateToDetail: (id: number) => `${baseRoute}/expenses/${id}`,
-    navigateToPrint: (ids: number[]) => `${baseRoute}/expenses/print/${ids}`,
+    navigateToDetail: (id: number) => `${baseExpense}/${id}`,
+    navigateToPrint: (ids: number[]) => `${baseExpense}/print/${ids}`,
   },
   contract: {
     base: baseContract,

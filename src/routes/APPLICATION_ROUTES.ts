@@ -1,6 +1,6 @@
 import { CustomRouteObject } from 'models';
 
-import { testPagesRoute } from 'modules/testPage/testPages.routes';
+// import { testPagesRoute } from 'modules/testPage/testPages.routes';
 import { homePageRoutes } from 'modules/Home/routes/homepage.routes';
 import { basePageRoutes } from 'modules/Base/routes/basePage.routes';
 import { loginPageRoutes } from 'modules/Login/routes/loginPage.routes';
@@ -12,7 +12,7 @@ export const APPLICATION_ROUTES: CustomRouteObject[] = [
   ...homePageRoutes,
   ...expensePageRoutes,
   ...basePageRoutes,
-  ...testPagesRoute,
+  // ...testPagesRoute,
 
   //notFound should located at the end of APPLICATION_ROUTES array list
   ...notFoundPageRoutes,

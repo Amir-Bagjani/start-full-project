@@ -59,7 +59,7 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <>
+    <header>
       <HideOnScroll>
         <Box sx={{ flexGrow: 1, boxShadow: 1 }}>
           <AppBar sx={{ bgcolor: 'background.paper' }}>
@@ -83,6 +83,7 @@ export const Navbar = () => {
                   direction='row'
                   spacing={0.5}
                   sx={{ display: { zero: 'none', lgLaptop: 'flex' } }}
+                  component='nav'
                 >
                   {NAVBAR_MENU.map((i) => {
                     if (includedRole(i.roles)) {
@@ -257,6 +258,6 @@ export const Navbar = () => {
           ))}
         </Stack>
       </Menu>
-    </>
+    </header>
   );
 };
