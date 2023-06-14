@@ -3,6 +3,7 @@ import { AxiosHandler } from 'services/utils';
 //types
 import { APIError } from 'models/APImodels';
 import { HelpMessageParams, HelpMessageResponse } from 'services/models/base';
+import { ProvinceTypeResponse } from 'services/models';
 
 class BaseAPI {
   getAgency = async (params: any) => {
@@ -20,8 +21,8 @@ class BaseAPI {
     return await AxiosHandler.get(`/base/agency/?${new_params}`);
   };
 
-  getProvince = async (params: any) => {
-    return await AxiosHandler.get('/base/province/', params);
+  getProvince = async (config: {}) => {
+    return await AxiosHandler.get<ProvinceTypeResponse, APIError>('/base/province/', config);
   };
 
   getCities = async (params: any) => {

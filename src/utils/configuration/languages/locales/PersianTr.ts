@@ -1,7 +1,7 @@
-import { homeLocal } from 'modules/Home/local';
+import { homeLocal } from 'modules/Home/locale';
 import { baseLocal } from 'modules/Base/locale';
 import { loginLocal } from 'modules/Login/locale';
-import { expenseLocal } from 'modules/Expense/locale';
+import { expenseLocale } from 'modules/Expense/locale';
 import { navbarLayoutLocal } from 'modules/common/components/Navbar/local';
 import { appLayoutLocal } from 'modules/common/components/layouts/AppLayout/local';
 import { authLayoutLocal } from 'modules/common/components/layouts/AuthLayout/local';
@@ -22,7 +22,7 @@ export const PersianTr = Object.assign(
   appLayoutLocal,
   navbarLayoutLocal,
   homeLocal,
-  expenseLocal,
+  expenseLocale,
   baseLocal,
   customModalLocale,
   datepickerLocal,

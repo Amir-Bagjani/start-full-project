@@ -32,7 +32,9 @@ export const Breadcrumbs = () => {
           const isLast = index === pathnames.length - 1;
 
           return isLast ? (
-            <Typography key={name}>{CrumbsMap[name]}</Typography>
+            <Typography variant='caption' key={name}>
+              {CrumbsMap[name]}
+            </Typography>
           ) : (
             <ChipLink key={name} to={routeTo}>
               {CrumbsMap[name]}
@@ -45,6 +47,7 @@ export const Breadcrumbs = () => {
 };
 
 const ChipLink = styled(Link)(({ theme }) => ({
+  ...theme.typography.caption,
   backgroundColor:
     theme.palette.mode === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
   padding: '0.1rem 0.5rem',

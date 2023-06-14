@@ -1,8 +1,11 @@
 import { AxiosHandler } from 'services/utils';
 
+import { APIError } from 'models/APImodels';
+import { TopicTypeResponse } from 'services/models';
+
 class RelativeValuePeriod {
-  getTopics = async (config: any) => {
-    return await AxiosHandler.get('/darman/topic/', config);
+  getTopics = async (config: {}) => {
+    return await AxiosHandler.get<TopicTypeResponse, APIError>('/darman/topic/', config);
   };
 
   getRelativeValuePeriod = async (config: any) => {

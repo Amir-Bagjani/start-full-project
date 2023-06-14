@@ -134,7 +134,7 @@ client.interceptors.response.use(
   },
 );
 
-export const request = <Data, Error>({ ...options }: AxiosRequestConfig) => {
+export const request = <Data, Error>({ ...options }: AxiosRequestConfig<Data>) => {
   const onSuccess = (response: AxiosResponse<Data>) => Promise.resolve(response.data);
 
   const onError = (error: AxiosError<Error>) => Promise.reject(error.response?.data);

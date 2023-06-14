@@ -1,5 +1,15 @@
 import { AxiosHandler } from 'services/utils';
 
+//types
+import {
+  ExpenseTypeParams,
+  ExpenseTypeResponse,
+  TypeExpenseTypeResponse,
+  ExpenseStatusTypeResponse,
+} from 'services/models';
+import { APIError } from 'models/APImodels';
+import { convertValuesToString } from 'utils/helper/convertToString';
+
 class ExpenseAPI {
   getArchiveTable = async (params: any) => {
     const { filter, page = 1 } = params;
@@ -23,8 +33,8 @@ class ExpenseAPI {
     return await AxiosHandler.get(`/darman/expense/archive/?${new_params}`);
   };
 
-  getAllExpenses = async (params: any) => {
-    const { filter, mode, transfer, page = 1 } = params;
+  getAllExpenses = async (params: ExpenseTypeParams) => {
+    const { filter, mode = '', transfer = '', page = 1 } = params;
     const { name, expense_status, province, fdate, tdate, expense_type } = filter;
 
     const add_params = {
@@ -39,21 +49,27 @@ class ExpenseAPI {
       page,
     };
 
-    const new_params = new URLSearchParams(add_params).toString();
+    const new_params = convertValuesToString(add_params);
 
-    return await AxiosHandler.get(`/darman/expense/?${new_params}`);
+    return await AxiosHandler.get<ExpenseTypeResponse, APIError>(`/darman/expense/?${new_params}`);
   };
 
   getAllCostCenterType = async (params: any) => {
     return await AxiosHandler.get('/darman/expense/costcentertype/', params);
   };
 
-  getAllExpenseStatus = async (params: any) => {
-    return await AxiosHandler.get('/darman/expense/expensestatus/', params);
+  getAllExpenseStatus = async (params: {}) => {
+    return await AxiosHandler.get<ExpenseStatusTypeResponse, APIError>(
+      '/darman/expense/expensestatus/',
+      params,
+    );
   };
 
-  getAllExpenseType = async (params: any) => {
-    return await AxiosHandler.get('/darman/expense/expensetype/', params);
+  getAllExpenseType = async (params: {}) => {
+    return await AxiosHandler.get<TypeExpenseTypeResponse, APIError>(
+      '/darman/expense/expensetype/',
+      params,
+    );
   };
 
   getExpenseDoc = async (params: any) => {

@@ -3,12 +3,12 @@ export type UserInsurance = {
   username: string;
   profile: {
     id: number;
-    first_name: string;
-    last_name: string;
-    national_code: string;
-    father: string;
-    gender: number;
-    birth_date: string;
-    phone_number: string;
+    first_name: string | null;
+    last_name: string | null;
+    national_code: string | null;
+    father: string | null;
+    gender: number | null;
+    birth_date: string | null;
+    phone_number: string | null;
   };
 };

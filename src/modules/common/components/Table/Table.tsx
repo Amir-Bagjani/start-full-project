@@ -28,7 +28,7 @@ import type { MouseEvent, ReactNode, ChangeEvent } from 'react';
 //type definition
 export type CustomTableColumn<T> = {
   field: string;
-  headerName: string;
+  headerName: ReactNode;
   width?: number;
   hide?: boolean;
   renderCell?: (params: ReturnGenerateTools<T>) => ReactNode;

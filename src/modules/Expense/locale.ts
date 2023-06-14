@@ -1,4 +1,4 @@
-export const expenseLocal = {
+export const expenseLocale = {
   ExpenseDashboardTitle: 'تنظیمات هزینه',
   ExpenseCostGroup: 'گروه هزینه',
   ExpenseKperiod: 'دوره های ارزش نسبی',
@@ -7,4 +7,7 @@ export const expenseLocal = {
   ExpenseExpCostCenterType: 'نوع مرکز هزینه',
   ExpenseSampleDesc: 'متن های پیش فرض',
   ExpenseExpDocType: 'نوع اسناد هزینه',
+  ExExpenseTab: 'هزینه ها',
+  ExDraftTab: 'بایگانی',
+  ExFoldersTab: 'پوشه ها',
 };
