@@ -28,7 +28,7 @@ class ExpenseAPI {
       page,
     };
 
-    const new_params = new URLSearchParams(add_params).toString();
+    const new_params = convertValuesToString(add_params);
 
     return await AxiosHandler.get(`/darman/expense/archive/?${new_params}`);
   };

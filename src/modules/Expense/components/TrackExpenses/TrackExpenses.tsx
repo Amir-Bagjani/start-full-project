@@ -3,12 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Box,
-  Button,
-  Checkbox,
   Fab,
   Stack,
   Theme,
+  Button,
   Tooltip,
+  Checkbox,
   Typography,
   useMediaQuery,
 } from '@mui/material';
@@ -25,20 +25,19 @@ import {
   SUPERADJUSTER_R,
   Constants,
 } from 'utils/constants';
-import { MdAdd } from 'react-icons/md';
-// import { TrackExpensesActions } from './TrackExpensesActions';
-// import { columnsDataShowExpenses as columns } from '../../utils';
 import {
   CustomTableColumn,
   NewDataGridTable,
   ReturnGenerateTools,
 } from 'modules/common/components';
+import { MdAdd } from 'react-icons/md';
 import { ExpenseType } from 'services/models';
-import { useAllExpensesAPI } from 'modules/Expense/hooks';
-import { useBrowserstorageState, useRole } from 'modules/common/hooks';
 import { FilterExpeses } from './FilterExpeses';
+import { useAllExpensesAPI } from 'modules/Expense/hooks';
 import { TrackExpensesActions } from './TrackExpensesActions';
 import { columnsDataShowExpenses as columns } from '../../utils';
+import { useBrowserstorageState, useRole } from 'modules/common/hooks';
+import { validationObject } from 'utils/helper';
 
 //types
 
@@ -78,17 +77,38 @@ const onError = () => {
   toast.error(Constants.PublicFetchError);
 };
 
+const pageChecker = (value: number) => {
+  if (typeof value === 'number' && value > 0) return value;
+  return 1;
+};
+
+const searchChecker = (value: SearchValuType) => {
+  if (
+    typeof value === 'object' &&
+    Object.keys(defaultValue).every((property) => value.hasOwnProperty(property))
+  )
+    return value;
+
+  return defaultValue;
+};
+
 export const TrackExpenses = () => {
   const navigate = useNavigate();
 
   const [printIds, setPrintIds] = useState<number[]>([]);
 
-  const [page, setPage] = useBrowserstorageState<number>('expense-page', 1, 'sessionStorage');
+  const [page, setPage] = useBrowserstorageState<number>(
+    'expense-page',
+    1,
+    'sessionStorage',
+    pageChecker,
+  );
   // const [page, setPage] = useState(1);
   const [filter, filterSet] = useBrowserstorageState<SearchValuType>(
     'expense-filters',
     defaultValue,
     'sessionStorage',
+    searchChecker,
   );
   // const [filter, filterSet] = useState(defaultValue);
 
@@ -111,8 +131,6 @@ export const TrackExpenses = () => {
     },
   );
 
-  console.log({ expensesData, isExpensesloading });
-
   useEffect(() => {
     return () => setPage(1);
   }, [setPage]);
@@ -130,10 +148,10 @@ export const TrackExpenses = () => {
     setPrintIds((p) => (e.target.checked ? [...p, selectId] : p.filter((i) => i !== selectId)));
   }, []);
 
-  const numberCol = useMemo(
+  const numberCol: CustomTableColumn<ExpenseType>[] = useMemo(
     () => [
       {
-        field: 'number5',
+        field: 'checkbox-selection',
         headerName: (
           <Checkbox
             defaultValue={undefined}
@@ -171,14 +189,12 @@ export const TrackExpenses = () => {
     [expensesData?.results?.length, handleIdChange, includedRole, page, printIds, wholeIdsPrint],
   );
 
-  const actionCol: any = useMemo(
+  const actionCol: CustomTableColumn<ExpenseType>[] = useMemo(
     () => [
       {
-        // sortable: false,
-        // disableColumnMenu: true,
-        hide: false,
         field: 'action',
         headerName: 'مدیریت',
+        hide: false,
         width: 190,
         renderCell: (params: ReturnGenerateTools<ExpenseType>) => (
           <TrackExpensesActions printIds={printIds} data={params.row} />
@@ -191,36 +207,36 @@ export const TrackExpenses = () => {
   useMemo(() => {
     //insured and registrar should not see topic_name column
     if (includedRole([INSURED_R, REGISTRAR_R])) {
-      (columns as any).find((i: any) => i.field === 'topic_name').hide = true;
+      columns.find((i) => i.field === 'topic_name')!.hide = true;
     }
     // registrar should not see expense_type column
     if (includedRole([REGISTRAR_R])) {
-      (columns as any).find((i: any) => i.field === 'expense_type').hide = true;
+      columns.find((i) => i.field === 'expense_type')!.hide = true;
     }
     //only admin , editor and adjuster can see deductions column
     if (includedRole([ADMIN_R, EDITOR_R, ADJUSTER_R])) {
-      (columns as any).find((i: any) => i.field === 'deductions').hide = false;
+      columns.find((i) => i.field === 'deductions')!.hide = false;
     }
     //only superadjuster, adjuster, coubter and reporter can see date column
     if (includedRole([ADJUSTER_R, SUPERADJUSTER_R, REPORTER_R, COUNTER_R])) {
-      (columns as any).find((i: any) => i.field === 'date').hide = false;
+      columns.find((i) => i.field === 'date')!.hide = false;
     }
     //only admin , editor, insured and counter can see expense_status column
     if (includedRole([INSURED_R, ADMIN_R, EDITOR_R, COUNTER_R])) {
-      (columns as any).find((i: any) => i.field === 'expense_status').hide = false;
+      columns.find((i) => i.field === 'expense_status')!.hide = false;
     }
     //only adjuster and admin can see expense_date column
     if (includedRole([ADJUSTER_R, ADMIN_R])) {
-      (columns as any).find((i: any) => i.field === 'expense_date').hide = false;
+      columns.find((i) => i.field === 'expense_date')!.hide = false;
     }
     //only adjuster can see created_by column
     if (includedRole([ADJUSTER_R])) {
-      (columns as any).find((i: any) => i.field === 'created_by').hide = false;
+      columns.find((i) => i.field === 'created_by')!.hide = false;
     }
   }, [includedRole]);
 
   return (
-    <Stack spacing={2} sx={{ bgcolor: 'background.default', pt: 2, pb: 8, pl: 2 }}>
+    <Stack spacing={2} sx={{ pt: 2 }}>
       <Stack direction='row' spacing={1} alignItems='center'>
         {includedRole([ADMIN_R, EDITOR_R, INSURED_R, COUNTER_R]) ? (
           <>
@@ -264,7 +280,7 @@ export const TrackExpenses = () => {
         <NewDataGridTable
           loading={isExpensesloading}
           rows={expensesData?.results ?? []}
-          columns={numberCol.concat(columns as any).concat(actionCol) as any}
+          columns={numberCol.concat(columns).concat(actionCol)}
           dataGridProps={{
             ...(expensesData?.results.length === PageSize && { height: 800 }),
             stickyHeader: true,

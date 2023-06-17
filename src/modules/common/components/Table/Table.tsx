@@ -13,12 +13,12 @@ import { Children, useCallback, useMemo, useRef, useState } from 'react';
 import {
   TableFooter,
   BodyTableRow,
+  TableWrapper,
   BodyTableCell,
   LoadingOverlay,
   HeaderTableCell,
   NoResultsOverlay,
   CustomTableContainer,
-  TableWrapper,
 } from './components';
 import { checkId, getCellStyle } from './utils';
 
@@ -26,7 +26,7 @@ import { checkId, getCellStyle } from './utils';
 import type { MouseEvent, ReactNode, ChangeEvent } from 'react';
 
 //type definition
-export type CustomTableColumn<T> = {
+export type CustomTableColumn<T = {}> = {
   field: string;
   headerName: ReactNode;
   width?: number;
@@ -233,7 +233,7 @@ export const Table = <T extends { id: string | number }>(
                     )}
                     {Children.toArray(
                       columns.map((column) => {
-                        const { renderCell, valueGetter, hide } = column;
+                        const { renderCell, valueGetter, hide, field = '' } = column;
 
                         if (hide) {
                           return null;
@@ -243,7 +243,7 @@ export const Table = <T extends { id: string | number }>(
                           ? renderCell(generateTools(row))
                           : valueGetter
                           ? valueGetter(generateTools(row))
-                          : (row as any)[column.field] ?? '-';
+                          : (row as any)[field] ?? '-';
                         return (
                           <BodyTableCell sx={{ ...getCellStyle(column), border: 0 }}>
                             {cellValue}

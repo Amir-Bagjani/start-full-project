@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { Children, Dispatch, SetStateAction, useLayoutEffect, useMemo, useState } from 'react';
@@ -90,19 +91,23 @@ const HomePage = () => {
 
   return (
     <DocumentTitle title={t('MainPage') as string}>
-      {isInsuredLoading && 'loading...'}
+      <Container sx={{ p: 0, bgcolor: 'transparent' }}>
+        {isInsuredLoading && 'loading...'}
 
-      {!isInsuredLoading && isActive && (
-        <CardWrapper variants={container} initial='hidden' animate='visible'>
-          {Children.toArray(
-            cardData.map((card: CardData) => {
-              return includedRole(card.roles) && !!!card.hide ? <Card data={card} /> : null;
-            }),
-          )}
-        </CardWrapper>
-      )}
+        {!isInsuredLoading && isActive && (
+          <CardWrapper variants={container} initial='hidden' animate='visible'>
+            {Children.toArray(
+              cardData.map((card: CardData) => {
+                return includedRole(card.roles) && !!!card.hide ? <Card data={card} /> : null;
+              }),
+            )}
+          </CardWrapper>
+        )}
 
-      {!isInsuredLoading && !isActive && <NotActiveContract>{t('InactiveAcc')}</NotActiveContract>}
+        {!isInsuredLoading && !isActive && (
+          <NotActiveContract>{t('InactiveAcc')}</NotActiveContract>
+        )}
+      </Container>
     </DocumentTitle>
   );
 };

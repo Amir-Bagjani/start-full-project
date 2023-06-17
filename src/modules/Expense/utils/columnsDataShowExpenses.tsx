@@ -1,18 +1,16 @@
 // import { DateFormat } from 'utils/date';
 // import { NumberFormat } from 'utils/number';
 import { Tooltip, Typography } from '@mui/material';
-import { ReturnGenerateTools } from 'modules/common/components';
+import { CustomTableColumn, ReturnGenerateTools } from 'modules/common/components';
 import { ExpenseType } from 'services/models';
 import { DateFormat, NumberFormat } from 'utils/helper';
 // import { TrackExpensesActions } from "../components/TrackExpenses";
 
-export const columnsDataShowExpenses = [
+export const columnsDataShowExpenses: CustomTableColumn<ExpenseType>[] = [
   {
     hide: false,
     field: 'fullName',
     headerName: 'نام و نام خانوادگی',
-    description: 'نمایش نام و نام خانوادگی',
-    sortable: false,
     width: 140,
     renderCell: (params: ReturnGenerateTools<ExpenseType>) => {
       const insured = params.row.insured
@@ -169,8 +167,6 @@ export const columnsDataShowExpenses = [
     hide: true,
     field: 'deductions',
     headerName: 'کسورات',
-    description: 'مبلغ اعلامی - مبلغ پرداختی',
-    sortable: false,
     width: 80,
     renderCell: (params: ReturnGenerateTools<ExpenseType>) => {
       const deductions = Number(params.row.amount) - Number(params.row.adjustprice);

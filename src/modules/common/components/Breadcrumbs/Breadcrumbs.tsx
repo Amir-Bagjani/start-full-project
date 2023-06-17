@@ -6,10 +6,13 @@ import { Container, Breadcrumbs as MUIBreadcrumbs, Typography } from '@mui/mater
 import { HiChevronLeft } from 'react-icons/hi';
 import { ROUTES_NAME } from 'routes/routesName';
 
+//TODO : add translation hear
 const CrumbsMap: any = {
   '/': 'صفحه اصلی',
   expenses: 'هزینه ها',
   add: 'اضافه',
+  base: 'تنظیمات پایه',
+  dashboard: 'تنظیمات هزینه',
 };
 
 export const Breadcrumbs = () => {
@@ -19,7 +22,7 @@ export const Breadcrumbs = () => {
   const pathnames = pathname.split('/').filter(Boolean);
 
   return (
-    <Container sx={{ maxWidth: '1260px', mt: 1, mb: 2.5 }} component='section'>
+    <Container sx={{ bgcolor: 'transparent', mt: 1, mb: 2.5 }} component='section'>
       <MUIBreadcrumbs aria-label='breadcrumb' separator={<HiChevronLeft />}>
         {pathnames.length ? (
           <ChipLink style={{ cursor: 'pointer' }} to={ROUTES_NAME.home}>

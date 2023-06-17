@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import { Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 
@@ -14,15 +15,17 @@ const NotActiveContract = ({ children }: NotActiveContractProps) => {
   const { t } = useTranslation();
 
   return (
-    <AlertWrapper
-      animate={{ y: 0, opacity: 1, scale: 1 }}
-      initial={{ y: 100, opacity: 0, scale: 0.5 }}
-      transition={{ duration: 1 }}
-    >
-      <div>
-        <EmptyState>{children ?? t('NotActiveContract')}</EmptyState>
-      </div>
-    </AlertWrapper>
+    <Container sx={{ p: 0, bgcolor: 'transparent' }}>
+      <AlertWrapper
+        animate={{ y: 0, opacity: 1, scale: 1 }}
+        initial={{ y: 100, opacity: 0, scale: 0.5 }}
+        transition={{ duration: 1 }}
+      >
+        <div>
+          <EmptyState>{children ?? t('NotActiveContract')}</EmptyState>
+        </div>
+      </AlertWrapper>
+    </Container>
   );
 };
 

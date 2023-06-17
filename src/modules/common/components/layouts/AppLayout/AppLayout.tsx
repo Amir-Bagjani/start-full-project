@@ -1,4 +1,3 @@
-import { Container } from '@mui/material';
 import { Navigate, Outlet, ScrollRestoration } from 'react-router-dom';
 
 //components
@@ -19,13 +18,13 @@ export const AppLayout = ({ hiddenBreadcrumbs = false }: AppLayoutProps) => {
   if (!user) return <Navigate to={ROUTES_NAME.login} />;
 
   return (
-    <>
+    <main>
       <ScrollRestoration />
       <Navbar />
       {hiddenBreadcrumbs ? null : <Breadcrumbs />}
-      <Container component='main' sx={{ maxWidth: '1260px' }}>
+      <section>
         <Outlet />
-      </Container>
-    </>
+      </section>
+    </main>
   );
 };

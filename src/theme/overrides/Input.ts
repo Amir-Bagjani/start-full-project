@@ -62,7 +62,7 @@ export default function Input(theme: Theme) {
           },
           '& .MuiOutlinedInput-notchedOutline': {
             borderColor: inputColor,
-            borderRadius: theme.shape.borderRadius * 0.5,
+            // borderRadius: theme.shape.borderRadius * 0.5,
           },
           '&.Mui-disabled': {
             '& .MuiOutlinedInput-notchedOutline': {

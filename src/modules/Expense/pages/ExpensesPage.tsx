@@ -2,8 +2,8 @@ import { t } from 'i18next';
 import { Box, Container } from '@mui/material';
 
 //components & utils
-import { DocumentTitle, Tabs } from 'modules/common/components';
 import { TrackExpenses } from '../components/TrackExpenses';
+import { DocumentTitle, Tabs } from 'modules/common/components';
 
 //utils
 import {
@@ -74,29 +74,44 @@ const tabsOption = [
   },
 ];
 
+const checker = (value: number) => {
+  if (typeof value === 'number' && value >= 0 && value < 3) return value;
+  return 0;
+};
+
 const ExpensesPage = () => {
-  const [value, setValue] = useBrowserstorageState('expense-tab', 0, 'sessionStorage');
+  const [value, setValue] = useBrowserstorageState('expense-tab', 0, 'sessionStorage', checker);
 
   return (
-    <Container sx={{ maxWidth: '1350px', bgcolor: 'background.paper' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={(_e, newValue) => setValue(newValue)} options={tabsOption} />
-      </Box>
+    <Box pb={8}>
+      <Container sx={{ maxWidth: 1350, px: { smLaptop: 0 } }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs
+            value={value}
+            onChange={(_e, newValue) => setValue(newValue)}
+            options={tabsOption}
+          />
+        </Box>
 
-      <Tabs.Panel value={value} index={0}>
-        <DocumentTitle title={t('ExExpenseTab') as string}>
-          <TrackExpenses />
-        </DocumentTitle>
-      </Tabs.Panel>
+        <Tabs.Panel value={value} index={0}>
+          <DocumentTitle title={t('ExExpenseTab') as string}>
+            <TrackExpenses />
+          </DocumentTitle>
+        </Tabs.Panel>
 
-      <Tabs.Panel value={value} index={1}>
-        <DocumentTitle title={t('ExDraftTab') as string}>{/* <ArchiveExpenses /> */}</DocumentTitle>
-      </Tabs.Panel>
+        <Tabs.Panel value={value} index={1}>
+          <DocumentTitle title={t('ExDraftTab') as string}>
+            {/* <ArchiveExpenses /> */}
+          </DocumentTitle>
+        </Tabs.Panel>
 
-      <Tabs.Panel value={value} index={2}>
-        <DocumentTitle title={t('ExFoldersTab') as string}>{/* <ExpenseFolder /> */}</DocumentTitle>
-      </Tabs.Panel>
-    </Container>
+        <Tabs.Panel value={value} index={2}>
+          <DocumentTitle title={t('ExFoldersTab') as string}>
+            {/* <ExpenseFolder /> */}
+          </DocumentTitle>
+        </Tabs.Panel>
+      </Container>
+    </Box>
   );
 };
 

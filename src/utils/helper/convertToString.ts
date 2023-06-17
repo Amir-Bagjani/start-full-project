@@ -1,3 +1,4 @@
 export const convertValuesToString = <T extends {}>(input: T) => {
-  return new URLSearchParams(JSON.stringify(input)).toString();
+  const params = JSON.stringify(input);
+  return new URLSearchParams(JSON.parse(params)).toString();
 };

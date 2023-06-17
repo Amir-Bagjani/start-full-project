@@ -1,5 +1,6 @@
 import { Children } from 'react';
 import { motion } from 'framer-motion';
+import { Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 
@@ -24,9 +25,11 @@ const ExpenseDashboardPage = () => {
 
   return (
     <DocumentTitle title={t('ExpenseDashboardTitle') as string}>
-      <CardWrapper variants={container} initial='hidden' animate='visible'>
-        {Children.toArray(EXPESE_DASHBOARD_CARD.map((card) => <Card data={card} />))}
-      </CardWrapper>
+      <Container sx={{ p: 0, bgcolor: 'transparent' }}>
+        <CardWrapper variants={container} initial='hidden' animate='visible'>
+          {Children.toArray(EXPESE_DASHBOARD_CARD.map((card) => <Card data={card} />))}
+        </CardWrapper>
+      </Container>
     </DocumentTitle>
   );
 };

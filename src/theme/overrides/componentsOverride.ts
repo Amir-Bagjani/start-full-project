@@ -32,6 +32,7 @@ import Progress from './Progress';
 import Timeline from './Timeline';
 import TreeView from './TreeView';
 import Checkbox from './Checkbox';
+import Container from './Container';
 import Accordion from './Accordion';
 import Typography from './Typography';
 import Pagination from './Pagination';
@@ -78,6 +79,7 @@ export function componentsOverride(theme: Theme) {
     TreeView(theme),
     Backdrop(theme),
     Progress(theme),
+    Container(theme),
     Accordion(theme),
     Typography(theme),
     Pagination(theme),
