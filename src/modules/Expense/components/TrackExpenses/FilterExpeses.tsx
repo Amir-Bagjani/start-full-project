@@ -9,6 +9,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 //components
@@ -25,6 +26,7 @@ import {
   useProvinceAPI,
   useExpenseTypeAPI,
   useExpenseStatusAPI,
+  useInsurancePolicyAPI,
   useModal as useCollapse,
 } from 'modules/common/hooks';
 import { DateFormat } from 'utils/helper';
@@ -42,6 +44,7 @@ const options = { staleTime: 1 * 1000 * 60 * 60 };
 const resetValue = {
   province: '',
   expense_status: '',
+  insurancepolicy: '',
   expense_type: '',
   fdate: null,
   tdate: null,
@@ -55,6 +58,8 @@ export const FilterExpeses = ({
   defaultValue,
   pageSet,
 }: FilterExpensesProps) => {
+  const { t } = useTranslation();
+
   const { includedRole } = useRole();
 
   const { isOpen, onToggle } = useCollapse(true);
@@ -74,6 +79,8 @@ export const FilterExpeses = ({
     {},
     options,
   );
+  const { data: insurancePolicy, isInitialLoading: isloadingInsurancePolicy } =
+    useInsurancePolicyAPI();
   const { data: topics, isInitialLoading: isLoadingTopic } = useTopicAPI({}, options);
 
   const onSubmit: SubmitHandler<SearchValuType> = useCallback(
@@ -105,6 +112,7 @@ export const FilterExpeses = ({
     'expense_type',
     'fdate',
     'tdate',
+    'insurancepolicy',
   ]).filter(Boolean).length;
 
   return (
@@ -140,16 +148,31 @@ export const FilterExpeses = ({
           pr={1}
         >
           <Box width={{ zero: 1, smLaptop: includedRole([ADMIN_R, EDITOR_R]) ? 0.5 : 1 }}>
-            <TextBox.Form name='name' control={control} label='نام،نام خانوادگی، کدملی' fullWidth />
+            <TextBox.Form name='name' control={control} label={t('ExNameLabel')} fullWidth />
           </Box>
           <Box sx={{ width: { zero: 1, smLaptop: includedRole([ADMIN_R, EDITOR_R]) ? 0.5 : 1 } }}>
             <Select.Form<{ label: string; value: any }>
               name='expense_type'
               control={control}
-              label='نوع هزینه'
+              label={t('ExpenseExpType')}
               isLoading={isLoadingExpenseType}
               defaultSelect={{ label: '', value: '' }}
               options={expenseType?.map((i) => ({ label: i.name, value: i.id })) || []}
+            />
+          </Box>
+          <Box sx={{ width: { zero: 1, smLaptop: includedRole([ADMIN_R, EDITOR_R]) ? 0.5 : 1 } }}>
+            <Select.Form<{ label: string; value: any }>
+              name='insurancepolicy'
+              control={control}
+              label={t('ExInsuranceplicyLabel')}
+              defaultSelect={{ label: '', value: '' }}
+              isLoading={isloadingInsurancePolicy}
+              options={
+                insurancePolicy?.map((i) => ({
+                  label: `${i.province.name} - ${i.name}`,
+                  value: i.id,
+                })) ?? []
+              }
             />
           </Box>
           {includedRole([ADMIN_R, EDITOR_R, REPORTER_R]) ? (
@@ -163,7 +186,7 @@ export const FilterExpeses = ({
               }}
             >
               <Select.Form<{ label: string; value: any }>
-                label='بیماری'
+                label={t('ExTopicLabel')}
                 name='topic'
                 isLoading={isLoadingTopic}
                 defaultSelect={{ label: '', value: '' }}
@@ -182,29 +205,36 @@ export const FilterExpeses = ({
               <Select.Form<{ label: string; value: any }>
                 name='province'
                 control={control}
-                label='استان'
+                label={t('ExProvinceLabel')}
                 isLoading={isProvincesLoading}
-                defaultSelect={{ label: 'همه استان ها', value: '' }}
+                defaultSelect={{ label: t('ExAllprovinceLabrl'), value: '' }}
                 options={provincesData?.map((i) => ({ label: i.name, value: i.id })) ?? []}
               />
             ) : null}
             <Select.Form<{ label: string; value: any }>
               name='expense_status'
               control={control}
-              label='وضعیت هزینه'
+              label={t('ExpenseExpStatus')}
               isLoading={isLoadingExpenseStatus}
               defaultSelect={{ label: '', value: '' }}
               options={expenseStatus?.map((i) => ({ label: i.name, value: i.code })) ?? []}
             />
           </Stack>
           <Stack direction='row' sx={{ width: { zero: 1, smLaptop: 0.8 } }} spacing={1}>
-            <DatePicker.Form name='fdate' control={control} disableFuture label=' از تاریخ' />
+            <DatePicker.Form
+              name='fdate'
+              onChange={(e) => console.log(e)}
+              control={control}
+              disableFuture
+              label={t('ExFdateLabel') as string}
+            />
 
             <DatePicker.Form
               name='tdate'
               control={control}
               disableFuture
-              label=' تا تاریخ'
+              onChange={(e) => console.log(e)}
+              label={t('ExTdateLabel') as string}
               minDate={fdate}
             />
           </Stack>
@@ -217,11 +247,11 @@ export const FilterExpeses = ({
               loading={loading}
               disabled={loading}
             >
-              جستجو
+              {t('ExSearch')}
             </Button.Loading>
             {isFieldsDirty ? (
               <Box sx={{ alignSelf: 'center' }}>
-                <Tooltip title='حذف فیلتر'>
+                <Tooltip title={t('ExRemovefilterLabel')}>
                   <IconButton color='error' onClick={resetForm}>
                     <MdOutlineDeleteSweep />
                   </IconButton>

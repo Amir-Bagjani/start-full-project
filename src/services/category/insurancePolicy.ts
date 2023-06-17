@@ -1,17 +1,22 @@
+import { APIError } from 'models/APImodels';
+import { InsurancePlicyParams, InsurancePolicyResponse } from 'services/models';
 import { AxiosHandler } from 'services/utils';
+import { convertValuesToString } from 'utils/helper';
 
 class InsurancePolicyAPI {
-  getInsurancePolicy = async (params: any) => {
+  getInsurancePolicy = async (params: InsurancePlicyParams) => {
     const { contract, province } = params;
 
     const add_params = {
-      contract,
+      ...(contract && { contract }),
       ...(province && { province }),
     };
 
-    const new_params = new URLSearchParams(add_params).toString();
+    const new_params = convertValuesToString(add_params);
 
-    return await AxiosHandler.get(`/darman/insurancepolicy/?${new_params}`);
+    return await AxiosHandler.get<InsurancePolicyResponse, APIError>(
+      `/darman/insurancepolicy/?${new_params}`,
+    );
   };
 
   addNewInsurancePolicy = async (data: any) => {

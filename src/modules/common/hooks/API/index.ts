@@ -4,3 +4,4 @@ export * from './useHelpMessageAPI';
 export * from './useExpenseTypeAPI';
 export * from './useRefreshTokenAPI';
 export * from './useExpenseStatusAPI';
+export * from './useInsurancePolicyAPi';

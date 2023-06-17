@@ -1,6 +1,3 @@
-import { toast } from 'react-hot-toast';
-import { Link, useNavigate } from 'react-router-dom';
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Box,
   Fab,
@@ -12,18 +9,22 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
+import { toast } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import { Link, useNavigate } from 'react-router-dom';
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 
-//components & utils
+//components
 import {
   ADMIN_R,
   EDITOR_R,
   INSURED_R,
   COUNTER_R,
+  Constants,
   REPORTER_R,
   ADJUSTER_R,
   REGISTRAR_R,
   SUPERADJUSTER_R,
-  Constants,
 } from 'utils/constants';
 import {
   CustomTableColumn,
@@ -31,21 +32,24 @@ import {
   ReturnGenerateTools,
 } from 'modules/common/components';
 import { MdAdd } from 'react-icons/md';
-import { ExpenseType } from 'services/models';
 import { FilterExpeses } from './FilterExpeses';
-import { useAllExpensesAPI } from 'modules/Expense/hooks';
 import { TrackExpensesActions } from './TrackExpensesActions';
+
+//utils
+import { useAllExpensesAPI } from 'modules/Expense/hooks';
 import { columnsDataShowExpenses as columns } from '../../utils';
 import { useBrowserstorageState, useRole } from 'modules/common/hooks';
-import { validationObject } from 'utils/helper';
 
 //types
+import { ExpenseType } from 'services/models';
+import { ROUTES_NAME } from 'routes/routesName';
 
 //type definition
 export type SearchValuType = {
   province: string | number;
   expense_status: string | number;
   expense_type: string | number;
+  insurancepolicy: string | number;
   fdate: null | string;
   tdate: null | string;
   name: string;
@@ -53,9 +57,11 @@ export type SearchValuType = {
 };
 
 const PageSize = 30;
-const defaultValue = {
+
+const defaultValue: SearchValuType = {
   province: '',
   expense_status: '',
+  insurancepolicy: '',
   expense_type: '',
   fdate: null,
   tdate: null,
@@ -71,7 +77,7 @@ const fabStyle = {
     zIndex: (theme: Theme) => theme.zIndex.speedDial,
   },
   box: { color: '#FFF', '&:hover': { color: '#FFF' } },
-};
+} as const;
 
 const onError = () => {
   toast.error(Constants.PublicFetchError);
@@ -94,6 +100,8 @@ const searchChecker = (value: SearchValuType) => {
 
 export const TrackExpenses = () => {
   const navigate = useNavigate();
+
+  const { t } = useTranslation();
 
   const [printIds, setPrintIds] = useState<number[]>([]);
 
@@ -242,15 +250,15 @@ export const TrackExpenses = () => {
           <>
             {smLaptop ? (
               <Fab variant='extended' sx={fabStyle.fab} color='primary' aria-label='add'>
-                <Box component={Link} to='/expense/add' sx={fabStyle.box}>
-                  افزودن هزینه
+                <Box component={Link} to={ROUTES_NAME.expense.add} sx={fabStyle.box}>
+                  {t('AddExpense')}
                   <MdAdd />
                 </Box>
               </Fab>
             ) : (
-              <Link to='/expense/add'>
+              <Link to={ROUTES_NAME.expense.add}>
                 <Button variant='outlined' color='success' sx={{ minWidth: 'max-content' }}>
-                  افزودن هزینه
+                  {t('AddExpense')}
                 </Button>
               </Link>
             )}

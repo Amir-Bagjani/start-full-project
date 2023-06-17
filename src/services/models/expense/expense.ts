@@ -55,6 +55,7 @@ export type ExpenseParams = {
   mode?: string;
   transfer?: string | number;
   province?: string | number;
+  insurancepolicy?: string | number;
   expense_type?: string | number;
   expense_status?: string | number;
   page: number;

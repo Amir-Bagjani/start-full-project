@@ -1,8 +1,8 @@
 import { forwardRef } from 'react';
 import { Button, Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { MobileDatePicker } from '@mui/x-date-pickers';
 import AdapterJalali from '@date-io/date-fns-jalali';
+import { MobileDatePicker } from '@mui/x-date-pickers';
 
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
@@ -44,13 +44,6 @@ export const RootDatePicker = forwardRef<Ref, RootDatePickerProps>((props, ref) 
   return (
     <LocalizationProvider dateAdapter={AdapterJalali}>
       <MobileDatePicker
-        // {...rest}
-        // inputRef={ref}
-        // format={'YYYY-MM-DD'}
-        // variant='outlined'
-        // fullWidt
-        // inputProps={{ placeholder: t('YYYYMMDD') }}
-        inputFormat='yyyy/mm/dd'
         minDate={minDate}
         label={label}
         disableFuture={disableFuture}

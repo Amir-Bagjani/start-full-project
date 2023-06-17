@@ -29,8 +29,8 @@ export const LinkContainer = styled('span')(({ theme }) => ({
   justifyContent: 'center',
   borderRadius: '0.2rem',
 
-  '&:first-child::before': { content: '"\\2770"' },
-  '&:last-child::before': { content: '"\\2771"' },
+  '&:first-of-type::before': { content: '"\\2770"' },
+  '&:last-of-type::before': { content: '"\\2771"' },
   '&:hover, &:focus': {
     color: theme.palette.primary.main,
     backgroundColor: theme.palette.background.neutral,
