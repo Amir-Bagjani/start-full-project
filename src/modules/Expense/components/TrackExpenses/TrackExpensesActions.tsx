@@ -1,36 +1,27 @@
 import { Children, memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { blueGrey } from '@mui/material/colors';
 import { useQueryClient } from '@tanstack/react-query';
 import { Box, IconButton, Stack, Tooltip } from '@mui/material';
 
-//components & utils
-// import { useModal, useRole } from 'hooks';
-// import { ALL_EXPENSES } from '../../hooks';
-// import { CustomModal } from 'components/shared';
-// import { TRACK_EXPENSE_ACTION_DATA } from '../../utils';
-// import { EvaluationDetail } from 'features/EvaluationDetail';
-// import { ChooseAgencyLocation } from './ChooseAgencyLocation';
-// import { NewLogExpenseModal } from 'features/NewLogExpenseModal';
-// import { CancellationExpenseModal } from './CancellationExpenseModal';
-// import { AddCommentModal } from "./AddCommentModal";
-// import { RejectExpenseModal } from './RejectExpenseModal';
-// import { ConfirmExpenseModal } from "./ConfirmExpenseModal";
+//components
+import { CustomModal } from 'modules/common/components';
+import { RejectExpenseModal } from './RejectExpenseModal';
 
 //utils
-
-//components
+import { useModal, useRole } from 'modules/common/hooks';
+import { TRACK_EXPENSE_ACTION_DATA } from 'modules/Expense/utils';
 
 //types
 import { ExpenseType } from 'services/models';
-import { useModal, useRole } from 'modules/common/hooks';
-import { TRACK_EXPENSE_ACTION_DATA } from 'modules/Expense/utils';
-import { CustomModal } from 'modules/common/components';
-import { ALL_EXPENSES } from 'modules/Expense/hooks';
+// import { ALL_EXPENSES } from 'modules/Expense/hooks';
 
 type TrackExpensesActionsProps = { data: ExpenseType; printIds: number[] };
 
 export const TrackExpensesActions = memo(({ data, printIds }: TrackExpensesActionsProps) => {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
+
+  const { t } = useTranslation();
 
   const { includedRole } = useRole();
 
@@ -84,7 +75,7 @@ export const TrackExpensesActions = memo(({ data, printIds }: TrackExpensesActio
 
       <CustomModal
         header
-        title='کارشناسی'
+        title={t('ExAdjustment')}
         open={expenseAdjust}
         handleClose={onCloseExpenseAdjust}
         sx={{ maxWidth: 1200 }}
@@ -99,7 +90,7 @@ export const TrackExpensesActions = memo(({ data, printIds }: TrackExpensesActio
 
       <CustomModal
         header
-        title='لاگ هزینه'
+        title={t('ExLog')}
         open={log}
         handleClose={onCloseLog}
         sx={{ maxWidth: 500 }}
@@ -109,7 +100,7 @@ export const TrackExpensesActions = memo(({ data, printIds }: TrackExpensesActio
 
       <CustomModal
         header
-        title='انتخاب مرکز اسناد'
+        title={t('ExChooseAgency')}
         open={agency}
         handleClose={onCloseAgency}
         sx={{ maxWidth: 1200 }}
@@ -119,7 +110,7 @@ export const TrackExpensesActions = memo(({ data, printIds }: TrackExpensesActio
 
       <CustomModal
         header
-        title='ابطال سند'
+        title={t('ExCancell')}
         open={cancellation}
         handleClose={onCloseCancellation}
         sx={{ maxWidth: 700 }}
@@ -142,12 +133,12 @@ export const TrackExpensesActions = memo(({ data, printIds }: TrackExpensesActio
 
       <CustomModal
         header
-        title='عودت'
+        title={t('ExReject')}
         open={reject}
         handleClose={onCloseReject}
         sx={{ maxWidth: 700 }}
       >
-        {/* <RejectExpenseModal expenseId={data.id} handleClose={onCloseReject} /> */}
+        <RejectExpenseModal expenseId={data.id} handleClose={onCloseReject} />
       </CustomModal>
 
       {/* <CustomModal
