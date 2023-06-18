@@ -9,3 +9,5 @@ export type TypeCostCenterType = {
   is_default: boolean;
   computer_code: string | null;
 };
+
+export type CostCenterResponse = TypeCostCenterType[];

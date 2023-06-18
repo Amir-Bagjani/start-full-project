@@ -14,7 +14,7 @@ export type TypeDataGridTable<T> = {
   printable?: boolean;
   paginatable?: boolean;
   columns: CustomTableColumn<T>[];
-  paginationProps: PaginationProps;
+  paginationProps?: PaginationProps;
   rows: CustomTableProps<T>['rows'];
   loading: CustomTableProps<T>['loading'];
   dataGridProps: Omit<CustomTableProps<T>, 'loading' | 'rows' | 'columns'>;
@@ -55,7 +55,7 @@ export const NewDataGridTable = <T extends { id: string | number }>(
           {...dataGridProps}
         />
       </div>
-      {!!paginatable && (
+      {!!paginatable && !!paginationProps && (
         <Stack
           direction='row'
           alignItems='center'

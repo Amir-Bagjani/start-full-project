@@ -85,12 +85,12 @@ export const TrackExpensesActions = memo(({ data, printIds }: TrackExpensesActio
         handleClose={onCloseExpenseAdjust}
         sx={{ maxWidth: 1200 }}
       >
-        {/* <EvaluationDetail
+        <EvaluationDetail
           data={data}
           updateExpenses={() => {
             queryClient.invalidateQueries([ALL_EXPENSES]);
           }}
-        /> */}
+        />
       </CustomModal>
 
       <CustomModal

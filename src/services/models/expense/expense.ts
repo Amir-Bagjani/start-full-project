@@ -5,6 +5,7 @@ import { Dependant, UserInsurance } from '../user';
 import { ExpenseStatusType } from './expenseStatus';
 import { DeliveryAgencyType } from './deliveryAgency';
 import { TypeCostCenterType } from './costCenterType';
+import { Override } from 'theme/models';
 
 export type ExpenseType = {
   id: number;
@@ -23,9 +24,9 @@ export type ExpenseType = {
   is_active: boolean;
   comments: string | null;
   created_at: string;
-  updated_at: string | null;
+  updated_at: string;
   amount: number;
-  date: string | null;
+  date: string;
   tracking_code: string;
   description: string | null;
   physical_has_received: boolean;
@@ -47,6 +48,33 @@ export type ExpenseTypeParams = {
   transfer?: Pick<ExpenseParams, 'transfer'>;
   mode?: Pick<ExpenseParams, 'mode'>;
 };
+
+export type EditExpenseParams = {
+  expenseId: number;
+  data: {
+    expense_type?: string | number;
+    cost_center_type?: string | number;
+  };
+};
+
+export type EditExpenseResponse = Override<
+  ExpenseType,
+  {
+    contract: {
+      id: number;
+      title: string;
+      start_date: string;
+      end_date: string;
+      computer_code: string;
+      insurer: number;
+      organization: number;
+      company: number;
+      contract_type: number;
+      reporters: number[];
+    };
+    created_by: number;
+  }
+>;
 
 export type ExpenseParams = {
   name?: string;

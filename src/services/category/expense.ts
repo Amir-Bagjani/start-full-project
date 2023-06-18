@@ -2,18 +2,26 @@ import { AxiosHandler } from 'services/utils';
 
 //types
 import {
+  LogExpenseParams,
   ExpenseTypeParams,
+  LogExpenseResponse,
   ExpenseTypeResponse,
-  TypeExpenseTypeResponse,
-  ExpenseStatusTypeResponse,
-  ActionExpenseResponse,
   ActionExpenseParams,
-  SampleDescriptionResponse,
+  ActionExpenseResponse,
+  EvaluationDetailParams,
   SampleDescriptionParams,
+  TypeExpenseTypeResponse,
+  EvaluationDetailResponse,
+  SampleDescriptionResponse,
+  ExpenseStatusTypeResponse,
   ChangeAgencyLocationParams,
   ChangeAgencyLocationResponse,
-  LogExpenseResponse,
-  LogExpenseParams,
+  ExpenseDocResponse,
+  ExpenseDocParams,
+  CostCenterResponse,
+  EditExpenseResponse,
+  EditExpenseParams,
+  DeleteEvaluationAdjustmentParams,
 } from 'services/models';
 import { APIError } from 'models/APImodels';
 import { convertValuesToString } from 'utils/helper/convertToString';
@@ -63,8 +71,11 @@ class ExpenseAPI {
     return await AxiosHandler.get<ExpenseTypeResponse, APIError>(`/darman/expense/?${new_params}`);
   };
 
-  getAllCostCenterType = async (params: any) => {
-    return await AxiosHandler.get('/darman/expense/costcentertype/', params);
+  getAllCostCenterType = async (config: {}) => {
+    return await AxiosHandler.get<CostCenterResponse, APIError>(
+      '/darman/expense/costcentertype/',
+      config,
+    );
   };
 
   getAllExpenseStatus = async (params: {}) => {
@@ -81,8 +92,8 @@ class ExpenseAPI {
     );
   };
 
-  getExpenseDoc = async (params: any) => {
-    return await AxiosHandler.get(
+  getExpenseDoc = async (params: ExpenseDocParams) => {
+    return await AxiosHandler.get<ExpenseDocResponse, APIError>(
       `/darman/expense/expensedocument/?expense=${String(params.expenseId)}`,
     );
   };
@@ -118,8 +129,8 @@ class ExpenseAPI {
     );
   };
 
-  getEvaluationAdjustList = async (params: any) => {
-    return await AxiosHandler.get(
+  getEvaluationAdjustList = async (params: EvaluationDetailParams) => {
+    return await AxiosHandler.get<EvaluationDetailResponse, APIError>(
       `/darman/expense/expenseadjust/?expense=${String(params.expenseId)}`,
     );
   };
@@ -128,17 +139,20 @@ class ExpenseAPI {
     return await AxiosHandler.post('/darman/expense/expenseadjust/', data);
   };
 
-  deleteEvaluationAdjustment = async (params: any) => {
-    return await AxiosHandler.delete(`/darman/expense/expenseadjust/${params.id}`);
+  deleteEvaluationAdjustment = async (params: DeleteEvaluationAdjustmentParams) => {
+    return await AxiosHandler.delete<{}, APIError>(`/darman/expense/expenseadjust/${params.id}`);
   };
 
   calcExpensePrice = async (params: any) => {
     return await AxiosHandler.post('/darman/expense/calcexpenseprice/', params);
   };
 
-  editExpense = async (params: any) => {
+  editExpense = async (params: EditExpenseParams) => {
     const { expenseId, data } = params;
-    return await AxiosHandler.patch(`/darman/expense/${expenseId}/`, data);
+    return await AxiosHandler.patch<EditExpenseResponse, APIError, EditExpenseParams['data']>(
+      `/darman/expense/${expenseId}/`,
+      data,
+    );
   };
 
   getExpenseByStatus = async (params: any) => {

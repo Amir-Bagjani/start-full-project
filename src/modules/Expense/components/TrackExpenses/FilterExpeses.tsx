@@ -207,7 +207,7 @@ export const FilterExpeses = ({
                 control={control}
                 label={t('ExProvinceLabel')}
                 isLoading={isProvincesLoading}
-                defaultSelect={{ label: t('ExAllprovinceLabrl'), value: '' }}
+                defaultSelect={{ label: t('ExAllprovinceLabel'), value: '' }}
                 options={provincesData?.map((i) => ({ label: i.name, value: i.id })) ?? []}
               />
             ) : null}
