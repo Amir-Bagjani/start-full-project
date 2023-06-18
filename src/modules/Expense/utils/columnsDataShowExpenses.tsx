@@ -1,10 +1,11 @@
-// import { DateFormat } from 'utils/date';
-// import { NumberFormat } from 'utils/number';
 import { Tooltip, Typography } from '@mui/material';
-import { CustomTableColumn, ReturnGenerateTools } from 'modules/common/components';
-import { ExpenseType } from 'services/models';
+
+//utils
 import { DateFormat, NumberFormat } from 'utils/helper';
-// import { TrackExpensesActions } from "../components/TrackExpenses";
+
+//types
+import { ExpenseType } from 'services/models';
+import { CustomTableColumn, ReturnGenerateTools } from 'modules/common/components';
 
 export const columnsDataShowExpenses: CustomTableColumn<ExpenseType>[] = [
   {

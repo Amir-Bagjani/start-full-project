@@ -3,15 +3,15 @@ import { UseMutationOptions, useMutation } from '@tanstack/react-query';
 
 //types
 import { APIError } from 'models/APImodels';
-import { ActionExpenseParams, ActionExpenseResponse } from 'services/models';
+import { ChangeAgencyLocationResponse, ChangeAgencyLocationParams } from 'services/models';
 
-type Data = ActionExpenseResponse;
-type Params = ActionExpenseParams;
+type Data = ChangeAgencyLocationResponse;
+type Params = ChangeAgencyLocationParams;
 type Options = Omit<UseMutationOptions<Data, APIError, Params, unknown>, 'mutationFn'>;
 
-export const useAddActionExpenseAPI = (options: Options = {}) => {
+export const usePostAgencyLocationAPI = (options: Options = {}) => {
   return useMutation<Data, APIError, Params>({
-    mutationFn: (params) => APIs.expense.actionExpense(params),
+    mutationFn: (params) => APIs.expense.changeAgencyLocation(params),
     ...options,
   });
 };

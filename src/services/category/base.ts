@@ -1,12 +1,21 @@
 import { AxiosHandler } from 'services/utils';
 
+//utils
+import { convertValuesToString } from 'utils/helper';
+
 //types
+import {
+  CityResponse,
+  AgenciesParams,
+  AgenciesResponse,
+  HelpMessageParams,
+  HelpMessageResponse,
+} from 'services/models/base';
 import { APIError } from 'models/APImodels';
-import { HelpMessageParams, HelpMessageResponse } from 'services/models/base';
 import { ProvinceTypeResponse } from 'services/models';
 
 class BaseAPI {
-  getAgency = async (params: any) => {
+  getAgency = async (params: AgenciesParams) => {
     const { province, name, city, page = 1 } = params;
 
     const add_params = {
@@ -16,17 +25,17 @@ class BaseAPI {
       page,
     };
 
-    const new_params = new URLSearchParams(add_params).toString();
+    const new_params = convertValuesToString(add_params);
 
-    return await AxiosHandler.get(`/base/agency/?${new_params}`);
+    return await AxiosHandler.get<AgenciesResponse, APIError>(`/base/agency/?${new_params}`);
   };
 
   getProvince = async (config: {}) => {
     return await AxiosHandler.get<ProvinceTypeResponse, APIError>('/base/province/', config);
   };
 
-  getCities = async (params: any) => {
-    return await AxiosHandler.get('/base/city/', params);
+  getCities = async (config: {}) => {
+    return await AxiosHandler.get<CityResponse, APIError>('/base/city/', config);
   };
 
   getHelpMessage = async (params: HelpMessageParams) => {

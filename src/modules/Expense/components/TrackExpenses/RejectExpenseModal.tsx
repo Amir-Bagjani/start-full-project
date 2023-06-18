@@ -5,23 +5,23 @@ import { useTranslation } from 'react-i18next';
 import { useQueryClient } from '@tanstack/react-query';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-//components & utils
-// import { useAddActionExpenseAPI, useSampleDescriptionAPI } from 'features/feature_transfer/hooks';
-import { ALL_EXPENSES } from '../../hooks';
+//components
 import { Button, Select, TextBox } from 'modules/common/components';
+
+// utils
+import { ALL_EXPENSES } from '../../hooks';
 import { Constants } from 'utils/constants';
-// import { Select, TextBox } from 'components/shared';
+import { useAddActionExpenseAPI, useSampleDescriptionAPI } from 'modules/common/hooks';
 
 //types
+import { ActionExpenseParams } from 'services/models';
+
 type RejectExpenseModalProps = {
   handleClose: () => void;
   expenseId: number;
 };
 
-type RejectParamsType = {
-  actionreason: string;
-  actiontype: number;
-};
+type RejectParamsType = Omit<ActionExpenseParams, 'expense'>;
 
 const onError = () => {
   toast.error(Constants.PublicFetchError);

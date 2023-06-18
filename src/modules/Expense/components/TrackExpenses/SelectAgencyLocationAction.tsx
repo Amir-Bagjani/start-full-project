@@ -1,92 +1,92 @@
-// import { useCallback } from 'react';
-// import { toast } from 'react-hot-toast';
-// import { LoadingButton } from '@mui/lab';
-// import { useQueryClient } from '@tanstack/react-query';
-// import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
+import { useCallback } from 'react';
+import { toast } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import { blueGrey } from '@mui/material/colors';
+import { useQueryClient } from '@tanstack/react-query';
+import { Box, IconButton, Stack, Typography } from '@mui/material';
 
-// //components & utils
-// import { useModal } from 'hooks';
-// import Constants from 'utils/constants';
-// import { CustomModal } from 'components/shared';
-// import { blueGrey } from '@mui/material/colors';
-// import { BiSelectMultiple } from 'react-icons/bi';
-// import { ALL_EXPENSES, usePostAgencyLocationAPI } from '../../hooks';
+//components & utils
+import { BiSelectMultiple } from 'react-icons/bi';
+import { Button, CustomModal } from 'modules/common/components';
 
-// const onError = () => { toast.error(Constants.PublicFetchError) }
+//utils
+import { Constants } from 'utils/constants';
+import { useModal } from 'modules/common/hooks';
+import { ALL_EXPENSES, usePostAgencyLocationAPI } from '../../hooks';
 
-// export const SelectAgencyLocationAction = ({ data, expenseId }) => {
-//     const queryClient = useQueryClient();
+//types
+import { AgencyType } from 'services/models';
+type SelectAgencyLocationProps = {
+  data: AgencyType;
+  expenseId: number;
+};
 
-//     const { isOpen, onOpen, onClose } = useModal();
+const onError = () => {
+  toast.error(Constants.PublicFetchError);
+};
 
-//     const onSuccess = useCallback(() => {
-//         toast.success(Constants.PublicFetchSuccess)
-//         queryClient.invalidateQueries([ALL_EXPENSES])
-//         onClose()
-//     }, [onClose, queryClient])
+export const SelectAgencyLocationAction = ({ data, expenseId }: SelectAgencyLocationProps) => {
+  const queryClient = useQueryClient();
 
-//     const { mutate: changeLocation, isLoading: isChangingLocation } = usePostAgencyLocationAPI({
-//         onError,
-//         onSuccess,
-//     })
+  const { t } = useTranslation();
 
-//     return (
-//         <>
-//             <IconButton
-//                 sx={{ color: blueGrey[200] }}
-//                 onClick={onOpen}
-//             >
-//                 <BiSelectMultiple />
-//             </IconButton>
+  const { isOpen, onOpen, onClose } = useModal();
 
-//             <CustomModal
-//                 header
-//                 title="ثبت مرکز اسناد"
-//                 open={isOpen}
-//                 handleClose={onClose}
-//                 sx={{ maxWidth: 700 }}
-//             >
+  const onSuccess = useCallback(() => {
+    toast.success(Constants.PublicFetchSuccess);
+    queryClient.invalidateQueries([ALL_EXPENSES]);
+    onClose();
+  }, [onClose, queryClient]);
 
-//                 <Stack spacing={5} py={1}>
-//                     <Stack spacing={1} >
-//                         <Typography
-//                             align="center"
-//                             sx={{ fontSize: "16px !important" }}
-//                         >
-//                             آیا از ثبت <Box component="span" color="primary.main">{data.name ?? ""}</Box> مطمئن هستید؟
-//                         </Typography>
-//                         <Typography
-//                             align="center"
-//                             sx={{ fontSize: "14px !important" }}
-//                         >
-//                             {data?.description ?? ''}
-//                         </Typography>
-//                     </Stack>
+  const { mutate: changeLocation, isLoading: isChangingLocation } = usePostAgencyLocationAPI({
+    onError,
+    onSuccess,
+  });
 
-//                     <Stack direction="row" spacing={3} justifyContent="center">
-//                         <LoadingButton
-//                             variant="outlined"
-//                             sx={{ width: 100 }}
-//                             color="success"
-//                             onClick={() => changeLocation({ agency: data.id, expense: expenseId })}
-//                             disabled={isChangingLocation}
-//                         >
-//                             تایید
-//                         </LoadingButton>
-//                         <Button
-//                             variant="outlined"
-//                             onClick={onClose}
-//                             sx={{ width: 100 }}
-//                         >
-//                             بازگشت
-//                         </Button>
-//                     </Stack>
+  return (
+    <>
+      <IconButton sx={{ color: blueGrey[200] }} onClick={onOpen}>
+        <BiSelectMultiple />
+      </IconButton>
 
-//                 </Stack>
+      <CustomModal
+        header
+        title={t('ExRegisterAgency')}
+        open={isOpen}
+        handleClose={onClose}
+        sx={{ maxWidth: 700 }}
+      >
+        <Stack spacing={5} py={1}>
+          <Stack spacing={1}>
+            <Typography align='center' variant='body2'>
+              {t('ExAreyousureToConfirm')}{' '}
+              <Box component='span' color='primary.main'>
+                {data.name ?? ''}
+              </Box>{' '}
+              {t('ExSureDelete')}
+            </Typography>
+            <Typography align='center' variant='body1'>
+              {data?.description ?? ''}
+            </Typography>
+          </Stack>
 
-//             </CustomModal>
-//         </>
-//     )
-// }
-
-export {};
+          <Stack direction='row' spacing={3} justifyContent='center'>
+            <Button.Loading
+              variant='outlined'
+              sx={{ width: 100 }}
+              color='success'
+              onClick={() => changeLocation({ agency: data.id, expense: expenseId })}
+              disabled={isChangingLocation}
+              loading={isChangingLocation}
+            >
+              {t('ExConfirm')}
+            </Button.Loading>
+            <Button variant='outlined' onClick={onClose} sx={{ width: 100 }}>
+              {t('ExBack')}
+            </Button>
+          </Stack>
+        </Stack>
+      </CustomModal>
+    </>
+  );
+};

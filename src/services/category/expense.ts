@@ -6,6 +6,14 @@ import {
   ExpenseTypeResponse,
   TypeExpenseTypeResponse,
   ExpenseStatusTypeResponse,
+  ActionExpenseResponse,
+  ActionExpenseParams,
+  SampleDescriptionResponse,
+  SampleDescriptionParams,
+  ChangeAgencyLocationParams,
+  ChangeAgencyLocationResponse,
+  LogExpenseResponse,
+  LogExpenseParams,
 } from 'services/models';
 import { APIError } from 'models/APImodels';
 import { convertValuesToString } from 'utils/helper/convertToString';
@@ -79,8 +87,10 @@ class ExpenseAPI {
     );
   };
 
-  getLogExpense = async (params: any) => {
-    return await AxiosHandler.get(`/darman/expense/log/?expense=${String(params.expense)}`);
+  getLogExpense = async (params: LogExpenseParams) => {
+    return await AxiosHandler.get<LogExpenseResponse, APIError>(
+      `/darman/expense/log/?expense=${String(params.expense)}`,
+    );
   };
 
   getExtraPrintInfo = async (params: any) => {
@@ -89,18 +99,23 @@ class ExpenseAPI {
     );
   };
 
-  getSampleDescription = async (params: any) => {
-    return await AxiosHandler.get(`/darman/expense/sampledescription/?type=${String(params.type)}`);
+  getSampleDescription = async (params: SampleDescriptionParams) => {
+    return await AxiosHandler.get<SampleDescriptionResponse, APIError>(
+      `/darman/expense/sampledescription/?type=${String(params.type)}`,
+    );
   };
 
-  actionExpense = async (params: any) => {
+  actionExpense = async (params: ActionExpenseParams) => {
     /*
      * actiontype: 1 => hardcoded value for confirm expense
      * actiontype: 2 => hardcoded value for return expense
      * actiontype: 5 => hardcoded value for send expense to master
      * actiontype: 6 => hardcoded value for cancel expense
      */
-    return await AxiosHandler.post('/darman/expense/send/', params);
+    return await AxiosHandler.post<ActionExpenseResponse, APIError, ActionExpenseParams>(
+      '/darman/expense/send/',
+      params,
+    );
   };
 
   getEvaluationAdjustList = async (params: any) => {
@@ -187,8 +202,12 @@ class ExpenseAPI {
     return await AxiosHandler.get(`/darman/insured/?${new_params}`);
   };
 
-  changeAgencyLocation = async (params: any) => {
-    return await AxiosHandler.post('/darman/expense/agency/', params);
+  changeAgencyLocation = async (params: ChangeAgencyLocationParams) => {
+    return await AxiosHandler.post<
+      ChangeAgencyLocationResponse,
+      APIError,
+      ChangeAgencyLocationParams
+    >('/darman/expense/agency/', params);
   };
 }
 

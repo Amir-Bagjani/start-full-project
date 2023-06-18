@@ -13,6 +13,7 @@ const CrumbsMap: any = {
   add: 'اضافه',
   base: 'تنظیمات پایه',
   dashboard: 'تنظیمات هزینه',
+  'not-found': 'پیدا نشد',
 };
 
 export const Breadcrumbs = () => {

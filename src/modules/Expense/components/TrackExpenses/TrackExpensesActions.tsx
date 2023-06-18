@@ -5,21 +5,26 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Box, IconButton, Stack, Tooltip } from '@mui/material';
 
 //components
-import { CustomModal } from 'modules/common/components';
 import { RejectExpenseModal } from './RejectExpenseModal';
+import { ChooseAgencyLocation } from './ChooseAgencyLocation';
+import { CancellationExpenseModal } from './CancellationExpenseModal';
+import { CustomModal, LogExpenseModal } from 'modules/common/components';
 
 //utils
+import { ALL_EXPENSES } from '../../hooks';
 import { useModal, useRole } from 'modules/common/hooks';
 import { TRACK_EXPENSE_ACTION_DATA } from 'modules/Expense/utils';
 
 //types
 import { ExpenseType } from 'services/models';
-// import { ALL_EXPENSES } from 'modules/Expense/hooks';
 
-type TrackExpensesActionsProps = { data: ExpenseType; printIds: number[] };
+type TrackExpensesActionsProps = {
+  data: ExpenseType;
+  printIds: number[];
+};
 
 export const TrackExpensesActions = memo(({ data, printIds }: TrackExpensesActionsProps) => {
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const { t } = useTranslation();
 
@@ -95,7 +100,7 @@ export const TrackExpensesActions = memo(({ data, printIds }: TrackExpensesActio
         handleClose={onCloseLog}
         sx={{ maxWidth: 500 }}
       >
-        {/* <NewLogExpenseModal handleClose={onCloseLog} id={data.id} /> */}
+        <LogExpenseModal handleClose={onCloseLog} id={data.id} />
       </CustomModal>
 
       <CustomModal
@@ -105,7 +110,7 @@ export const TrackExpensesActions = memo(({ data, printIds }: TrackExpensesActio
         handleClose={onCloseAgency}
         sx={{ maxWidth: 1200 }}
       >
-        {/* <ChooseAgencyLocation data={data} /> */}
+        <ChooseAgencyLocation data={data} />
       </CustomModal>
 
       <CustomModal
@@ -115,7 +120,7 @@ export const TrackExpensesActions = memo(({ data, printIds }: TrackExpensesActio
         handleClose={onCloseCancellation}
         sx={{ maxWidth: 700 }}
       >
-        {/* <CancellationExpenseModal data={data} handleClose={onCloseCancellation} /> */}
+        <CancellationExpenseModal data={data} handleClose={onCloseCancellation} />
       </CustomModal>
 
       {/* <CustomModal
