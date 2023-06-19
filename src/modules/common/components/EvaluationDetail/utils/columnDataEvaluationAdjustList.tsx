@@ -1,5 +1,6 @@
 //components
 import { t } from 'i18next';
+import { Trans } from 'react-i18next';
 import { Tooltip, Typography } from '@mui/material';
 
 //utils
@@ -12,7 +13,7 @@ import { EvaluationDetailType } from 'services/models';
 export const columnDataEvaluationAdjustList: CustomTableColumn<EvaluationDetailType>[] = [
   {
     field: 'ktable',
-    headerName: t('EvaKtable'),
+    headerName: <Trans t={t}>EvaKtable</Trans>,
     width: 300,
     renderCell: (params) => {
       const { code_description } = params.row?.ktable;
@@ -25,32 +26,41 @@ export const columnDataEvaluationAdjustList: CustomTableColumn<EvaluationDetailT
   },
   {
     field: 'amount',
-    headerName: t('EvaAmountRial'),
+    headerName: <Trans t={t}>EvaAmountRial</Trans>,
     width: 100,
     valueGetter: (params) => NumberFormat.separateNum(params.row.amount),
   },
   {
     field: 'franchise',
-    headerName: t('EvaFranchise'),
+    headerName: <Trans t={t}>EvaFranchise</Trans>,
     width: 100,
     valueGetter: (params) =>
-      params.row.franchise ? NumberFormat.separateNum(params.row.franchise) : t('EvaFranNo'),
+      params.row.franchise ? (
+        NumberFormat.separateNum(params.row.franchise)
+      ) : (
+        <Trans t={t}>EvaFranNo</Trans>
+      ),
   },
   {
     field: 'has_base_insurance',
-    headerName: t('EvaBaseInsurance'),
+    headerName: <Trans t={t}>EvaBaseInsurance</Trans>,
     width: 100,
-    valueGetter: (params) => (params.row.has_base_insurance ? t('EvaFranYes') : t('EvaFranNo')),
+    valueGetter: (params) =>
+      params.row.has_base_insurance ? (
+        <Trans t={t}>EvaFranYes</Trans>
+      ) : (
+        <Trans t={t}>EvaFranNo</Trans>
+      ),
   },
   {
     field: 'created_at',
-    headerName: t('EvaCreatedAt'),
+    headerName: <Trans t={t}>EvaCreatedAt</Trans>,
     width: 100,
     valueGetter: (params) => DateFormat.fPersianDate(params.row.created_at),
   },
   {
     field: 'comments',
-    headerName: t('EvaComments'),
+    headerName: <Trans t={t}>EvaComments</Trans>,
     width: 300,
     renderCell: (params) => {
       const { comments } = params.row;

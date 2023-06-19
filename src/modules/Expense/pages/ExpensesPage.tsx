@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import { Box, Container } from '@mui/material';
 
 //components & utils
-import { TrackExpenses } from '../components/TrackExpenses';
+// import { TrackExpenses } from '../components/TrackExpenses';
 import { DocumentTitle, Tabs } from 'modules/common/components';
 
 //utils
@@ -22,6 +22,8 @@ import {
   RECEIPTIONICT_R,
 } from 'utils/constants';
 import { useBrowserstorageState } from 'modules/common/hooks';
+import { Suspense, lazy, useDeferredValue } from 'react';
+import { TrackExpenses } from '../components/TrackExpenses';
 
 const tabsOption = [
   {
@@ -81,6 +83,9 @@ const checker = (value: number) => {
 
 const ExpensesPage = () => {
   const [value, setValue] = useBrowserstorageState('expense-tab', 0, 'sessionStorage', checker);
+  const deferredValue = useDeferredValue(value);
+
+  const isStale = value !== deferredValue;
 
   return (
     <Box pb={8}>
@@ -93,23 +98,27 @@ const ExpensesPage = () => {
           />
         </Box>
 
-        <Tabs.Panel value={value} index={0}>
-          <DocumentTitle title={t('ExExpenseTab') as string}>
-            <TrackExpenses />
-          </DocumentTitle>
-        </Tabs.Panel>
+        <Suspense fallback='LOADING...'>
+          {isStale && 'LOADING...'}
 
-        <Tabs.Panel value={value} index={1}>
-          <DocumentTitle title={t('ExDraftTab') as string}>
-            {/* <ArchiveExpenses /> */}
-          </DocumentTitle>
-        </Tabs.Panel>
+          <Tabs.Panel value={deferredValue} index={0}>
+            <DocumentTitle title={t('ExExpenseTab') as string}>
+              <TrackExpenses />
+            </DocumentTitle>
+          </Tabs.Panel>
 
-        <Tabs.Panel value={value} index={2}>
-          <DocumentTitle title={t('ExFoldersTab') as string}>
-            {/* <ExpenseFolder /> */}
-          </DocumentTitle>
-        </Tabs.Panel>
+          <Tabs.Panel value={deferredValue} index={1}>
+            <DocumentTitle title={t('ExDraftTab') as string}>
+              {/* <ArchiveExpenses /> */}
+            </DocumentTitle>
+          </Tabs.Panel>
+
+          <Tabs.Panel value={deferredValue} index={0}>
+            <DocumentTitle title={t('ExFoldersTab') as string}>
+              {/* <ExpenseFolder /> */}
+            </DocumentTitle>
+          </Tabs.Panel>
+        </Suspense>
       </Container>
     </Box>
   );

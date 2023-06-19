@@ -31,17 +31,23 @@ export const bodyStyle = {
   overflow: 'auto',
   maxHeight: '80vh',
   p: 2,
-  scrollbarColor: 'grey gainsboro',
+  scrollbarColor: (theme: Theme) =>
+    `${theme.palette.mode === 'light' ? theme.palette.grey[500] : theme.palette.grey[700]} ${
+      theme.palette.mode === 'light' ? theme.palette.grey[300] : theme.palette.grey[500]
+    }`,
   scrollbarWidth: 'thin',
   '&::-webkit-scrollbar': {
     width: '0.5rem',
+    height: '0.5rem',
   },
   '&::-webkit-scrollbar-track': {
-    background: 'gainsboro',
+    background: (theme: Theme) =>
+      theme.palette.mode === 'light' ? theme.palette.grey[300] : theme.palette.grey[500],
     borderRadius: '24px',
   },
   '&::-webkit-scrollbar-thumb': {
-    background: 'grey',
+    background: (theme: Theme) =>
+      theme.palette.mode === 'light' ? theme.palette.grey[500] : theme.palette.grey[700],
     borderRadius: '5px',
   },
 } as const;

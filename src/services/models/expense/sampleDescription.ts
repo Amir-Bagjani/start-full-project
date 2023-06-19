@@ -9,5 +9,7 @@ export type SampleDescriptionResponse = {
 }[];
 
 export type SampleDescriptionParams = {
-  type: 1; //hardcoded value for return type
+  // 1 => hardcoded value for return type
+  // 6 => hardcoded value for adjuster comments
+  type: 1 | 6;
 };

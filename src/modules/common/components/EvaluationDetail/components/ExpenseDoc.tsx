@@ -57,8 +57,8 @@ export const ExpenseDoc = () => {
         border: '0.5px solid',
         borderRadius: 1,
         p: 1,
-        borderColor: blueGrey[100],
-        bgcolor: blueGrey[50],
+        borderColor: (t) => (t.palette.mode === 'light' ? blueGrey[100] : 'text.disabled'),
+        bgcolor: (t) => (t.palette.mode === 'light' ? blueGrey[50] : 'transparent'),
       }}
     >
       <Stack

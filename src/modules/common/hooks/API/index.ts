@@ -5,6 +5,7 @@ export * from './useAgenciesAPI';
 export * from './useHelpMessageAPI';
 export * from './useExpenseTypeAPI';
 export * from './useEditExpenseAPI';
+export * from './useTablePeriodAPI';
 export * from './useRefreshTokenAPI';
 export * from './useExpenseStatusAPI';
 export * from './useCostCenterTypeAPI';

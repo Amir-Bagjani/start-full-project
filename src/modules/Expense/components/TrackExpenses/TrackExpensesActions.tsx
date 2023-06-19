@@ -8,7 +8,7 @@ import { Box, IconButton, Stack, Tooltip } from '@mui/material';
 import { RejectExpenseModal } from './RejectExpenseModal';
 import { ChooseAgencyLocation } from './ChooseAgencyLocation';
 import { CancellationExpenseModal } from './CancellationExpenseModal';
-import { CustomModal, LogExpenseModal } from 'modules/common/components';
+import { CustomModal, EvaluationDetail, LogExpenseModal } from 'modules/common/components';
 
 //utils
 import { ALL_EXPENSES } from '../../hooks';

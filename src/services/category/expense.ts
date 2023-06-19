@@ -22,6 +22,11 @@ import {
   EditExpenseResponse,
   EditExpenseParams,
   DeleteEvaluationAdjustmentParams,
+  CalcExpensePriceResponse,
+  CalcExpensePriceParams,
+  ToothNumberResponse,
+  AddEvaluationAdjustmentResponse,
+  AddEvaluationAdjustmentParams,
 } from 'services/models';
 import { APIError } from 'models/APImodels';
 import { convertValuesToString } from 'utils/helper/convertToString';
@@ -135,16 +140,23 @@ class ExpenseAPI {
     );
   };
 
-  sendEvaluationAdjustment = async (data: any) => {
-    return await AxiosHandler.post('/darman/expense/expenseadjust/', data);
+  sendEvaluationAdjustment = async (data: AddEvaluationAdjustmentParams) => {
+    return await AxiosHandler.post<
+      AddEvaluationAdjustmentResponse,
+      APIError,
+      AddEvaluationAdjustmentParams
+    >('/darman/expense/expenseadjust/', data);
   };
 
   deleteEvaluationAdjustment = async (params: DeleteEvaluationAdjustmentParams) => {
     return await AxiosHandler.delete<{}, APIError>(`/darman/expense/expenseadjust/${params.id}`);
   };
 
-  calcExpensePrice = async (params: any) => {
-    return await AxiosHandler.post('/darman/expense/calcexpenseprice/', params);
+  calcExpensePrice = async (params: CalcExpensePriceParams) => {
+    return await AxiosHandler.post<CalcExpensePriceResponse, APIError, CalcExpensePriceParams>(
+      '/darman/expense/calcexpenseprice/',
+      params,
+    );
   };
 
   editExpense = async (params: EditExpenseParams) => {
@@ -222,6 +234,47 @@ class ExpenseAPI {
       APIError,
       ChangeAgencyLocationParams
     >('/darman/expense/agency/', params);
+  };
+
+  getExtraApprovedCostPrice = async (params: any) => {
+    return await AxiosHandler.get(
+      `/darman/expense/extraapprovedcostprice/?costgroup=${String(params.costgroup)}`,
+    );
+  };
+
+  addExtraApprovedCostPrice = async (params: any) => {
+    return await AxiosHandler.post('/darman/expense/extraapprovedcostprice/', params);
+  };
+
+  editExtraApprovedCostPrice = async (params: any) => {
+    const { data, id } = params;
+    return await AxiosHandler.patch(`/darman/expense/extraapprovedcostprice/${id}`, data);
+  };
+
+  deleteExtraApprovedCostPrice = async (params: any) => {
+    return await AxiosHandler.delete(`/darman/expense/extraapprovedcostprice/${params.id}`);
+  };
+
+  getInsuredExpenseHistory = async (params: any) => {
+    const { insured, dependant, date, topic, page = 1 } = params;
+
+    const add_params = {
+      ...(!!insured && { insured }),
+      ...(!!dependant && { dependant }),
+      ...(!!date && { date }),
+      ...(!!topic && { topic }),
+      page,
+    };
+
+    const new_params = new URLSearchParams(add_params).toString();
+    return await AxiosHandler.get(`/darman/expense/history/?${new_params}`);
+  };
+
+  getToothNumbers = async (config: {}) => {
+    return await AxiosHandler.get<ToothNumberResponse, APIError>(
+      '/darman/expense/toothnumbers/',
+      config,
+    );
   };
 }
 

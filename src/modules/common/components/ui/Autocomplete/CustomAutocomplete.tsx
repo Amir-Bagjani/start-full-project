@@ -1,5 +1,11 @@
+import {
+  Autocomplete,
+  InputAdornment,
+  CircularProgress,
+  AutocompleteProps,
+  AutocompleteCloseReason,
+} from '@mui/material';
 import { ComponentProps, FocusEventHandler, ForwardedRef, SyntheticEvent, forwardRef } from 'react';
-import { Autocomplete, InputAdornment, CircularProgress, AutocompleteProps } from '@mui/material';
 
 import { TextBox } from '../TextBox';
 // import { Override } from 'theme/models';
@@ -22,6 +28,10 @@ export type AutocompleteType<T> = {
   loadingText?: string;
   freeSolo?: boolean;
   disableClearable?: boolean;
+  open?: boolean;
+  onOpen?: (event: SyntheticEvent<Element, Event>) => void;
+  onClose?: (event: SyntheticEvent<Element, Event>, reason: AutocompleteCloseReason) => void;
+  disabled?: boolean;
 };
 // export type AutocompleteType<T> = Override<
 //   AutocompleteProps<T, any, any, any>,
@@ -56,6 +66,10 @@ export const CustomAutocomplete = forwardRef(
       loadingText,
       freeSolo,
       disableClearable,
+      open,
+      onOpen,
+      onClose,
+      disabled,
       // ...autocompleteProps
     } = props;
 
@@ -78,6 +92,10 @@ export const CustomAutocomplete = forwardRef(
         value={value}
         freeSolo={freeSolo}
         disableClearable={disableClearable}
+        open={open}
+        onOpen={onOpen}
+        onClose={onClose}
+        disabled={disabled}
         renderInput={(params) => (
           <TextBox
             {...params}

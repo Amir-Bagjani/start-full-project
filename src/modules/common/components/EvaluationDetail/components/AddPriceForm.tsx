@@ -1,26 +1,55 @@
 import { toast } from 'react-hot-toast';
-import { LoadingButton } from '@mui/lab';
+import { useTranslation } from 'react-i18next';
 import { NumericFormat } from 'react-number-format';
 import { Box, Stack, Tooltip } from '@mui/material';
-import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef } from 'react';
+import { Controller, useForm, SubmitHandler } from 'react-hook-form';
 
 //components
+import { MdAdd } from 'react-icons/md';
+import { AddComments } from './AddComments';
+import { Button, Select, TextBox } from 'modules/common/components';
+
+//utils
 import {
   useToothNumbersAPI,
   EVALUATION_ADJUST_LIST,
   usePostEvaluationAdjustmentAPI,
 } from '../hooks';
-import { calcAmount, convertToothProperty, expenseAdjustmentValidation } from '../utils';
-import { MdAdd } from 'react-icons/md';
-import { NumberFormat } from 'utils/number';
-import { AddComments } from './AddComments';
-import { Select, TextBox } from 'components/shared';
+import { NumberFormat } from 'utils/helper';
 import { useEvaluationAdjustmentContext } from '../context/EvaluationContext';
+import { calcAmount, convertToothProperty, expenseAdjustmentValidation } from '../utils';
 
-const addPriceDefaultValues = {
+//types
+import { CalcPriceType } from './EvaluationForm';
+
+type AddPriceFormProps = {
+  setCalcPrice: (e: CalcPriceType | undefined) => void;
+  calcPrice: CalcPriceType;
+  setResetForm: (e: boolean) => void;
+};
+
+export type AddPriceValuesType = {
+  actual_professinal_technical_cost: string | number;
+  ansethesia_professinal_cost: string | number;
+  approvedcostprice: string | number;
+  franchise: string | number;
+  professinal_technical_cost: string | number;
+  tooth_number: string;
+  ansethesia_percent: string | number;
+  amount: string | number;
+  comments?: string;
+  has_base_insurance?: number;
+  ktable?: string | number;
+  expense_amount?: string | number;
+  number_of_sessions?: string | number;
+  deduction?: string | number;
+  total_amount?: string | number;
+};
+
+const addPriceDefaultValues: AddPriceValuesType = {
   actual_professinal_technical_cost: '',
   ansethesia_professinal_cost: '',
   approvedcostprice: '',
@@ -34,46 +63,49 @@ const addPriceDefaultValues = {
   comments: '',
 };
 
-const onError = (err) => {
+const onError = (err: any) => {
   toast.error(err.error);
 };
 
 const options = { staleTime: 1 * 1000 * 60 * 60 };
 
-export const AddPriceForm = (props) => {
+export const AddPriceForm = (props: AddPriceFormProps) => {
   const { calcPrice, setResetForm, setCalcPrice } = props;
+
+  const { t } = useTranslation();
 
   const { expense, mobileUI, expenseId, updateDataAfterAddAdjustment } =
     useEvaluationAdjustmentContext();
 
   const queryClient = useQueryClient();
 
-  const amountRef = useRef(null);
+  const amountRef = useRef({} as HTMLInputElement);
 
-  const { handleSubmit, control, reset, setFocus, setValue, getValues, setError } = useForm({
-    resolver: yupResolver(expenseAdjustmentValidation),
-    defaultValues: addPriceDefaultValues,
-  });
+  const { handleSubmit, control, reset, setFocus, setValue, getValues, setError } =
+    useForm<AddPriceValuesType>({
+      resolver: yupResolver(expenseAdjustmentValidation),
+      defaultValues: addPriceDefaultValues,
+    });
 
   const { data: toothNumberData, isInitialLoading: isToothNumberLoading } = useToothNumbersAPI(
     {},
-    { enabled: expense.expense_type.name === 'دندانپزشکی', ...options },
+    { enabled: expense.expense_type?.name === t('EvaDental'), ...options },
   );
 
   const onSuccessAddAdjustment = useCallback(() => {
     setResetForm(true);
     setCalcPrice(undefined); // close form setep 2
-    toast.success('کارشناسی هزینه با موفقیت انجام شد.');
+    toast.success(t('EvaAdjustmentDoneSuccssesfuly'));
     queryClient.invalidateQueries([EVALUATION_ADJUST_LIST]);
     if (!!updateDataAfterAddAdjustment) updateDataAfterAddAdjustment();
-  }, [queryClient, setCalcPrice, setResetForm, updateDataAfterAddAdjustment]);
+  }, [queryClient, setCalcPrice, setResetForm, t, updateDataAfterAddAdjustment]);
 
   const { mutate: addAdjustment, isLoading: isAddingAdjustment } = usePostEvaluationAdjustmentAPI({
     onSuccess: onSuccessAddAdjustment,
     onError,
   });
 
-  const onSubmit = useCallback(
+  const onSubmit: SubmitHandler<AddPriceValuesType> = useCallback(
     (data) => {
       const {
         amount,
@@ -84,15 +116,13 @@ export const AddPriceForm = (props) => {
         comments,
         number_of_sessions,
         tooth_number,
-        // deduction,
+        deduction,
       } = data;
-      const pureAmount = amount.split(',').join('');
+      const pureAmount = (amount as string).split(',').join('');
 
       const totalExpenseAmount = expense.amount ?? 0;
       const pureExpenseAmount = Number(String(expense_amount).split(',').join(''));
-      // const pureDeduction = Number(
-      //   String(deduction).split(",").join("")
-      // );
+      const pureDeduction = Number(String(deduction).split(',').join(''));
 
       if (pureExpenseAmount > totalExpenseAmount) {
         setError('expense_amount', {
@@ -108,25 +138,25 @@ export const AddPriceForm = (props) => {
         });
         return;
       }
-      // if (pureDeduction < 0) {
-      //   setError("deduction", {
-      //     type: "custom",
-      //     message: " کسورات نباید کمتر از صفر باشد ",
-      //   });
-      //   return;
-      // }
+      if (pureDeduction < 0) {
+        setError('deduction', {
+          type: 'custom',
+          message: ' کسورات نباید کمتر از صفر باشد ',
+        });
+        return;
+      }
 
       addAdjustment({
         amount: pureAmount,
         franchise,
-        has_base_insurance,
-        expense: expenseId,
-        ktable,
+        has_base_insurance: has_base_insurance as number,
+        expense: expenseId as number,
+        ktable: ktable as string,
         expense_amount: pureExpenseAmount,
-        comments,
-        number_of_sessions,
+        comments: comments as string,
+        number_of_sessions: number_of_sessions as string,
         tooth_number,
-        // deduction: pureDeduction,
+        deduction: pureDeduction,
       });
     },
     [addAdjustment, expense.amount, expenseId, setError],
@@ -139,7 +169,7 @@ export const AddPriceForm = (props) => {
       ansethesia_percent,
       franchise,
       tooth_number,
-      // deduction,
+      deduction,
 
       is_calculatetable,
 
@@ -151,9 +181,9 @@ export const AddPriceForm = (props) => {
       ansethesia_professinal_cost,
       ansethesia_percent: ansethesia_percent ?? 0,
       franchise,
-      amount: calcAmount(calcPrice) || 0,
+      amount: calcAmount(calcPrice as any) || 0,
       tooth_number,
-      // deduction,
+      deduction,
 
       total_amount: expense.amount ?? 0, //helper for expense_amount in expenseAdjustmentValidation
 
@@ -190,7 +220,7 @@ export const AddPriceForm = (props) => {
                     value={value}
                     onChange={onChange}
                     fullWidth
-                    label='مبلغ اعلامی'
+                    label={t('EvaExpenseAmount')}
                     thousandSeparator={true}
                     customInput={TextBox}
                     error={!!error?.message}
@@ -201,8 +231,8 @@ export const AddPriceForm = (props) => {
             />
 
             <Tooltip
-              title={`مبلغ تعرفه اصلی : ${NumberFormat.separateNum(
-                calcPrice.actual_professinal_technical_cost,
+              title={`${t('EvaPriceProfessinalThechnicalCost')}: ${NumberFormat.separateNum(
+                calcPrice.actual_professinal_technical_cost as number,
               )}`}
             >
               <Box width={1}>
@@ -213,7 +243,7 @@ export const AddPriceForm = (props) => {
                     <>
                       <NumericFormat
                         name={name}
-                        value={NumberFormat.separateNum(value)}
+                        value={NumberFormat.separateNum(value as number)}
                         onChange={(e) => {
                           onChange(e.target.value.split(',').join(''));
                           setValue('amount', calcAmount(getValues()), {
@@ -221,7 +251,7 @@ export const AddPriceForm = (props) => {
                           });
                         }}
                         fullWidth
-                        label='مبلغ تعرفه'
+                        label={t('EvaProfessinalThechnicalCost')}
                         thousandSeparator={true}
                         customInput={TextBox}
                         disabled={
@@ -248,7 +278,7 @@ export const AddPriceForm = (props) => {
                     value={value}
                     onChange={onChange}
                     fullWidth
-                    label='مبلغ بیهوشی'
+                    label={t('EvaAnsethesiaPerofessinalCost')}
                     thousandSeparator={true}
                     customInput={TextBox}
                     disabled={calcPrice.is_calculatetable}
@@ -258,7 +288,7 @@ export const AddPriceForm = (props) => {
             />
             <TextBox.Form
               name='ansethesia_percent'
-              label='درصد بیهوشی'
+              label={t('EvaAnsethesiaPercent')}
               control={control}
               onChange={() => {
                 setValue('amount', calcAmount(getValues()), {
@@ -272,7 +302,7 @@ export const AddPriceForm = (props) => {
           <Stack direction='row' spacing={2} width={1}>
             <TextBox.Form
               name='franchise'
-              label='فرانشیز'
+              label={t('EvaFranchise')}
               control={control}
               onChange={() => {
                 setValue('amount', calcAmount(getValues()), {
@@ -294,7 +324,7 @@ export const AddPriceForm = (props) => {
                     value={value}
                     onChange={onChange}
                     fullWidth
-                    label='مبلغ پرداختی'
+                    label={t('EvaAmountCost')}
                     thousandSeparator={true}
                     customInput={TextBox}
                     error={!!error?.message}
@@ -311,38 +341,38 @@ export const AddPriceForm = (props) => {
           spacing={2}
         >
           <Stack direction='row' justifyContent='center' spacing={2}>
-            <LoadingButton
+            <Button.Loading
               variant='contained'
               type='submit'
-              loadingPosition='start'
               startIcon={<MdAdd />}
               loading={isAddingAdjustment}
               disabled={isAddingAdjustment}
-              sx={{ width: { zero: 1, lgTablet: 178 }, height: 56 }}
+              sx={{
+                width: { zero: 1, lgTablet: 178 },
+                //  height: 56
+              }}
             >
-              افزودن
-            </LoadingButton>
+              {t('EvaAdd')}
+            </Button.Loading>
             <AddComments control={control} setValue={setValue} />
           </Stack>
           <Stack direction='row' justifyContent='center' spacing={2}>
-            {/* <Controller
-              name="deduction"
+            <Controller
+              name='deduction'
               control={control}
               render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                 <Box sx={{ width: { zero: 1, lgTablet: 178 } }}>
                   <NumericFormat
                     name={name}
                     value={value}
-                    onChange={
-                      (e) => {
-                        onChange(e.target.value)
-                        setValue("amount", calcAmount(getValues()), {
-                          shouldDirty: true,
-                        });
-                      }
-                    }
+                    onChange={(e) => {
+                      onChange(e.target.value);
+                      setValue('amount', calcAmount(getValues()), {
+                        shouldDirty: true,
+                      });
+                    }}
                     fullWidth
-                    label="کسورات"
+                    label={t('EvaDeduction')}
                     thousandSeparator={true}
                     customInput={TextBox}
                     error={!!error?.message}
@@ -350,16 +380,17 @@ export const AddPriceForm = (props) => {
                   />
                 </Box>
               )}
-            /> */}
-            {expense.expense_type.name === 'دندانپزشکی' && (
+            />
+            {expense.expense_type?.name === t('EvaDental') && (
               <Box sx={{ width: { zero: 1, lgTablet: 178 } }}>
                 <Select.Form
                   name='tooth_number'
                   control={control}
-                  label='شماره دندان'
+                  label={t('EvaToothNumber')}
                   isLoading={isToothNumberLoading}
                   defaultSelect={{ label: '', value: '' }}
                   options={convertToothProperty(toothNumberData ?? {})}
+                  rules={{ required: { value: true, message: t('EvaEnterToothNumber') } }}
                 />
               </Box>
             )}

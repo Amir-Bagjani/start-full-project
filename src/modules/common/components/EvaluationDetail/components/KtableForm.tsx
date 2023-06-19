@@ -1,30 +1,57 @@
-import { Box, Stack, Alert, Tooltip, IconButton, CircularProgress } from '@mui/material';
+import {
+  Box,
+  Stack,
+  Alert,
+  Tooltip,
+  IconButton,
+  CircularProgress,
+  SelectChangeEvent,
+} from '@mui/material';
+import { t } from 'i18next';
 import { toast } from 'react-hot-toast';
-import { useForm, useWatch } from 'react-hook-form';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 
 //components
-import { debounce } from '../utils';
 import { MdClose } from 'react-icons/md';
-import { useModal, useTablePeriodAPI } from 'hooks';
-import { usePsotCalcExpensePriceAPI } from '../hooks';
-import { Select, TextBox, Autocomplete } from 'components/shared';
+import { Autocomplete, Select, TextBox } from 'modules/common/components';
 import { useEvaluationAdjustmentContext } from '../context/EvaluationContext';
 
-const ServerErrorsObj = {
-  "This Ktable is not in insured's contract": 'ضریب انتخاب شده در قرارداد بیمه شده نمی باشد',
-  'KTable not found': 'ضریب یافت نشد',
-  'CostCenterType not found': 'نوع مرکز هزینه یافت نشد',
-  'Insured not found': 'بیمه شده یافت نشد',
-  // "Related Approved Cost Price not found": "هزینه مصوب یافت نشد",
-  'ContractFranchise not found': 'فرانشیز قرارداد یافت نشد',
+//utils
+import { usePsotCalcExpensePriceAPI } from '../hooks';
+import { useDebounce, useModal, useTablePeriodAPI } from 'modules/common/hooks';
+
+//types
+import { CalcPriceType } from './EvaluationForm';
+import { CalcExpensePriceResponse } from 'services/models';
+
+type KtableFormProps = {
+  setCalcPrice: (e: CalcPriceType | undefined) => void;
+  hasExpenseType: boolean;
+  resetForm: boolean;
+};
+
+type KtableSearchValues = {
+  name: string;
+  has_base_insurance: number;
+  k: string | number;
+  number_of_sessions: number | string;
+};
+
+const ServerErrorsObj: Record<string, string> = {
+  "This Ktable is not in insured's contract": t('EvaKtableIsNotInInsuredsContract'),
+  'KTable not found': t('EvaKtableNotFound'),
+  'CostCenterType not found': t('EvaCostCenterTypeNotFound'),
+  'Insured not found': t('EvaInsuredNotFound'),
+  // "Related Approved Cost Price not found": t("EvaRelatedAppronedcostPricenotFound"),
+  'ContractFranchise not found': t('EvaContractFranchiseNotFound'),
 };
 
 const options = [
   { label: 'ندارد', value: 0 },
   { label: 'دارد', value: 1 },
 ];
-const ktableDefaultValues = {
+const ktableDefaultValues: KtableSearchValues = {
   name: '',
   has_base_insurance: 0,
   k: '',
@@ -41,7 +68,7 @@ const addPriceDefaultValues = {
   amount: '',
 };
 
-export const KtableForm = (props) => {
+export const KtableForm = (props: KtableFormProps) => {
   const {
     resetForm,
     setCalcPrice,
@@ -50,26 +77,28 @@ export const KtableForm = (props) => {
 
   const { mobileUI, expenseId, insuredId, disableAutoFocus } = useEvaluationAdjustmentContext();
 
-  const [expenseTypeError, setExpenseTypeError] = useState(null);
-  const [searchServerError, setSearchServerError] = useState(null);
+  const [expenseTypeError, setExpenseTypeError] = useState<string | null>(null);
+  const [searchServerError, setSearchServerError] = useState<string | null>(null);
 
   const [search, setSearch] = useState(true);
 
   const { isOpen, onOpen, onClose } = useModal(true);
 
-  const autocompleteRef = useRef(null);
+  // const autocompleteRef = useRef(null);
 
   const {
     handleSubmit: ktableHandleSubmit,
     control: ktableControl,
     reset,
-  } = useForm({
+  } = useForm<KtableSearchValues>({
     defaultValues: ktableDefaultValues,
   });
   const [name, has_base_insurance, k, number_of_sessions] = useWatch({
     name: ['name', 'has_base_insurance', 'k', 'number_of_sessions'],
     control: ktableControl,
   });
+
+  const searchValue = useDebounce(name, 800); //debounce for k-table search
 
   const {
     data: ktable,
@@ -94,7 +123,7 @@ export const KtableForm = (props) => {
   }, [setCalcPrice]);
 
   const onError = useCallback(
-    (e) => {
+    (e: any) => {
       if (e.error === `Related Approved Cost Price not found`) {
         setCalcPrice({
           ...addPriceDefaultValues,
@@ -106,7 +135,7 @@ export const KtableForm = (props) => {
           ktable: k,
           number_of_sessions,
         });
-        toast.error('هزینه مصوب یافت نشد');
+        toast.error(t('EvaRelatedAppronedcostPricenotFound'));
       } else {
         setSearchServerError(ServerErrorsObj[e.error]);
         clearPrice();
@@ -116,13 +145,13 @@ export const KtableForm = (props) => {
   );
 
   const onSuccess = useCallback(
-    (data) => {
+    (data: CalcExpensePriceResponse) => {
       setCalcPrice({
         ...data,
         has_base_insurance,
         ktable: k,
         number_of_sessions: Number(number_of_sessions),
-        // deduction: 0,
+        deduction: 0,
       });
     },
     [has_base_insurance, k, number_of_sessions, setCalcPrice],
@@ -130,7 +159,7 @@ export const KtableForm = (props) => {
 
   const onMutate = useCallback(() => {
     setSearchServerError(null);
-    setCalcPrice(null);
+    setCalcPrice(undefined);
   }, [setCalcPrice]);
 
   const { mutate: calcExpensePrice, isLoading: isCalcExpensePriceLoading } =
@@ -149,17 +178,17 @@ export const KtableForm = (props) => {
         setSearch(false);
       }
     } else {
-      setExpenseTypeError('لطفا نوع هزینه و نوع مرکز هزینه را وارد نمایید');
+      setExpenseTypeError(t('EvaHighlightCostCenterTypeAndExpenseType'));
     }
   }, [name?.length, search, hasExpenseType, refetchKtable]);
 
-  const ktableChangeOnSubmit = useCallback(
+  const ktableChangeOnSubmit: SubmitHandler<KtableSearchValues> = useCallback(
     (data) => {
       const { k, has_base_insurance, number_of_sessions } = data;
       if (!!k) {
         calcExpensePrice({
           k,
-          expense: expenseId,
+          expense: expenseId as number,
           has_base_insurance,
           number_of_sessions: Number(number_of_sessions),
         });
@@ -186,9 +215,13 @@ export const KtableForm = (props) => {
     }
   }, [resetForm, resetWholeForm]);
 
+  // useEffect(() => {
+  //   if (!disableAutoFocus) autocompleteRef.current?.focus();
+  // }, [disableAutoFocus]);
+
   useEffect(() => {
-    if (!disableAutoFocus) autocompleteRef.current?.focus();
-  }, [disableAutoFocus]);
+    if (!!searchValue) ktableSearchOnSubmit();
+  }, [ktableSearchOnSubmit, searchValue]);
 
   return (
     <>
@@ -205,7 +238,7 @@ export const KtableForm = (props) => {
         {!search && (
           <Stack direction='row' spacing={1} alignItems='center' sx={{ width: '100%' }}>
             <Box sx={{ width: 'max-content' }}>
-              <Tooltip title={isCalcExpensePriceLoading ? '' : 'جستجو جدید'}>
+              <Tooltip title={isCalcExpensePriceLoading ? '' : t('EvaNewSearch')}>
                 <IconButton
                   disabled={isCalcExpensePriceLoading}
                   onClick={resetWholeForm}
@@ -220,17 +253,19 @@ export const KtableForm = (props) => {
                 <CircularProgress size={20} color='primary' />
               </Stack>
             )}
-            {!isKtableLoading && ktable?.count > 0 && (
+            {!isKtableLoading && ktable && ktable.count > 0 && (
               <Autocomplete.Form
-                label='کد ملی / نام ضریب جدول K'
+                label={t('EvaNationnalKCode') as string}
                 name='k'
                 // ref={autocompleteRef}
                 // shouldFocus={!disableAutoFocus}
                 control={ktableControl}
-                options={ktable?.results?.map((i) => ({
-                  label: i.code_description,
-                  value: i.id,
-                }))}
+                options={
+                  ktable?.results?.map((i) => ({
+                    label: i.code_description,
+                    value: i.id,
+                  })) ?? []
+                }
                 open={isOpen}
                 onOpen={onOpen}
                 onClose={onClose}
@@ -239,7 +274,7 @@ export const KtableForm = (props) => {
                   return ktableHandleSubmit(ktableChangeOnSubmit)(e);
                 }}
                 rules={{
-                  required: { value: true, message: 'ارزش نسبی را وارد کنید' },
+                  required: { value: true, message: t('EvaEnterKtable') },
                 }}
                 freeSolo
                 disableClearable
@@ -247,40 +282,35 @@ export const KtableForm = (props) => {
               />
             )}
             {!isKtableLoading && ktable?.count === 0 && (
-              <TextBox disabled fullWidth value='موردی یافت نشد دوباره جستجو کنید' />
+              <TextBox disabled fullWidth value={t('Eva404SearchAgain')} />
             )}
           </Stack>
         )}
         {search && (
           <TextBox.Form
             name='name'
-            label='کد ملی / نام ضریب جدول K'
+            label={t('EvaNationnalKCode')}
             control={ktableControl}
             fullWidth
             defaultValue='500'
             shouldFocus={!disableAutoFocus}
-            onChange={debounce((e) => {
-              ktableHandleSubmit(ktableSearchOnSubmit)(e);
-            }, 500)}
           />
         )}
         <Select.Form
           control={ktableControl}
           name='has_base_insurance'
-          label='بیمه پایه'
-          onChange={(e) => {
+          label={t('EvaBaseInsurance')}
+          onChange={(e: SelectChangeEvent<unknown>) => {
             e.stopPropagation();
-            return ktableHandleSubmit(ktableChangeOnSubmit)(e);
+            return ktableHandleSubmit(ktableChangeOnSubmit)(e as any);
           }}
           defaultValue={0}
           options={options}
-          formControlProps={{
-            disabled: isCalcExpensePriceLoading,
-          }}
+          disabled={isCalcExpensePriceLoading} //formcontrol
         />
         <TextBox.Form
           name='number_of_sessions'
-          label='تعداد جلسه'
+          label={t('EvaNumberSession')}
           control={ktableControl}
           onChange={(e) => {
             e.stopPropagation();
@@ -288,9 +318,9 @@ export const KtableForm = (props) => {
           }}
           type='number'
           rules={{
-            required: { value: true, message: 'اجباری' },
-            max: { value: 100, message: 'بیشتر از صد' },
-            min: { value: 1, message: 'کمتر از یک' },
+            required: { value: true, message: t('EvaRequired') },
+            max: { value: 100, message: t('EvaOver100') },
+            min: { value: 1, message: t('EvaLessThan1') },
           }}
         />
 

@@ -10,6 +10,21 @@ export type DeleteEvaluationAdjustmentParams = {
   id: number;
 };
 
+export type AddEvaluationAdjustmentResponse = EvaluationDetailType;
+
+export type AddEvaluationAdjustmentParams = {
+  amount: string | number;
+  franchise: string | number;
+  expense: string | number;
+  ktable: string | number;
+  expense_amount: string | number;
+  number_of_sessions: string | number;
+  deduction: string | number;
+  has_base_insurance: number;
+  comments: string;
+  tooth_number: string;
+};
+
 export type EvaluationDetailType = {
   id: number;
   ktable: KtableType;

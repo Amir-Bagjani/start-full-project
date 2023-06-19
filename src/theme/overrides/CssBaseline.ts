@@ -10,6 +10,24 @@ export default function CssBaseline(theme: Theme) {
           padding: 0,
           boxSizing: 'border-box',
           fontFamily: 'IRANSans, Courier, monospace',
+          scrollbarColor: `${
+            theme.palette.mode === 'light' ? theme.palette.grey[500] : theme.palette.grey[700]
+          } ${theme.palette.mode === 'light' ? theme.palette.grey[300] : theme.palette.grey[500]}`,
+          scrollbarWidth: 'thin',
+          '&::-webkit-scrollbar': {
+            width: '0.5rem',
+            height: '0.5rem',
+          },
+          '&::-webkit-scrollbar-track': {
+            background:
+              theme.palette.mode === 'light' ? theme.palette.grey[300] : theme.palette.grey[500],
+            borderRadius: '24px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background:
+              theme.palette.mode === 'light' ? theme.palette.grey[500] : theme.palette.grey[700],
+            borderRadius: '5px',
+          },
         },
         html: {
           width: '100%',

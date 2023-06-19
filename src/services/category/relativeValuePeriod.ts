@@ -1,7 +1,9 @@
 import { AxiosHandler } from 'services/utils';
 
+import { convertValuesToString } from 'utils/helper';
+
 import { APIError } from 'models/APImodels';
-import { TopicTypeResponse } from 'services/models';
+import { KtableParams, KtableResponse, TopicTypeResponse } from 'services/models';
 
 class RelativeValuePeriod {
   getTopics = async (config: {}) => {
@@ -42,7 +44,7 @@ class RelativeValuePeriod {
     return await AxiosHandler.delete(`/darman/expense/ktable/${params.id}`);
   };
 
-  getTablePeriod = async (params: any) => {
+  getTablePeriod = async (params: KtableParams) => {
     const { kperiod, page = 1, filter } = params;
     const { name, topic, insured, loadonlyenabledktables } = filter;
 
@@ -55,9 +57,11 @@ class RelativeValuePeriod {
       page,
     };
 
-    const new_params = new URLSearchParams(add_params).toString();
+    const new_params = convertValuesToString(add_params);
 
-    return await AxiosHandler.get(`/darman/expense/ktable/?${new_params}`);
+    return await AxiosHandler.get<KtableResponse, APIError>(
+      `/darman/expense/ktable/?${new_params}`,
+    );
   };
 }
 

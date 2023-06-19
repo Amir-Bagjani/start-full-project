@@ -1,4 +1,4 @@
-import { object, number, string, lazy } from 'yup';
+import { object, number, string } from 'yup';
 
 export const expenseAdjustmentValidation = object({
   amount: string().required('مبلغ پرداختی را وارد کنید').min(0, 'حداقل صفر'),
