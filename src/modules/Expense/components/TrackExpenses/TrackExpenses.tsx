@@ -12,7 +12,7 @@ import {
 import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useCallback, useMemo, useState } from 'react';
 
 //components
 import {
@@ -25,10 +25,12 @@ import {
   ADJUSTER_R,
   REGISTRAR_R,
   SUPERADJUSTER_R,
+  TRUSTEDDOCTOR_R,
+  RECEIPTIONICT_R,
 } from 'utils/constants';
 import {
-  CustomTableColumn,
   NewDataGridTable,
+  CustomTableColumn,
   ReturnGenerateTools,
 } from 'modules/common/components';
 import { MdAdd } from 'react-icons/md';
@@ -139,9 +141,9 @@ export const TrackExpenses = () => {
     },
   );
 
-  useEffect(() => {
-    return () => setPage(1);
-  }, [setPage]);
+  // useEffect(() => {
+  //   return () => setPage(1);
+  // }, [setPage]);
 
   const ids = useMemo(() => expensesData?.results.map((i) => i.id) ?? [], [expensesData?.results]);
 
@@ -159,7 +161,7 @@ export const TrackExpenses = () => {
   const numberCol: CustomTableColumn<ExpenseType>[] = useMemo(
     () => [
       {
-        field: 'checkbox-selection',
+        field: 'number5',
         headerName: (
           <Checkbox
             defaultValue={undefined}
@@ -171,7 +173,7 @@ export const TrackExpenses = () => {
         ),
         width: 60,
         hide: includedRole([ADMIN_R, COUNTER_R]) ? false : true,
-        renderCell: (params: ReturnGenerateTools<ExpenseType>) => (
+        renderCell: (params) => (
           <Checkbox
             defaultValue={undefined}
             onChange={(e) => handleIdChange(e, params.row.id)}
@@ -181,9 +183,9 @@ export const TrackExpenses = () => {
       },
       {
         field: 'number',
-        headerName: 'ردیف',
+        headerName: t('ExNumber'),
         width: 45,
-        renderCell: (params: ReturnGenerateTools<ExpenseType>) => {
+        renderCell: (params) => {
           const number =
             params.api.getRowIndex(params.row.id) + 1 + (page > 1 ? (page - 1) * 30 : 0);
           return (
@@ -194,22 +196,29 @@ export const TrackExpenses = () => {
         },
       },
     ],
-    [expensesData?.results?.length, handleIdChange, includedRole, page, printIds, wholeIdsPrint],
+    [expensesData?.results?.length, handleIdChange, includedRole, page, printIds, t, wholeIdsPrint],
   );
 
   const actionCol: CustomTableColumn<ExpenseType>[] = useMemo(
     () => [
       {
-        field: 'action',
-        headerName: 'مدیریت',
         hide: false,
-        width: 190,
+        field: 'action',
+        headerName: t('ExComments'),
+        width: 250,
         renderCell: (params: ReturnGenerateTools<ExpenseType>) => (
-          <TrackExpensesActions printIds={printIds} data={params.row} />
+          <Stack spacing={0}>
+            <Tooltip title={params.row.description || ''}>
+              <Typography noWrap fontSize={14}>
+                {params.row?.description?.trim() || '-'}
+              </Typography>
+            </Tooltip>
+            <TrackExpensesActions printIds={printIds} data={params.row} />
+          </Stack>
         ),
       },
     ],
-    [printIds],
+    [printIds, t],
   );
 
   useMemo(() => {
@@ -228,6 +237,10 @@ export const TrackExpenses = () => {
     //only superadjuster, adjuster, coubter and reporter can see date column
     if (includedRole([ADJUSTER_R, SUPERADJUSTER_R, REPORTER_R, COUNTER_R])) {
       columns.find((i) => i.field === 'date')!.hide = false;
+    }
+    //only admin can see transfer column
+    if (includedRole([ADMIN_R])) {
+      columns.find((i) => i.field === 'transfer')!.hide = false;
     }
     //only admin , editor, insured and counter can see expense_status column
     if (includedRole([INSURED_R, ADMIN_R, EDITOR_R, COUNTER_R])) {
@@ -290,13 +303,22 @@ export const TrackExpenses = () => {
           rows={expensesData?.results ?? []}
           columns={numberCol.concat(columns).concat(actionCol)}
           dataGridProps={{
-            ...(expensesData?.results.length === PageSize && { height: 800 }),
+            // ...(expensesData?.results.length === PageSize && { height: 800 }),
             stickyHeader: true,
             checkboxSelection: false,
             onRowDoubleClick: (params) => {
-              navigate(`/expense/${params.row.id}`);
+              if (includedRole([ADJUSTER_R, SUPERADJUSTER_R, TRUSTEDDOCTOR_R, RECEIPTIONICT_R]))
+                navigate(`/expense/detail`, {
+                  state: { expenseId: params.row.id },
+                  // replace: true,
+                });
+              else navigate(`/expense/${params.row.id}`);
             },
           }}
+          //   onRowDoubleClick: (params) => {
+          //     navigate(`/expense/${params.row.id}`);
+          //   },
+          // }}
           paginatable={!isExpensesloading && (expensesData?.count ?? 0) > PageSize}
           paginationProps={{
             currentPage: page,

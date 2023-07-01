@@ -32,7 +32,7 @@ export type ExpenseType = {
   physical_has_received: boolean;
   delivery_address: string | null;
   contract: number;
-  transfer: number | null;
+  transfer: { id: number; title: string } | null;
 };
 
 export type ExpenseTypeResponse = {
