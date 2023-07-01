@@ -7,6 +7,7 @@ export type EvaluationContextType = {
   expense: ExpenseType;
   expenseId?: number;
   mobileUI?: boolean;
+  pageView?: boolean;
   updateExpenses?: () => void;
   insuredId?: number;
   disableAutoFocus?: boolean;

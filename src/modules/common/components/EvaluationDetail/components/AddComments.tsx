@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { useFormState } from 'react-hook-form';
 import { blueGrey } from '@mui/material/colors';
-import { Control, UseFormSetValue } from 'react-hook-form';
 
 //components
 import { BiCommentAdd } from 'react-icons/bi';
@@ -13,14 +13,19 @@ import { useModal, useSampleDescriptionAPI } from 'modules/common/hooks';
 
 //types
 import type { AddPriceValuesType } from './AddPriceForm';
+import { useEvaluationAdjustmentContext } from '../context/EvaluationContext';
+import type { Control, UseFormSetError, UseFormSetValue } from 'react-hook-form';
 
 type AddCommentsProps = {
   control: Control<AddPriceValuesType, any>;
   setValue: UseFormSetValue<AddPriceValuesType>;
+  setError: UseFormSetError<AddPriceValuesType>;
 };
 
 export const AddComments = ({ control, setValue }: AddCommentsProps) => {
   const { isOpen, onClose, onOpen } = useModal();
+
+  const { mobileUI } = useEvaluationAdjustmentContext();
 
   const { t } = useTranslation();
 
@@ -38,6 +43,13 @@ export const AddComments = ({ control, setValue }: AddCommentsProps) => {
     },
   );
 
+  const {
+    errors: { comments },
+  } = useFormState({
+    control,
+    name: 'comments',
+  });
+
   return (
     <>
       <Button
@@ -45,11 +57,11 @@ export const AddComments = ({ control, setValue }: AddCommentsProps) => {
         startIcon={<BiCommentAdd />}
         onClick={onOpen}
         sx={{
-          width: { zero: 1, lgTablet: 178 },
-          color: blueGrey[200],
-          borderColor: blueGrey[200],
-          // height: 56,
-          '&:hover': { borderColor: blueGrey[200] },
+          height: 40,
+          width: mobileUI ? 1 : { zero: 1, lgTablet: 178 },
+          color: !!comments ? 'error.main' : blueGrey[200],
+          borderColor: !!comments ? 'error.main' : blueGrey[200],
+          '&:hover': { borderColor: !!comments ? 'error.main' : blueGrey[200] },
         }}
       >
         {t('EvaComments')}
@@ -69,7 +81,7 @@ export const AddComments = ({ control, setValue }: AddCommentsProps) => {
               control={control}
               label={t('EvaComments')}
               isLoading={isInitialLoading}
-              defaultSelect={{ label: '', value: '' }}
+              defaultSelect={{ label: t('EvaNoOne'), value: '' }}
               options={
                 sampleDescriptions?.map((i) => ({
                   label: i.description,

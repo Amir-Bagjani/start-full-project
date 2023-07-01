@@ -30,7 +30,7 @@ export const evaluationExpenseLocale = {
   EvaContractFranchiseNotFound: 'فرانشیز قرارداد یافت نشد',
   EvaRelatedAppronedcostPricenotFound: 'هزینه مصوب یافت نشد',
   EvaHighlightCostCenterTypeAndExpenseType: 'لطفا نوع هزینه و نوع مرکز هزینه را وارد نمایید',
-  EvaNumberSession: 'تعداد جلسه',
+  EvaNumberSession: 'تعداد جلسه / تزریق',
   EvaRequired: 'اجباری',
   EvaOver100: 'بیشتر از صد',
   EvaLessThan1: 'کمتر از یک',
@@ -51,4 +51,9 @@ export const evaluationExpenseLocale = {
   EvaAdjustmentDoneSuccssesfuly: 'کارشناسی هزینه با موفقیت انجام شد.',
   EvaEnterToothNumber: ' شماره دندادن را وارد کنید',
   EvaMoreComments: 'توضیحات بیشتر',
+  EvaNoOne: 'هیچ کدام',
+  EvaDiffrenceAmount: 'مابه التفاوت بیمه پایه',
+  EvaRight: 'راست',
+  EvaCancel: 'انصراف',
+  EvaBaseInsuranceAmount: 'مبلغ بیمه پایه',
 };

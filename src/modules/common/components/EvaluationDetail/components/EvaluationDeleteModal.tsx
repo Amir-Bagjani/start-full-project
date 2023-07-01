@@ -91,9 +91,6 @@ const DeleteModal = ({ handleClose, data }: DeleteModalProps) => {
       </Typography>
 
       <Stack direction='row' spacing={3} justifyContent='center'>
-        <Button variant='outlined' onClick={handleClose} sx={{ width: 100 }}>
-          {t('EvaBack')}
-        </Button>
         <Button.Loading
           variant='outlined'
           sx={{ width: 100 }}
@@ -104,6 +101,9 @@ const DeleteModal = ({ handleClose, data }: DeleteModalProps) => {
         >
           {t('EvaRemove')}
         </Button.Loading>
+        <Button variant='outlined' onClick={handleClose} sx={{ width: 100 }}>
+          {t('EvaBack')}
+        </Button>
       </Stack>
     </Stack>
   );

@@ -2,6 +2,17 @@ import { object, number, string } from 'yup';
 
 export const expenseAdjustmentValidation = object({
   amount: string().required('مبلغ پرداختی را وارد کنید').min(0, 'حداقل صفر'),
+  difference_amount: number().notRequired().nullable(),
+  baseinsurance_amount: number().nullable(),
+  expense_amount: number()
+    .typeError('مبلغ اعلامی را وارد نمایید')
+    .required('مبلغ اعلامی را وارد نمایید'),
+  deduction: string(),
+  comments: string().when(['deduction'], {
+    is: (deduction: number) => deduction == 0,
+    then: string().notRequired(),
+    otherwise: string().required('علت کسورات را وارد کنید'),
+  } as any),
   franchise: number()
     .typeError('فرانشیز را وارد کنید')
     .required('فرانشیز را وارد کنید')
@@ -20,7 +31,4 @@ export const expenseAdjustmentValidation = object({
     .typeError('مبلغ بیهوشی را وارد کنید')
     .required('مبلغ بیهوشی را وارد کنید')
     .min(0, 'حداقل صفر'),
-  // deduction: lazy(value => value.includes("-") ? ),
-  // .typeError("جلسه را وارد کنید")
-  // .min(0, "کسورات کمتر از صفر نمیتواند باشد")
 });

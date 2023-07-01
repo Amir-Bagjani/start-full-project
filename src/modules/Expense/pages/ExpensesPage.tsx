@@ -21,9 +21,9 @@ import {
   TRUSTEDDOCTOR_R,
   RECEIPTIONICT_R,
 } from 'utils/constants';
-import { useBrowserstorageState } from 'modules/common/hooks';
-import { Suspense, lazy, useDeferredValue } from 'react';
+import { Suspense, useDeferredValue } from 'react';
 import { TrackExpenses } from '../components/TrackExpenses';
+import { useBrowserstorageState } from 'modules/common/hooks';
 
 const tabsOption = [
   {

@@ -9,7 +9,8 @@ import {
 } from '@mui/material';
 import { t } from 'i18next';
 import { toast } from 'react-hot-toast';
-import { useCallback, useEffect, useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 
 //components
@@ -19,7 +20,7 @@ import { useEvaluationAdjustmentContext } from '../context/EvaluationContext';
 
 //utils
 import { usePsotCalcExpensePriceAPI } from '../hooks';
-import { useDebounce, useModal, useTablePeriodAPI } from 'modules/common/hooks';
+import { useModal, useTablePeriodAPI } from 'modules/common/hooks';
 
 //types
 import { CalcPriceType } from './EvaluationForm';
@@ -75,7 +76,10 @@ export const KtableForm = (props: KtableFormProps) => {
     hasExpenseType, //backend will set it to default value, so it must remove
   } = props;
 
-  const { mobileUI, expenseId, insuredId, disableAutoFocus } = useEvaluationAdjustmentContext();
+  const [abortFetch, setAbortFetch] = useState(false);
+
+  const { mobileUI, expenseId, insuredId, disableAutoFocus, pageView } =
+    useEvaluationAdjustmentContext();
 
   const [expenseTypeError, setExpenseTypeError] = useState<string | null>(null);
   const [searchServerError, setSearchServerError] = useState<string | null>(null);
@@ -98,7 +102,7 @@ export const KtableForm = (props: KtableFormProps) => {
     control: ktableControl,
   });
 
-  const searchValue = useDebounce(name, 800); //debounce for k-table search
+  // const searchValue = useDebounce(name, 800); //debounce for k-table search
 
   const {
     data: ktable,
@@ -151,7 +155,11 @@ export const KtableForm = (props: KtableFormProps) => {
         has_base_insurance,
         ktable: k,
         number_of_sessions: Number(number_of_sessions),
+
+        //it used for next step form
         deduction: 0,
+        baseinsurance_amount: 0,
+        difference_amount: 0,
       });
     },
     [has_base_insurance, k, number_of_sessions, setCalcPrice],
@@ -219,9 +227,14 @@ export const KtableForm = (props: KtableFormProps) => {
   //   if (!disableAutoFocus) autocompleteRef.current?.focus();
   // }, [disableAutoFocus]);
 
-  useEffect(() => {
-    if (!!searchValue) ktableSearchOnSubmit();
-  }, [ktableSearchOnSubmit, searchValue]);
+  const debounced = useDebouncedCallback(
+    //search k-table with debounce
+    () => {
+      ktableSearchOnSubmit();
+    },
+    // delay in ms
+    2200,
+  );
 
   return (
     <>
@@ -273,6 +286,9 @@ export const KtableForm = (props: KtableFormProps) => {
                   e.stopPropagation();
                   return ktableHandleSubmit(ktableChangeOnSubmit)(e);
                 }}
+                onKeyUp={(e: any) => {
+                  if (e.key === 'Backspace' && e.target.value === '') resetWholeForm();
+                }}
                 rules={{
                   required: { value: true, message: t('EvaEnterKtable') },
                 }}
@@ -293,7 +309,8 @@ export const KtableForm = (props: KtableFormProps) => {
             control={ktableControl}
             fullWidth
             defaultValue='500'
-            shouldFocus={!disableAutoFocus}
+            onChange={debounced}
+            shouldFocus={pageView ? false : !disableAutoFocus}
           />
         )}
         <Select.Form

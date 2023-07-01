@@ -14,7 +14,7 @@ export const TABLE_PERIOD = 'TABLE_PERIOD';
 export const useTablePeriodAPI = (params: Params, options: Options = {}) => {
   return useQuery<Data, APIError>({
     queryKey: [TABLE_PERIOD, params],
-    queryFn: () => APIs.relativeValuePeriod.getTablePeriod(params),
+    queryFn: ({ signal }) => APIs.relativeValuePeriod.getTablePeriod(params, signal),
     ...options,
   });
 };

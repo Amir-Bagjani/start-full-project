@@ -14,13 +14,15 @@ import { Button, Select, TextBox } from 'modules/common/components';
 
 //utils
 import {
-  useToothNumbersAPI,
-  EVALUATION_ADJUST_LIST,
-  usePostEvaluationAdjustmentAPI,
-} from '../hooks';
+  calcAmount,
+  convertToothProperty,
+  extraCheckOnAdjustment,
+  expenseAdjustmentValidation,
+} from '../utils';
+import { SelectTooth } from './SelectTooth';
 import { NumberFormat } from 'utils/helper';
 import { useEvaluationAdjustmentContext } from '../context/EvaluationContext';
-import { calcAmount, convertToothProperty, expenseAdjustmentValidation } from '../utils';
+import { EVALUATION_ADJUST_LIST, usePostEvaluationAdjustmentAPI } from '../hooks';
 
 //types
 import { CalcPriceType } from './EvaluationForm';
@@ -47,6 +49,8 @@ export type AddPriceValuesType = {
   number_of_sessions?: string | number;
   deduction?: string | number;
   total_amount?: string | number;
+  baseinsurance_amount?: number;
+  difference_amount?: number;
 };
 
 const addPriceDefaultValues: AddPriceValuesType = {
@@ -56,7 +60,9 @@ const addPriceDefaultValues: AddPriceValuesType = {
   franchise: '',
   professinal_technical_cost: '',
   tooth_number: '',
-  // deduction: "",
+  // baseinsurance_amount: 0,//comes from form step 1 and default is 0
+  // difference_amount: 0,//comes from form step 1 and default is 0
+  // deduction: 0,//comes from form step 1 and default is 0
 
   ansethesia_percent: '',
   amount: '',
@@ -66,8 +72,6 @@ const addPriceDefaultValues: AddPriceValuesType = {
 const onError = (err: any) => {
   toast.error(err.error);
 };
-
-const options = { staleTime: 1 * 1000 * 60 * 60 };
 
 export const AddPriceForm = (props: AddPriceFormProps) => {
   const { calcPrice, setResetForm, setCalcPrice } = props;
@@ -81,22 +85,17 @@ export const AddPriceForm = (props: AddPriceFormProps) => {
 
   const amountRef = useRef({} as HTMLInputElement);
 
-  const { handleSubmit, control, reset, setFocus, setValue, getValues, setError } =
+  const { handleSubmit, control, reset, setValue, getValues, setError } =
     useForm<AddPriceValuesType>({
       resolver: yupResolver(expenseAdjustmentValidation),
       defaultValues: addPriceDefaultValues,
     });
 
-  const { data: toothNumberData, isInitialLoading: isToothNumberLoading } = useToothNumbersAPI(
-    {},
-    { enabled: expense.expense_type?.name === t('EvaDental'), ...options },
-  );
-
-  const onSuccessAddAdjustment = useCallback(() => {
+  const onSuccessAddAdjustment = useCallback(async () => {
     setResetForm(true);
     setCalcPrice(undefined); // close form setep 2
     toast.success(t('EvaAdjustmentDoneSuccssesfuly'));
-    queryClient.invalidateQueries([EVALUATION_ADJUST_LIST]);
+    await queryClient.invalidateQueries([EVALUATION_ADJUST_LIST]);
     if (!!updateDataAfterAddAdjustment) updateDataAfterAddAdjustment();
   }, [queryClient, setCalcPrice, setResetForm, t, updateDataAfterAddAdjustment]);
 
@@ -117,49 +116,38 @@ export const AddPriceForm = (props: AddPriceFormProps) => {
         number_of_sessions,
         tooth_number,
         deduction,
+        baseinsurance_amount,
+        difference_amount,
       } = data;
-      const pureAmount = (amount as string).split(',').join('');
 
       const totalExpenseAmount = expense.amount ?? 0;
-      const pureExpenseAmount = Number(String(expense_amount).split(',').join(''));
-      const pureDeduction = Number(String(deduction).split(',').join(''));
 
-      if (pureExpenseAmount > totalExpenseAmount) {
-        setError('expense_amount', {
+      const { hasError, errorDetail } = extraCheckOnAdjustment(data, totalExpenseAmount, expense);
+
+      if (hasError) {
+        setError(errorDetail!.name, {
           type: 'custom',
-          message: 'مبلغ اعلامی نباید بیشتر از مبلغ کل هزینه باشد ',
-        });
-        return;
-      }
-      if (pureExpenseAmount <= 0) {
-        setError('expense_amount', {
-          type: 'custom',
-          message: 'مبلغ اعلامی نباید صفر کمتر از صفر باشد ',
-        });
-        return;
-      }
-      if (pureDeduction < 0) {
-        setError('deduction', {
-          type: 'custom',
-          message: ' کسورات نباید کمتر از صفر باشد ',
+          message: errorDetail!.message,
         });
         return;
       }
 
       addAdjustment({
-        amount: pureAmount,
+        amount,
         franchise,
         has_base_insurance: has_base_insurance as number,
         expense: expenseId as number,
         ktable: ktable as string,
-        expense_amount: pureExpenseAmount,
+        expense_amount: expense_amount as string,
         comments: comments as string,
         number_of_sessions: number_of_sessions as string,
         tooth_number,
-        deduction: pureDeduction,
+        deduction: deduction as number,
+        baseinsurance_amount: baseinsurance_amount as number,
+        difference_amount: difference_amount as number,
       });
     },
-    [addAdjustment, expense.amount, expenseId, setError],
+    [addAdjustment, expense, expenseId, setError],
   );
 
   useEffect(() => {
@@ -173,6 +161,9 @@ export const AddPriceForm = (props: AddPriceFormProps) => {
 
       is_calculatetable,
 
+      baseinsurance_amount,
+      difference_amount,
+
       ...rest
     } = calcPrice;
 
@@ -185,13 +176,16 @@ export const AddPriceForm = (props: AddPriceFormProps) => {
       tooth_number,
       deduction,
 
-      total_amount: expense.amount ?? 0, //helper for expense_amount in expenseAdjustmentValidation
+      // total_amount: expense.amount ?? 0, //helper for expense_amount in expenseAdjustmentValidation
+
+      baseinsurance_amount: baseinsurance_amount as number,
+      difference_amount: difference_amount as number,
 
       expense_amount: expense.amount ?? 0,
 
       ...rest,
     });
-  }, [calcPrice, expense, reset, setFocus]);
+  }, [calcPrice, expense.amount, reset]);
 
   useEffect(() => {
     amountRef.current?.focus();
@@ -210,24 +204,10 @@ export const AddPriceForm = (props: AddPriceFormProps) => {
       >
         <Stack direction={mobileUI ? 'column' : { zero: 'column', lgTablet: 'row' }} spacing={2}>
           <Stack direction='row' spacing={2} width={1}>
-            <Controller
+            <TextBox.NumericForm
               name='expense_amount'
               control={control}
-              render={({ field: { onChange, value, name }, fieldState: { error } }) => (
-                <>
-                  <NumericFormat
-                    name={name}
-                    value={value}
-                    onChange={onChange}
-                    fullWidth
-                    label={t('EvaExpenseAmount')}
-                    thousandSeparator={true}
-                    customInput={TextBox}
-                    error={!!error?.message}
-                    helperText={error?.message}
-                  />
-                </>
-              )}
+              label={t('EvaExpenseAmount')}
             />
 
             <Tooltip
@@ -236,55 +216,31 @@ export const AddPriceForm = (props: AddPriceFormProps) => {
               )}`}
             >
               <Box width={1}>
-                <Controller
+                <TextBox.NumericForm
                   name='professinal_technical_cost'
                   control={control}
-                  render={({ field: { onChange, value, name } }) => (
-                    <>
-                      <NumericFormat
-                        name={name}
-                        value={NumberFormat.separateNum(value as number)}
-                        onChange={(e) => {
-                          onChange(e.target.value.split(',').join(''));
-                          setValue('amount', calcAmount(getValues()), {
-                            shouldDirty: true,
-                          });
-                        }}
-                        fullWidth
-                        label={t('EvaProfessinalThechnicalCost')}
-                        thousandSeparator={true}
-                        customInput={TextBox}
-                        disabled={
-                          //if all files was 0, enable professinal_technical_cost files
-                          calcPrice.actual_professinal_technical_cost === 0
-                            ? false
-                            : calcPrice.is_calculatetable
-                        }
-                      />
-                    </>
-                  )}
+                  label={t('EvaProfessinalThechnicalCost')}
+                  onChange={() => {
+                    setValue('amount', calcAmount(getValues()), {
+                      shouldDirty: true,
+                    });
+                  }}
+                  disabled={
+                    //if all files were 0, enable professinal_technical_cost files
+                    calcPrice.actual_professinal_technical_cost === 0
+                      ? false
+                      : calcPrice.is_calculatetable
+                  }
                 />
               </Box>
             </Tooltip>
           </Stack>
+
           <Stack direction='row' spacing={2} width={1}>
-            <Controller
+            <TextBox.NumericForm
               name='ansethesia_professinal_cost'
               control={control}
-              render={({ field: { onChange, value, name } }) => (
-                <>
-                  <NumericFormat
-                    name={name}
-                    value={value}
-                    onChange={onChange}
-                    fullWidth
-                    label={t('EvaAnsethesiaPerofessinalCost')}
-                    thousandSeparator={true}
-                    customInput={TextBox}
-                    disabled={calcPrice.is_calculatetable}
-                  />
-                </>
-              )}
+              label={t('EvaAnsethesiaPerofessinalCost')}
             />
             <TextBox.Form
               name='ansethesia_percent'
@@ -311,30 +267,18 @@ export const AddPriceForm = (props: AddPriceFormProps) => {
               }}
               type='number'
               fullWidth
+              disabled
             />
 
-            <Controller
+            <TextBox.NumericForm
               name='amount'
+              inputRef={amountRef}
               control={control}
-              render={({ field: { onChange, value, name }, fieldState: { error } }) => (
-                <>
-                  <NumericFormat
-                    getInputRef={amountRef}
-                    name={name}
-                    value={value}
-                    onChange={onChange}
-                    fullWidth
-                    label={t('EvaAmountCost')}
-                    thousandSeparator={true}
-                    customInput={TextBox}
-                    error={!!error?.message}
-                    helperText={error?.message}
-                  />
-                </>
-              )}
+              label={t('EvaAmountCost')}
             />
           </Stack>
         </Stack>
+
         <Stack
           direction={mobileUI ? 'column-reverse' : { zero: 'column-reverse', lgTablet: 'row' }}
           justifyContent='center'
@@ -347,50 +291,55 @@ export const AddPriceForm = (props: AddPriceFormProps) => {
               startIcon={<MdAdd />}
               loading={isAddingAdjustment}
               disabled={isAddingAdjustment}
-              sx={{
-                width: { zero: 1, lgTablet: 178 },
-                //  height: 56
-              }}
+              sx={{ width: mobileUI ? 1 : { zero: 1, lgTablet: 178 }, height: 40 }}
             >
               {t('EvaAdd')}
             </Button.Loading>
-            <AddComments control={control} setValue={setValue} />
+            <AddComments control={control} setValue={setValue} setError={setError} />
           </Stack>
+
           <Stack direction='row' justifyContent='center' spacing={2}>
-            <Controller
-              name='deduction'
-              control={control}
-              render={({ field: { onChange, value, name }, fieldState: { error } }) => (
-                <Box sx={{ width: { zero: 1, lgTablet: 178 } }}>
-                  <NumericFormat
-                    name={name}
-                    value={value}
-                    onChange={(e) => {
-                      onChange(e.target.value);
-                      setValue('amount', calcAmount(getValues()), {
-                        shouldDirty: true,
-                      });
-                    }}
-                    fullWidth
-                    label={t('EvaDeduction')}
-                    thousandSeparator={true}
-                    customInput={TextBox}
-                    error={!!error?.message}
-                    helperText={error?.message}
-                  />
-                </Box>
-              )}
-            />
             {expense.expense_type?.name === t('EvaDental') && (
-              <Box sx={{ width: { zero: 1, lgTablet: 178 } }}>
-                <Select.Form
-                  name='tooth_number'
+              <SelectTooth control={control} setValue={setValue} />
+            )}
+            <Box sx={{ width: mobileUI ? 1 : { zero: 1, lgTablet: 178 } }}>
+              <TextBox.NumericForm
+                name='difference_amount'
+                control={control}
+                label={t('EvaDiffrenceAmount')}
+                onChange={() => {
+                  setValue('amount', calcAmount(getValues()), {
+                    shouldDirty: true,
+                  });
+                }}
+              />
+            </Box>
+          </Stack>
+
+          <Stack direction='row' justifyContent='center' spacing={2}>
+            <Box sx={{ width: mobileUI ? 1 : { zero: 1, lgTablet: 178 } }}>
+              <TextBox.NumericForm
+                name='deduction'
+                control={control}
+                label={t('EvaDeduction')}
+                onChange={() => {
+                  setValue('amount', calcAmount(getValues()), {
+                    shouldDirty: true,
+                  });
+                }}
+              />
+            </Box>
+            {calcPrice.has_base_insurance === 1 && (
+              <Box sx={{ width: mobileUI ? 1 : { zero: 1, lgTablet: 178 } }}>
+                <TextBox.NumericForm
+                  name='baseinsurance_amount'
                   control={control}
-                  label={t('EvaToothNumber')}
-                  isLoading={isToothNumberLoading}
-                  defaultSelect={{ label: '', value: '' }}
-                  options={convertToothProperty(toothNumberData ?? {})}
-                  rules={{ required: { value: true, message: t('EvaEnterToothNumber') } }}
+                  label={t('EvaBaseInsuranceAmount')}
+                  onChange={() => {
+                    setValue('amount', calcAmount(getValues()), {
+                      shouldDirty: true,
+                    });
+                  }}
                 />
               </Box>
             )}

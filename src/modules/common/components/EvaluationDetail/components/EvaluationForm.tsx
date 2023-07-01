@@ -21,9 +21,12 @@ export type CalcPriceType = {
   has_base_insurance: number;
   ktable: string | number;
   number_of_sessions: string | number;
-  deduction?: number | string;
   is_calculatetable?: boolean;
   tooth_number?: string;
+
+  deduction?: number | string;
+  baseinsurance_amount?: number | string;
+  difference_amount?: number | string;
 };
 
 const style = {

@@ -1,7 +1,15 @@
 import { ForwardedRef, forwardRef } from 'react';
-import { TextField, TextFieldProps } from '@mui/material';
+import { InputBaseComponentProps, TextField, TextFieldProps } from '@mui/material';
+import { Override } from 'theme/models';
 
-export type TextBoxType = TextFieldProps;
+export type TextBoxType = Override<
+  TextFieldProps,
+  {
+    inputProps?: InputBaseComponentProps;
+    size?: TextFieldProps['size'];
+    fullWidth?: TextFieldProps['fullWidth'];
+  }
+>;
 type Ref = ForwardedRef<HTMLInputElement>;
 
 export const RootTextBox = forwardRef<Ref, TextBoxType>((props, ref) => {

@@ -6,8 +6,8 @@ import { Box, Stack, Tooltip, IconButton, Typography, CircularProgress } from '@
 
 //components
 import { ShowImages } from './ShowImages';
-import { CustomModal } from 'modules/common/components';
 import { ExpenseTypeForm } from './ExpenseTypeForm';
+import { CustomModal } from 'modules/common/components';
 
 //utils
 import { IMAGE_CONTROL } from '../utils';
@@ -22,12 +22,14 @@ import { ExpenseDocResponse } from 'services/models';
 type ImgModalProps = {
   src: string;
   data: ExpenseDocResponse;
+  width?: number;
+  height?: number;
 };
 
 export const ExpenseDoc = () => {
   const { t } = useTranslation();
 
-  const { expense, mobileUI, expenseId } = useEvaluationAdjustmentContext();
+  const { expense, mobileUI, expenseId, pageView } = useEvaluationAdjustmentContext();
 
   const { amount, topic, expense_type, cost_center_type } = expense;
 
@@ -36,7 +38,7 @@ export const ExpenseDoc = () => {
       expenseId: expenseId as number,
     },
     {
-      enabled: !!expenseId,
+      enabled: !!expenseId && !pageView,
     },
   );
 
@@ -75,14 +77,16 @@ export const ExpenseDoc = () => {
         <ExpenseTypeForm expense_type={expense_type} cost_center_type={cost_center_type} />
       </Stack>
 
-      <Stack spacing={1} direction='row' sx={{ flexWrap: 'wrap' }}>
-        {Children.toArray(data?.map((item) => <ImgModal src={item.file} data={data} />))}
-      </Stack>
+      {!pageView && (
+        <Stack spacing={1} direction='row' sx={{ flexWrap: 'wrap' }}>
+          {Children.toArray(data?.map((item) => <ImgModal src={item.file} data={data} />))}
+        </Stack>
+      )}
     </Stack>
   );
 };
 
-const ImgModal = memo(({ src, data }: ImgModalProps) => {
+const ImgModal = memo(({ src, data, width, height }: ImgModalProps) => {
   const [imgSrc, imgSrcSet] = useState(src);
 
   const [rotate, setRotate] = useState(0);
@@ -107,9 +111,9 @@ const ImgModal = memo(({ src, data }: ImgModalProps) => {
         component='img'
         alt=''
         sx={{
-          width: 30,
+          width: width ?? 38,
           border: 1,
-          height: 30,
+          height: height ?? 38,
           borderRadius: 1,
           cursor: 'pointer',
           borderColor: blueGrey[100],

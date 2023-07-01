@@ -15,6 +15,7 @@ type Ref = ForwardedRef<HTMLInputElement>;
 
 export type AutocompleteType<T> = {
   onChange?: (event: SyntheticEvent<Element, Event>, value: T) => void;
+  onKeyUp?: AutocompleteProps<T, any, any, any>['onKeyUp'];
   onBlur?: FocusEventHandler<HTMLDivElement>;
   textFiledProps?: Omit<ComponentProps<typeof TextBox>, 'error' | 'label' | 'helperText'>;
   options: T[];
@@ -53,6 +54,7 @@ export const CustomAutocomplete = forwardRef(
   <T extends { label: string; value: any }>(props: AutocompleteType<T>, ref: Ref) => {
     const {
       onChange,
+      onKeyUp,
       onBlur,
       textFiledProps,
       options = [],
@@ -81,6 +83,7 @@ export const CustomAutocomplete = forwardRef(
       <Autocomplete
         // {...autocompleteProps}
         onChange={_onChange as AutocompleteProps<T, any, any, any>['onChange']}
+        onKeyUp={onKeyUp}
         loadingText={loadingText}
         onBlur={onBlur}
         ref={ref}

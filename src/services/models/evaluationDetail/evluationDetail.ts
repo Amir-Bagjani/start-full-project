@@ -23,6 +23,8 @@ export type AddEvaluationAdjustmentParams = {
   has_base_insurance: number;
   comments: string;
   tooth_number: string;
+  baseinsurance_amount: number;
+  difference_amount: number;
 };
 
 export type EvaluationDetailType = {

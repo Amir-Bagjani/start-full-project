@@ -44,7 +44,7 @@ class RelativeValuePeriod {
     return await AxiosHandler.delete(`/darman/expense/ktable/${params.id}`);
   };
 
-  getTablePeriod = async (params: KtableParams) => {
+  getTablePeriod = async (params: KtableParams, signal?: AbortSignal) => {
     const { kperiod, page = 1, filter } = params;
     const { name, topic, insured, loadonlyenabledktables } = filter;
 
@@ -61,6 +61,7 @@ class RelativeValuePeriod {
 
     return await AxiosHandler.get<KtableResponse, APIError>(
       `/darman/expense/ktable/?${new_params}`,
+      { signal },
     );
   };
 }

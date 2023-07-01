@@ -19,6 +19,7 @@ type EvaluationDetailProps = {
   updateExpenses?: () => void;
   readonly?: boolean;
   mobileUI?: boolean;
+  pageView?: boolean;
   disableAutoFocus?: boolean;
   updateDataAfterAddAdjustment?: () => void;
 };
@@ -29,6 +30,7 @@ export const EvaluationDetail = (props: EvaluationDetailProps) => {
     updateExpenses = undefined,
     readonly = false,
     mobileUI = false,
+    pageView = false,
     disableAutoFocus = false,
     updateDataAfterAddAdjustment = undefined,
   } = props;
@@ -61,6 +63,7 @@ export const EvaluationDetail = (props: EvaluationDetailProps) => {
     <EvaluationContextProvider
       expense={data}
       mobileUI={mobileUI}
+      pageView={pageView}
       updateExpenses={updateExpenses}
       disableAutoFocus={disableAutoFocus}
       updateDataAfterAddAdjustment={updateDataAfterAddAdjustment}
