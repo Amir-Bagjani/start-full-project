@@ -5,24 +5,19 @@ import { Box, Stack, Tooltip } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef } from 'react';
-import { Controller, useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 //components
 import { MdAdd } from 'react-icons/md';
 import { AddComments } from './AddComments';
-import { Button, Select, TextBox } from 'modules/common/components';
+import { Button, TextBox } from 'modules/common/components';
 
 //utils
-import {
-  calcAmount,
-  convertToothProperty,
-  extraCheckOnAdjustment,
-  expenseAdjustmentValidation,
-} from '../utils';
 import { SelectTooth } from './SelectTooth';
 import { NumberFormat } from 'utils/helper';
 import { useEvaluationAdjustmentContext } from '../context/EvaluationContext';
 import { EVALUATION_ADJUST_LIST, usePostEvaluationAdjustmentAPI } from '../hooks';
+import { calcAmount, extraCheckOnAdjustment, expenseAdjustmentValidation } from '../utils';
 
 //types
 import { CalcPriceType } from './EvaluationForm';
@@ -104,51 +99,48 @@ export const AddPriceForm = (props: AddPriceFormProps) => {
     onError,
   });
 
-  const onSubmit: SubmitHandler<AddPriceValuesType> = useCallback(
-    (data) => {
-      const {
-        amount,
-        franchise,
-        has_base_insurance,
-        ktable,
-        expense_amount,
-        comments,
-        number_of_sessions,
-        tooth_number,
-        deduction,
-        baseinsurance_amount,
-        difference_amount,
-      } = data;
+  const onSubmit: SubmitHandler<AddPriceValuesType> = (data) => {
+    const {
+      amount,
+      franchise,
+      has_base_insurance,
+      ktable,
+      expense_amount,
+      comments,
+      number_of_sessions,
+      tooth_number,
+      deduction,
+      baseinsurance_amount,
+      difference_amount,
+    } = data;
 
-      const totalExpenseAmount = expense.amount ?? 0;
+    const totalExpenseAmount = expense.amount ?? 0;
 
-      const { hasError, errorDetail } = extraCheckOnAdjustment(data, totalExpenseAmount, expense);
+    const { hasError, errorDetail } = extraCheckOnAdjustment(data, totalExpenseAmount, expense);
 
-      if (hasError) {
-        setError(errorDetail!.name, {
-          type: 'custom',
-          message: errorDetail!.message,
-        });
-        return;
-      }
-
-      addAdjustment({
-        amount,
-        franchise,
-        has_base_insurance: has_base_insurance as number,
-        expense: expenseId as number,
-        ktable: ktable as string,
-        expense_amount: expense_amount as string,
-        comments: comments as string,
-        number_of_sessions: number_of_sessions as string,
-        tooth_number,
-        deduction: deduction as number,
-        baseinsurance_amount: baseinsurance_amount as number,
-        difference_amount: difference_amount as number,
+    if (hasError) {
+      setError(errorDetail!.name, {
+        type: 'custom',
+        message: errorDetail!.message,
       });
-    },
-    [addAdjustment, expense, expenseId, setError],
-  );
+      return;
+    }
+
+    addAdjustment({
+      amount,
+      franchise,
+      has_base_insurance: has_base_insurance as number,
+      expense: expenseId as number,
+      ktable: ktable as string,
+      expense_amount: expense_amount as string,
+      comments: comments as string,
+      number_of_sessions: number_of_sessions as string,
+      tooth_number,
+      deduction: deduction as number,
+      baseinsurance_amount: baseinsurance_amount as number,
+      difference_amount: difference_amount as number,
+    });
+  };
 
   useEffect(() => {
     const {

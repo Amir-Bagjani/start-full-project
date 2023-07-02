@@ -2,20 +2,30 @@ import { toast } from 'react-hot-toast';
 import { useCallback, useMemo, useState } from 'react';
 import { Box, Stack, Tooltip, Typography } from '@mui/material';
 
-//components & utils
-import Constants from 'utils/constants';
-import { NewDataGridTable } from 'components/shared';
-import { ADMIN_R, COUNTER_R, INSURED_R, REGISTRAR_R } from 'utils/ROLES';
-import { useExpenseArchiveTableAPI, useRole } from 'hooks';
-import { FilterArchiveExpeses } from './FilterArchiveExpeses';
-import { columnsDataArchiveExpenses as columns } from '../../utils';
+//components
+import { FilterArchiveExpenses } from './FilterArchiveExpenses';
+import { CustomTableColumn, NewDataGridTable } from 'modules/common/components';
 
-const PageSize = 30;
-const defaultValue = {
+//utils
+import { Constants, INSURED_R, REGISTRAR_R } from 'utils/constants';
+import { useExpenseArchiveTableAPI, useRole } from 'modules/common/hooks';
+import { columnsDataArchiveExpenses as columns } from 'modules/Expense/utils';
+
+//type
+import { ExpenseArchivedType } from 'services/models';
+
+export type SearchValuType = {
+  province: string | number;
+  expense_status_code: string | number;
+  name: string;
+};
+
+const defaultValue: SearchValuType = {
   province: '',
   name: '',
-  expense_status_code: 7,
+  expense_status_code: '',
 };
+const PageSize = 30;
 
 const onError = () => {
   toast.error(Constants.PublicFetchError);
@@ -23,20 +33,17 @@ const onError = () => {
 
 export const ArchiveExpenses = () => {
   const [page, setPage] = useState(1);
-  const [filter, filterSet] = useState(defaultValue);
+  const [filter, filterSet] = useState<SearchValuType>(defaultValue);
 
   const { includedRole } = useRole();
 
-  const setFilter = useCallback((e) => filterSet(e), []);
-  const pageSet = useCallback((e) => setPage(e), []);
+  const setFilter = useCallback((e: SearchValuType) => filterSet(e), []);
+  const pageSet = useCallback((e: number) => setPage(e), []);
 
   const { data: expensesData, isInitialLoading: isExpensesloading } = useExpenseArchiveTableAPI(
     {
       page,
-      filter: {
-        ...filter,
-        // expense_status_code: 7, //it means Paid expenses
-      },
+      filter,
     },
     {
       keepPreviousData: true,
@@ -44,7 +51,7 @@ export const ArchiveExpenses = () => {
     },
   );
 
-  const numberCol = useMemo(
+  const numberCol: CustomTableColumn<ExpenseArchivedType>[] = useMemo(
     () => [
       {
         field: 'number',
@@ -67,14 +74,14 @@ export const ArchiveExpenses = () => {
   useMemo(() => {
     //insured and registrar should not see topic_name and expense_type columns
     if (includedRole([INSURED_R, REGISTRAR_R])) {
-      columns.find((i) => i.field === 'topic_name').hide = true;
-      columns.find((i) => i.field === 'expense_type').hide = true;
+      columns.find((i) => i.field === 'topic_name')!.hide = true;
+      columns.find((i) => i.field === 'expense_type')!.hide = true;
     }
   }, [includedRole]);
 
   return (
-    <Stack spacing={2} sx={{ bgcolor: 'background.default', pt: 2 }}>
-      <FilterArchiveExpeses
+    <Stack spacing={2} sx={{ bgcolor: 'background.paper', pt: 2 }}>
+      <FilterArchiveExpenses
         loading={isExpensesloading}
         setFilter={setFilter}
         defaultValue={defaultValue}

@@ -14,7 +14,7 @@ export const ALL_EXPENSES = 'ALL_EXPENSES';
 export const useAllExpensesAPI = (params: Params, options: Options = {}) => {
   return useQuery<Data, APIError>({
     queryKey: [ALL_EXPENSES, params],
-    queryFn: () => APIs.expense.getAllExpenses(params),
+    queryFn: ({ signal }) => APIs.expense.getAllExpenses(params, signal),
     ...options,
   });
 };

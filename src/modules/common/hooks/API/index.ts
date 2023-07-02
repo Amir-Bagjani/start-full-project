@@ -13,3 +13,4 @@ export * from './useCostCenterTypeAPI';
 export * from './useInsurancePolicyAPi';
 export * from './useAddActionExpenseAPI';
 export * from './useSampleDescriptionAPI';
+export * from './useExpenseArchiveTableAPI';

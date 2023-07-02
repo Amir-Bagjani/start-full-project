@@ -76,8 +76,6 @@ export const KtableForm = (props: KtableFormProps) => {
     hasExpenseType, //backend will set it to default value, so it must remove
   } = props;
 
-  const [abortFetch, setAbortFetch] = useState(false);
-
   const { mobileUI, expenseId, insuredId, disableAutoFocus, pageView } =
     useEvaluationAdjustmentContext();
 
@@ -177,7 +175,7 @@ export const KtableForm = (props: KtableFormProps) => {
       onError,
     });
 
-  const ktableSearchOnSubmit = useCallback(() => {
+  const ktableSearchOnSubmit = () => {
     if (hasExpenseType) {
       //backend will set it to default value, so it must remove
       // setExpenseTypeError(null)
@@ -188,22 +186,19 @@ export const KtableForm = (props: KtableFormProps) => {
     } else {
       setExpenseTypeError(t('EvaHighlightCostCenterTypeAndExpenseType'));
     }
-  }, [name?.length, search, hasExpenseType, refetchKtable]);
+  };
 
-  const ktableChangeOnSubmit: SubmitHandler<KtableSearchValues> = useCallback(
-    (data) => {
-      const { k, has_base_insurance, number_of_sessions } = data;
-      if (!!k) {
-        calcExpensePrice({
-          k,
-          expense: expenseId as number,
-          has_base_insurance,
-          number_of_sessions: Number(number_of_sessions),
-        });
-      }
-    },
-    [calcExpensePrice, expenseId],
-  );
+  const ktableChangeOnSubmit: SubmitHandler<KtableSearchValues> = (data) => {
+    const { k, has_base_insurance, number_of_sessions } = data;
+    if (!!k) {
+      calcExpensePrice({
+        k,
+        expense: expenseId as number,
+        has_base_insurance,
+        number_of_sessions: Number(number_of_sessions),
+      });
+    }
+  };
 
   const resetWholeForm = useCallback(() => {
     setSearch(true);

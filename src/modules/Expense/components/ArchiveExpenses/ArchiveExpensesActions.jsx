@@ -4,14 +4,14 @@ import { blueGrey } from '@mui/material/colors';
 import { Box, IconButton, Stack, Tooltip } from '@mui/material';
 
 //components & utils
-import { useModal, useRole } from 'hooks';
 import { MdEdit } from 'react-icons/md';
 import { BsPrinter } from 'react-icons/bs';
 import { FiBarChart2 } from 'react-icons/fi';
-import { CustomModal } from 'components/shared';
 import { TbHeartRateMonitor } from 'react-icons/tb';
-import { NewLogExpenseModal } from 'features/NewLogExpenseModal';
-import { ADMIN_R, COUNTER_R, REGISTRAR_R } from 'utils/ROLES';
+import { useModal, useRole } from 'modules/common/hooks';
+import { ADMIN_R, COUNTER_R, REGISTRAR_R } from 'utils/constants';
+import { CustomModal } from 'modules/common/components';
+// import { NewLogExpenseModal } from 'features/NewLogExpenseModal';
 
 export const ArchiveExpensesActions = memo(({ data }) => {
   const { isOpen: log, onClose: onCloseLog, onOpen: onOpenLog } = useModal();
@@ -72,7 +72,7 @@ export const ArchiveExpensesActions = memo(({ data }) => {
         handleClose={onCloseLog}
         sx={{ maxWidth: 500 }}
       >
-        <NewLogExpenseModal handleClose={onCloseLog} id={data.id} />
+        {/* <NewLogExpenseModal handleClose={onCloseLog} id={data.id} /> */}
       </CustomModal>
     </>
   );

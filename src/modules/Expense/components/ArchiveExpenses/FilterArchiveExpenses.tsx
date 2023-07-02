@@ -1,18 +1,35 @@
-import { useCallback } from 'react';
-import { LoadingButton } from '@mui/lab';
-import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { Box, IconButton, Stack, Tooltip } from '@mui/material';
 
-//components & utils
-import { useProvinceAPI } from 'hooks';
+//components
 import { FiSearch } from 'react-icons/fi';
-import { Select, TextBox } from 'components/shared';
 import { MdOutlineDeleteSweep } from 'react-icons/md';
-import { useExpenseStatusAPI } from 'features/feature_report/hooks';
+import { Button, Select, TextBox } from 'modules/common/components';
+
+//utils
+import { useExpenseStatusAPI, useProvinceAPI } from 'modules/common/hooks';
+
+//types
+import { SearchValuType } from './ArchiveExpenses';
+
+type FilterArchiveExpensesProps = {
+  loading: boolean;
+  setFilter: (e: SearchValuType) => void;
+  defaultValue: SearchValuType;
+  pageSet: (e: number) => void;
+};
 
 const options = { staleTime: 1 * 1000 * 60 * 60 };
 
-export const FilterArchiveExpeses = ({ loading, setFilter, defaultValue, pageSet }) => {
+export const FilterArchiveExpenses = ({
+  loading,
+  setFilter,
+  defaultValue,
+  pageSet,
+}: FilterArchiveExpensesProps) => {
+  const { t } = useTranslation();
+
   const { handleSubmit, control, getValues, reset } = useForm({
     defaultValues: defaultValue,
   });
@@ -23,19 +40,16 @@ export const FilterArchiveExpeses = ({ loading, setFilter, defaultValue, pageSet
     options,
   );
 
-  const onSubmit = useCallback(
-    (filters) => {
-      pageSet(1);
-      setFilter(filters);
-    },
-    [pageSet, setFilter],
-  );
+  const onSubmit: SubmitHandler<SearchValuType> = (filters) => {
+    pageSet(1);
+    setFilter(filters);
+  };
 
-  const resetForm = useCallback(() => {
+  const resetForm = () => {
     pageSet(1);
     reset(defaultValue);
     setFilter(defaultValue);
-  }, [defaultValue, pageSet, reset, setFilter]);
+  };
 
   // it is better than dirtyFields, because dirtyFields forces component to re-render
   const isFieldsDirty = !!getValues(['name', 'province']).filter(Boolean).length;
@@ -50,25 +64,25 @@ export const FilterArchiveExpeses = ({ loading, setFilter, defaultValue, pageSet
       px={1}
       alignItems='center'
     >
-      <TextBox.Form name='name' control={control} label='نام،نام خانوادگی، کدملی' fullWidth />
-      <Select.Form
+      <TextBox.Form name='name' control={control} label={t('ExNameLabel')} fullWidth />
+      <Select.Form<{ label: string; value: any }>
         name='province'
         control={control}
-        label='استان'
+        label={t('ExProvinceLabel')}
         isLoading={isProvincesLoading}
-        defaultSelect={{ label: 'همه استان ها', value: '' }}
+        defaultSelect={{ label: t('ExAll'), value: '' }}
         options={provincesData?.map((i) => ({ label: i.name, value: i.id })) ?? []}
       />
-      <Select.Form
+      <Select.Form<{ label: string; value: any }>
         name='expense_status_code'
         control={control}
-        label='وضعیت هزینه'
+        label={t('ExpenseExpStatus')}
         isLoading={isLoadingExpenseStatus}
-        defaultSelect={{ label: '', value: '' }}
+        defaultSelect={{ label: t('ExAll'), value: '' }}
         options={expenseStatus?.map((i) => ({ label: i.name, value: i.code })) || []}
       />
       <Stack direction='row' sx={{ width: { zero: 1, tablet: 'max-content' } }} spacing={2}>
-        <LoadingButton
+        <Button.Loading
           type='submit'
           variant='contained'
           endIcon={<FiSearch />}
@@ -76,11 +90,11 @@ export const FilterArchiveExpeses = ({ loading, setFilter, defaultValue, pageSet
           loading={loading}
           disabled={loading}
         >
-          جستجو
-        </LoadingButton>
+          {t('ExSearch')}
+        </Button.Loading>
         {isFieldsDirty ? (
           <Box sx={{ alignSelf: 'center' }}>
-            <Tooltip title='حذف فیلتر'>
+            <Tooltip title={t('ExRemovefilterLabel')}>
               <IconButton color='error' onClick={resetForm}>
                 <MdOutlineDeleteSweep />
               </IconButton>

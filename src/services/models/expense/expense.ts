@@ -35,6 +35,11 @@ export type ExpenseType = {
   transfer: { id: number; title: string } | null;
 };
 
+export type ExpenseArchivedType = ExpenseType & {
+  physical_has_received_by: null | number | object;
+  physical_has_received_date: string | null;
+};
+
 export type ExpenseTypeResponse = {
   count: number;
   next: string | null;
@@ -42,11 +47,23 @@ export type ExpenseTypeResponse = {
   results: ExpenseType[] | [];
 };
 
+export type ExpenseArchivedTypeResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: ExpenseArchivedType[] | [];
+};
+
 export type ExpenseTypeParams = {
   page: number;
   filter: Omit<ExpenseParams, 'page' | 'transfer' | 'mode'>;
   transfer?: Pick<ExpenseParams, 'transfer'>;
   mode?: Pick<ExpenseParams, 'mode'>;
+};
+
+export type ExpenseArchivedTypeParams = {
+  page: number;
+  filter: Omit<ExpenseArchivedParams, 'page'>;
 };
 
 export type EditExpenseParams = {
@@ -87,4 +104,16 @@ export type ExpenseParams = {
   expense_type?: string | number;
   expense_status?: string | number;
   page: number;
+};
+
+export type ExpenseArchivedParams = {
+  page: number;
+  expense?: string | number;
+  cost_center_type?: string | number;
+  name?: string;
+  fdate?: string | null;
+  tdate?: string | null;
+  expense_status?: string | number;
+  province?: string | number;
+  expense_status_code?: string | number;
 };

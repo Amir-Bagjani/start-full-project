@@ -1,9 +1,10 @@
 import { t } from 'i18next';
 import { Box, Container } from '@mui/material';
 
-//components & utils
-// import { TrackExpenses } from '../components/TrackExpenses';
+//components
+import { ArchiveExpenses } from '../components/ArchiveExpenses';
 import { DocumentTitle, Tabs } from 'modules/common/components';
+// import { TrackExpenses } from '../components/TrackExpenses';
 
 //utils
 import {
@@ -99,25 +100,29 @@ const ExpensesPage = () => {
         </Box>
 
         <Suspense fallback='LOADING...'>
-          {isStale && 'LOADING...'}
+          {isStale ? (
+            'LOADING...'
+          ) : (
+            <>
+              <Tabs.Panel value={deferredValue} index={0}>
+                <DocumentTitle title={t('ExExpenseTab') as string}>
+                  <TrackExpenses />
+                </DocumentTitle>
+              </Tabs.Panel>
 
-          <Tabs.Panel value={deferredValue} index={0}>
-            <DocumentTitle title={t('ExExpenseTab') as string}>
-              <TrackExpenses />
-            </DocumentTitle>
-          </Tabs.Panel>
+              <Tabs.Panel value={deferredValue} index={1}>
+                <DocumentTitle title={t('ExDraftTab') as string}>
+                  <ArchiveExpenses />
+                </DocumentTitle>
+              </Tabs.Panel>
 
-          <Tabs.Panel value={deferredValue} index={1}>
-            <DocumentTitle title={t('ExDraftTab') as string}>
-              {/* <ArchiveExpenses /> */}
-            </DocumentTitle>
-          </Tabs.Panel>
-
-          <Tabs.Panel value={deferredValue} index={0}>
-            <DocumentTitle title={t('ExFoldersTab') as string}>
-              {/* <ExpenseFolder /> */}
-            </DocumentTitle>
-          </Tabs.Panel>
+              <Tabs.Panel value={deferredValue} index={0}>
+                <DocumentTitle title={t('ExFoldersTab') as string}>
+                  {/* <ExpenseFolder /> */}
+                </DocumentTitle>
+              </Tabs.Panel>
+            </>
+          )}
         </Suspense>
       </Container>
     </Box>

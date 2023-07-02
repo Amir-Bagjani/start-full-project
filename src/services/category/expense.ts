@@ -27,34 +27,47 @@ import {
   ToothNumberResponse,
   AddEvaluationAdjustmentResponse,
   AddEvaluationAdjustmentParams,
+  ExpenseArchivedTypeParams,
+  ExpenseArchivedTypeResponse,
 } from 'services/models';
 import { APIError } from 'models/APImodels';
 import { convertValuesToString } from 'utils/helper/convertToString';
 
 class ExpenseAPI {
-  getArchiveTable = async (params: any) => {
+  getArchiveTable = async (params: ExpenseArchivedTypeParams, signal?: AbortSignal) => {
     const { filter, page = 1 } = params;
-    const { expense, costType, fdate, tdate, expenseStatus, expense_status_code, name, province } =
-      filter;
+    const {
+      expense,
+      cost_center_type,
+      fdate,
+      tdate,
+      expense_status,
+      expense_status_code,
+      name,
+      province,
+    } = filter;
 
     const add_params = {
-      ...(expense && { expense }),
-      ...(costType && { cost_center_type: costType }),
-      ...(fdate && { fdate }),
-      ...(tdate && { tdate }),
       ...(name && { name }),
-      ...(expenseStatus && { expense_status: expenseStatus }),
+      ...(tdate && { tdate }),
+      ...(fdate && { fdate }),
+      ...(expense && { expense }),
       ...(province && { province }),
+      ...(expense_status && { expense_status }),
+      ...(cost_center_type && { cost_center_type }),
       ...(expense_status_code && { expense_status_code }),
       page,
     };
 
     const new_params = convertValuesToString(add_params);
 
-    return await AxiosHandler.get(`/darman/expense/archive/?${new_params}`);
+    return await AxiosHandler.get<ExpenseArchivedTypeResponse, APIError>(
+      `/darman/expense/archive/?${new_params}`,
+      { signal },
+    );
   };
 
-  getAllExpenses = async (params: ExpenseTypeParams) => {
+  getAllExpenses = async (params: ExpenseTypeParams, signal?: AbortSignal) => {
     const { filter, mode = '', transfer = '', page = 1 } = params;
     const { name, expense_status, province, fdate, tdate, expense_type, insurancepolicy } = filter;
 
@@ -73,7 +86,9 @@ class ExpenseAPI {
 
     const new_params = convertValuesToString(add_params);
 
-    return await AxiosHandler.get<ExpenseTypeResponse, APIError>(`/darman/expense/?${new_params}`);
+    return await AxiosHandler.get<ExpenseTypeResponse, APIError>(`/darman/expense/?${new_params}`, {
+      signal,
+    });
   };
 
   getAllCostCenterType = async (config: {}) => {

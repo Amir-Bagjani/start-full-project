@@ -90,13 +90,13 @@ const ImgModal = memo(({ src, data, width, height }: ImgModalProps) => {
   const [imgSrc, imgSrcSet] = useState(src);
 
   const [rotate, setRotate] = useState(0);
-  const handleRotate = useCallback((direction: 'right' | 'left') => {
+  const handleRotate = (direction: 'right' | 'left') => {
     if (direction === 'right') {
       setRotate((p) => p + 1);
     } else {
       setRotate((p) => p - 1);
     }
-  }, []);
+  };
 
   const setImgSrc = useCallback((s: string) => {
     imgSrcSet(s);
