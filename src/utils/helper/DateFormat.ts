@@ -1,6 +1,10 @@
 import moment from 'jalali-moment';
 
 export class DateFormat {
+  static getDate = (date: any) => {
+    return moment(date).format('YYYY-MM-DD');
+  };
+
   static fDate = (date: Date | string) => {
     return new Date(date).toISOString().split('T')[0];
   };

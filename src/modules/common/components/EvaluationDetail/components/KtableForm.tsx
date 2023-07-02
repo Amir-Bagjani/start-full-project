@@ -275,7 +275,7 @@ export const KtableForm = (props: KtableFormProps) => {
                 control={ktableControl}
                 options={
                   ktable?.results?.map((i) => ({
-                    label: i.code_description,
+                    label: `${i.code_description} (${i.national_code})`,
                     value: i.id,
                   })) ?? []
                 }

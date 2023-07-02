@@ -1,16 +1,7 @@
-import {
-  Box,
-  Fab,
-  Stack,
-  Theme,
-  Tooltip,
-  Collapse,
-  IconButton,
-  useMediaQuery,
-} from '@mui/material';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { Box, Fab, Stack, Theme, Collapse, useMediaQuery } from '@mui/material';
 
 //components
 import { FiSearch } from 'react-icons/fi';
@@ -24,13 +15,14 @@ import {
   useRole,
   useTopicAPI,
   useProvinceAPI,
+  useContractAPI,
   useExpenseTypeAPI,
   useExpenseStatusAPI,
   useInsurancePolicyAPI,
   useModal as useCollapse,
 } from 'modules/common/hooks';
 import { DateFormat } from 'utils/helper';
-import { ADMIN_R, EDITOR_R, REPORTER_R } from 'utils/constants';
+import { ADMIN_R, COUNTER_R, EDITOR_R, INSURED_R, REPORTER_R, ROLES } from 'utils/constants';
 
 //types
 type FilterExpensesProps = {
@@ -82,14 +74,18 @@ export const FilterExpeses = ({
   const { data: insurancePolicy, isInitialLoading: isloadingInsurancePolicy } =
     useInsurancePolicyAPI();
   const { data: topics, isInitialLoading: isLoadingTopic } = useTopicAPI({}, options);
+  const { data: contractsData, isInitialLoading: isContractsLoading } = useContractAPI(
+    {},
+    { staleTime: 1 * 1000 * 60 * 60 },
+  );
 
   const onSubmit: SubmitHandler<SearchValuType> = useCallback(
     (filters) => {
       pageSet(1);
       setFilter({
         ...filters,
-        ...(filters.fdate && { fdate: DateFormat.fDate(filters.fdate) }),
-        ...(filters.tdate && { tdate: DateFormat.fDate(filters.tdate) }),
+        ...(filters.fdate && { fdate: DateFormat.getDate(filters.fdate) }),
+        ...(filters.tdate && { tdate: DateFormat.getDate(filters.tdate) }),
       });
     },
     [pageSet, setFilter],
@@ -119,21 +115,25 @@ export const FilterExpeses = ({
     <Box sx={{ position: 'relative' }}>
       {smLaptop ? (
         <Fab
+          variant='extended'
           color='primary'
           sx={{
             position: 'absolute',
-            top: -50,
+            top: -65,
             right: -10,
             zIndex: (theme) => theme.zIndex.speedDial,
           }}
           aria-label='collapse-search-form'
           onClick={onToggle}
         >
-          {isOpen ? (
-            <BsArrowsCollapse size={17} fontWeight={900} />
-          ) : (
-            <BsArrowsExpand size={17} fontWeight={900} />
-          )}
+          <Stack direction='row' spacing={1} alignItems='center'>
+            <span>{t('ExFilterSearch')}</span>
+            {isOpen ? (
+              <BsArrowsCollapse size={17} fontWeight={900} />
+            ) : (
+              <BsArrowsExpand size={17} fontWeight={900} />
+            )}
+          </Stack>
         </Fab>
       ) : null}
 
@@ -143,29 +143,26 @@ export const FilterExpeses = ({
           noValidate
           onSubmit={handleSubmit(onSubmit)}
           spacing={1}
-          direction={{ zero: 'column', smLaptop: 'row' }}
           alignItems='center'
-          pr={1}
+          sx={{ alignItems: 'flex-start', '& > *': { width: 1 } }}
         >
-          <Box width={{ zero: 1, smLaptop: includedRole([ADMIN_R, EDITOR_R]) ? 0.5 : 1 }}>
+          <Stack direction={{ zero: 'column', tablet: 'row' }} spacing={2}>
             <TextBox.Form name='name' control={control} label={t('ExNameLabel')} fullWidth />
-          </Box>
-          <Box sx={{ width: { zero: 1, smLaptop: includedRole([ADMIN_R, EDITOR_R]) ? 0.5 : 1 } }}>
             <Select.Form<{ label: string; value: any }>
               name='expense_type'
               control={control}
               label={t('ExpenseExpType')}
               isLoading={isLoadingExpenseType}
-              defaultSelect={{ label: '', value: '' }}
+              defaultSelect={{ label: t('ExAll'), value: '' }}
+              disabled={!includedRole(ROLES.filter((r) => r !== INSURED_R))}
               options={expenseType?.map((i) => ({ label: i.name, value: i.id })) || []}
             />
-          </Box>
-          <Box sx={{ width: { zero: 1, smLaptop: includedRole([ADMIN_R, EDITOR_R]) ? 0.5 : 1 } }}>
             <Select.Form<{ label: string; value: any }>
               name='insurancepolicy'
               control={control}
               label={t('ExInsuranceplicyLabel')}
-              defaultSelect={{ label: '', value: '' }}
+              disabled={!includedRole(ROLES.filter((r) => r !== INSURED_R))}
+              defaultValue={''}
               isLoading={isloadingInsurancePolicy}
               options={
                 insurancePolicy?.map((i) => ({
@@ -174,56 +171,42 @@ export const FilterExpeses = ({
                 })) ?? []
               }
             />
-          </Box>
-          {includedRole([ADMIN_R, EDITOR_R, REPORTER_R]) ? (
-            <Box
-              sx={{
-                maxWidth: {
-                  zero: 1,
-                  smLaptop: includedRole([ADMIN_R, EDITOR_R, REPORTER_R]) ? 160 : 1,
-                },
-                width: { zero: 1, smLaptop: includedRole([ADMIN_R, EDITOR_R]) ? 0.5 : 1 },
-              }}
-            >
-              <Select.Form<{ label: string; value: any }>
-                label={t('ExTopicLabel')}
-                name='topic'
-                isLoading={isLoadingTopic}
-                defaultSelect={{ label: '', value: '' }}
-                control={control}
-                options={
-                  topics?.map((i) => ({
-                    label: `${i.name}${i.documents_help_text ? ' - ' + i.documents_help_text : ''}`,
-                    value: i.id,
-                  })) ?? []
-                }
-              />
-            </Box>
-          ) : null}
-          <Stack direction='row' sx={{ width: 1 }} spacing={1}>
-            {includedRole([ADMIN_R, EDITOR_R, REPORTER_R]) ? (
-              <Select.Form<{ label: string; value: any }>
-                name='province'
-                control={control}
-                label={t('ExProvinceLabel')}
-                isLoading={isProvincesLoading}
-                defaultSelect={{ label: t('ExAllprovinceLabel'), value: '' }}
-                options={provincesData?.map((i) => ({ label: i.name, value: i.id })) ?? []}
-              />
-            ) : null}
+            <Select.Form<{ label: string; value: any }>
+              label={t('ExTopicLabel')}
+              name='topic'
+              disabled={!includedRole([ADMIN_R, EDITOR_R, REPORTER_R])}
+              isLoading={isLoadingTopic}
+              defaultSelect={{ label: t('ExAll'), value: '' }}
+              control={control}
+              options={
+                topics?.map((i) => ({
+                  label: `${i.name}${i.documents_help_text ? ' - ' + i.documents_help_text : ''}`,
+                  value: i.id,
+                })) ?? []
+              }
+            />
+          </Stack>
+
+          <Stack direction={{ zero: 'column', tablet: 'row' }} spacing={2}>
+            <Select.Form<{ label: string; value: any }>
+              name='province'
+              control={control}
+              label={t('ExProvinceLabel')}
+              disabled={!includedRole([ADMIN_R, EDITOR_R, REPORTER_R, COUNTER_R])}
+              isLoading={isProvincesLoading}
+              defaultSelect={{ label: t('ExAll'), value: '' }}
+              options={provincesData?.map((i) => ({ label: i.name, value: i.id })) ?? []}
+            />
             <Select.Form<{ label: string; value: any }>
               name='expense_status'
               control={control}
               label={t('ExpenseExpStatus')}
               isLoading={isLoadingExpenseStatus}
-              defaultSelect={{ label: '', value: '' }}
-              options={expenseStatus?.map((i) => ({ label: i.name, value: i.code })) ?? []}
+              defaultSelect={{ label: t('ExAll'), value: '' }}
+              options={expenseStatus?.map((i) => ({ label: i.name, value: i.code })) || []}
             />
-          </Stack>
-          <Stack direction='row' sx={{ width: { zero: 1, smLaptop: 0.8 } }} spacing={1}>
             <DatePicker.Form
               name='fdate'
-              onChange={(e) => console.log(e)}
               control={control}
               disableFuture
               label={t('ExFdateLabel') as string}
@@ -233,31 +216,51 @@ export const FilterExpeses = ({
               name='tdate'
               control={control}
               disableFuture
-              onChange={(e) => console.log(e)}
               label={t('ExTdateLabel') as string}
               minDate={fdate}
             />
           </Stack>
-          <Stack direction='row' sx={{ width: { zero: 1, smLaptop: 'max-content' } }} spacing={1}>
-            <Button.Loading
-              type='submit'
-              variant='contained'
-              endIcon={<FiSearch />}
-              sx={{ width: 1 }}
-              loading={loading}
-              disabled={loading}
-            >
-              {t('ExSearch')}
-            </Button.Loading>
-            {isFieldsDirty ? (
-              <Box sx={{ alignSelf: 'center' }}>
-                <Tooltip title={t('ExRemovefilterLabel')}>
-                  <IconButton color='error' onClick={resetForm}>
-                    <MdOutlineDeleteSweep />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            ) : null}
+
+          <Stack
+            direction={{ zero: 'column', tablet: 'row' }}
+            spacing={2}
+            sx={{ '& > *': { flex: 1 } }}
+          >
+            <Select.Form
+              name='contract'
+              label={t('ExContract')}
+              control={control}
+              defaultValue={9}
+              isLoading={isContractsLoading}
+              options={contractsData?.map((i) => ({ label: i.title, value: i.id })) || []}
+              disabled={!includedRole(ROLES.filter((r) => r !== INSURED_R))}
+            />
+            <Box sx={{ display: { zero: 'none', tablet: 'block' } }} />
+            <Box sx={{ display: { zero: 'none', tablet: 'block' } }} />
+
+            <Stack direction='row' spacing={2} sx={{ justifyContent: 'flex-end' }}>
+              <Button
+                color='error'
+                variant='outlined'
+                onClick={resetForm}
+                sx={{ width: 'max-content' }}
+                endIcon={<MdOutlineDeleteSweep />}
+                disabled={!isFieldsDirty}
+              >
+                {t('ExRemovefilterLabel')}
+              </Button>
+
+              <Button.Loading
+                type='submit'
+                variant='contained'
+                endIcon={<FiSearch />}
+                sx={{ width: 'max-content' }}
+                loading={loading}
+                disabled={loading}
+              >
+                {t('ExSearch')}
+              </Button.Loading>
+            </Stack>
           </Stack>
         </Stack>
       </Collapse>

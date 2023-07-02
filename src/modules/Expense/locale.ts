@@ -18,6 +18,7 @@ export const expenseLocale = {
   ExFdateLabel: 'از تاریخ',
   ExTdateLabel: 'تا تاریخ',
   ExSearch: 'جستجو',
+  ExFilterSearch: 'فیلتر ها',
   ExRemovefilterLabel: 'حذف فیلتر',
   ExAllprovinceLabel: 'همه استان ها',
   ExReject: 'عودت',
@@ -56,4 +57,6 @@ export const expenseLocale = {
   ExDateOfExpense: 'تاریخ هزینه',
   ExDateOfRegisterExpense: 'تاریخ ثبت',
   ExTrackingCode: 'کد پیگیری',
+  ExAll: 'همه موارد',
+  ExContract: 'قرارداد',
 };

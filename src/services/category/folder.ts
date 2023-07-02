@@ -1,5 +1,9 @@
 import { AxiosHandler } from 'services/utils';
 
+//types
+import { APIError } from 'models/APImodels';
+import { ContractTypeResponse } from 'services/models';
+
 class Folder {
   getFolders = async (params: any) => {
     const { filter, page = 1 } = params;
@@ -32,8 +36,8 @@ class Folder {
     return await AxiosHandler.post('/darman/expense/folder/', params);
   };
 
-  getContract = async () => {
-    return await AxiosHandler.get('/darman/contract/');
+  getContract = async (params?: {}, signal?: AbortSignal) => {
+    return await AxiosHandler.get<ContractTypeResponse, APIError>('/darman/contract/', { signal });
   };
 }
 

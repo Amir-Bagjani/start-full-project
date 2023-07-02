@@ -1,5 +1,6 @@
 export * from './useCityAPI';
 export * from './useTopicAPI';
+export * from './useContractAPI';
 export * from './useProvinceAPI';
 export * from './useAgenciesAPI';
 export * from './useHelpMessageAPI';

@@ -258,22 +258,32 @@ export const TrackExpenses = () => {
 
   return (
     <Stack spacing={2} sx={{ pt: 2 }}>
-      <Stack direction='row' spacing={1} alignItems='center'>
+      <Stack spacing={2} p={1}>
         {includedRole([ADMIN_R, EDITOR_R, INSURED_R, COUNTER_R]) ? (
           <>
             {smLaptop ? (
               <Fab variant='extended' sx={fabStyle.fab} color='primary' aria-label='add'>
-                <Box component={Link} to={ROUTES_NAME.expense.add} sx={fabStyle.box}>
+                <Stack
+                  direction='row'
+                  alignItems='center'
+                  component={Link}
+                  to={ROUTES_NAME.expense.add}
+                  sx={fabStyle.box}
+                >
                   {t('AddExpense')}
-                  <MdAdd />
-                </Box>
+                  <MdAdd size={20} color='#FFF' />
+                </Stack>
               </Fab>
             ) : (
-              <Link to={ROUTES_NAME.expense.add}>
-                <Button variant='outlined' color='success' sx={{ minWidth: 'max-content' }}>
-                  {t('AddExpense')}
-                </Button>
-              </Link>
+              <Button
+                component={Link}
+                to={ROUTES_NAME.expense.add}
+                variant='outlined'
+                color='success'
+                sx={{ width: 'max-content' }}
+              >
+                {t('AddExpense')}
+              </Button>
             )}
           </>
         ) : null}
