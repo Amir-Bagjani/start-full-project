@@ -1,11 +1,11 @@
 import { TopicType } from './topic';
+import { Override } from 'theme/models';
 import { InsuredType } from '../insured';
 import { TypeExpenseType } from './expenseType';
 import { Dependant, UserInsurance } from '../user';
 import { ExpenseStatusType } from './expenseStatus';
 import { DeliveryAgencyType } from './deliveryAgency';
 import { TypeCostCenterType } from './costCenterType';
-import { Override } from 'theme/models';
 
 export type ExpenseType = {
   id: number;
@@ -33,12 +33,11 @@ export type ExpenseType = {
   delivery_address: string | null;
   contract: number;
   transfer: { id: number; title: string } | null;
+  physical_has_received_by: number | null;
+  physical_has_received_date: number | null;
 };
 
-export type ExpenseArchivedType = ExpenseType & {
-  physical_has_received_by: null | number | object;
-  physical_has_received_date: string | null;
-};
+export type ExpenseArchivedType = ExpenseType;
 
 export type ExpenseTypeResponse = {
   count: number;
@@ -114,6 +113,7 @@ export type ExpenseArchivedParams = {
   fdate?: string | null;
   tdate?: string | null;
   expense_status?: string | number;
+  expense_type?: string | number;
   province?: string | number;
   expense_status_code?: string | number;
 };

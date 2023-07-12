@@ -1,10 +1,12 @@
 import { t } from 'i18next';
 import { Box, Container } from '@mui/material';
+import { Suspense, useDeferredValue } from 'react';
 
 //components
 import { ArchiveExpenses } from '../components/ArchiveExpenses';
 import { DocumentTitle, Tabs } from 'modules/common/components';
-// import { TrackExpenses } from '../components/TrackExpenses';
+import { ExpenseFolder } from '../components/FolderExpenses/ExpenseFolder';
+import { TrackExpenses } from '../components/TrackExpenses';
 
 //utils
 import {
@@ -22,8 +24,6 @@ import {
   TRUSTEDDOCTOR_R,
   RECEIPTIONICT_R,
 } from 'utils/constants';
-import { Suspense, useDeferredValue } from 'react';
-import { TrackExpenses } from '../components/TrackExpenses';
 import { useBrowserstorageState } from 'modules/common/hooks';
 
 const tabsOption = [
@@ -116,9 +116,9 @@ const ExpensesPage = () => {
                 </DocumentTitle>
               </Tabs.Panel>
 
-              <Tabs.Panel value={deferredValue} index={0}>
+              <Tabs.Panel value={deferredValue} index={2}>
                 <DocumentTitle title={t('ExFoldersTab') as string}>
-                  {/* <ExpenseFolder /> */}
+                  <ExpenseFolder />
                 </DocumentTitle>
               </Tabs.Panel>
             </>

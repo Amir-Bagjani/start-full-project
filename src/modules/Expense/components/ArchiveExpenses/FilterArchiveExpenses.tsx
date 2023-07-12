@@ -11,12 +11,12 @@ import { Button, Select, TextBox } from 'modules/common/components';
 import { useExpenseStatusAPI, useProvinceAPI } from 'modules/common/hooks';
 
 //types
-import { SearchValuType } from './ArchiveExpenses';
+import { SearchValueType } from './ArchiveExpenses';
 
 type FilterArchiveExpensesProps = {
   loading: boolean;
-  setFilter: (e: SearchValuType) => void;
-  defaultValue: SearchValuType;
+  setFilter: (e: SearchValueType) => void;
+  defaultValue: SearchValueType;
   pageSet: (e: number) => void;
 };
 
@@ -40,7 +40,7 @@ export const FilterArchiveExpenses = ({
     options,
   );
 
-  const onSubmit: SubmitHandler<SearchValuType> = (filters) => {
+  const onSubmit: SubmitHandler<SearchValueType> = (filters) => {
     pageSet(1);
     setFilter(filters);
   };
@@ -52,7 +52,8 @@ export const FilterArchiveExpenses = ({
   };
 
   // it is better than dirtyFields, because dirtyFields forces component to re-render
-  const isFieldsDirty = !!getValues(['name', 'province']).filter(Boolean).length;
+  const isFieldsDirty = !!getValues(['name', 'province', 'expense_status_code']).filter(Boolean)
+    .length;
 
   return (
     <Stack

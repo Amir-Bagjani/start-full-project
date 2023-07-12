@@ -161,7 +161,7 @@ export const TrackExpenses = () => {
   const numberCol: CustomTableColumn<ExpenseType>[] = useMemo(
     () => [
       {
-        field: 'number5',
+        field: 'select',
         headerName: (
           <Checkbox
             defaultValue={undefined}

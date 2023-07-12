@@ -11,7 +11,6 @@ import { CustomTableColumn, ReturnGenerateTools } from 'modules/common/component
 export const columnsDataArchiveExpenses: CustomTableColumn<ExpenseArchivedType>[] = [
   // {
   //   field: "fullName",
-  //   hide: false,
   //   headerName: "نام و نام خانوادگی",
   //   description: "نمایش نام و نام خانوادگی",
   //   sortable: false,
@@ -43,7 +42,6 @@ export const columnsDataArchiveExpenses: CustomTableColumn<ExpenseArchivedType>[
   //   },
   // },
   {
-    hide: false,
     field: 'fullName',
     headerName: t('ExNameLabel'),
     width: 150,
@@ -57,8 +55,8 @@ export const columnsDataArchiveExpenses: CustomTableColumn<ExpenseArchivedType>[
         ? params.row.dependant?.first_name + ' ' + params.row.dependant?.last_name
         : '';
 
-      const insuredNationalcode = params.row.insured.user.profile.national_code;
-      const dependantNationalcode = params.row?.dependant?.nationalcode;
+      // const insuredNationalcode = params.row.insured.user.profile.national_code;
+      // const dependantNationalcode = params.row?.dependant?.nationalcode;
 
       if (!!dependant)
         return (
@@ -78,9 +76,9 @@ export const columnsDataArchiveExpenses: CustomTableColumn<ExpenseArchivedType>[
                 </Typography>
               </>
             </Tooltip>
-            <Typography fontSize={14} noWrap>
+            {/* <Typography fontSize={14} noWrap>
               {dependantNationalcode}
-            </Typography>
+            </Typography> */}
           </Stack>
         );
 
@@ -91,15 +89,14 @@ export const columnsDataArchiveExpenses: CustomTableColumn<ExpenseArchivedType>[
               {insured}
             </Typography>
           </Tooltip>
-          <Typography fontSize={14} noWrap>
+          {/* <Typography fontSize={14} noWrap>
             {insuredNationalcode}
-          </Typography>
+          </Typography> */}
         </Stack>
       );
     },
   },
   {
-    hide: false,
     field: 'tracking_code',
     headerName: t('ExTrackingCode'),
     width: 110,
@@ -107,7 +104,6 @@ export const columnsDataArchiveExpenses: CustomTableColumn<ExpenseArchivedType>[
       params.row.tracking_code ?? '',
   },
   {
-    hide: true,
     field: 'expense_date',
     headerName: t('ExDateOfRegisterExpense'),
     width: 85,
@@ -126,7 +122,6 @@ export const columnsDataArchiveExpenses: CustomTableColumn<ExpenseArchivedType>[
     },
   },
   {
-    hide: false,
     field: 'expense_type',
     headerName: t('ExpenseExpType'),
     width: 90,
@@ -134,10 +129,9 @@ export const columnsDataArchiveExpenses: CustomTableColumn<ExpenseArchivedType>[
       params.row?.expense_type?.name ?? '',
   },
   {
-    hide: false,
     field: 'topic_name',
     headerName: t('ExTopicLabel'),
-    width: 170,
+    width: 190,
 
     renderCell: (params: ReturnGenerateTools<ExpenseArchivedType>) => {
       const name = params.row?.topic?.name ?? '';
@@ -152,7 +146,6 @@ export const columnsDataArchiveExpenses: CustomTableColumn<ExpenseArchivedType>[
     },
   },
   {
-    hide: false,
     field: 'amount',
     headerName: t('ExAmountToRial'),
     width: 90,
@@ -167,7 +160,6 @@ export const columnsDataArchiveExpenses: CustomTableColumn<ExpenseArchivedType>[
     },
   },
   {
-    hide: true,
     field: 'deductions',
     headerName: t('ExDeduction'),
     width: 80,
@@ -184,7 +176,6 @@ export const columnsDataArchiveExpenses: CustomTableColumn<ExpenseArchivedType>[
     },
   },
   {
-    hide: false,
     field: 'adjustprice',
     headerName: t('ExAdjusterPrice'),
     width: 90,
@@ -199,7 +190,6 @@ export const columnsDataArchiveExpenses: CustomTableColumn<ExpenseArchivedType>[
     },
   },
   {
-    hide: true,
     field: 'expense_status',
     headerName: t('ExpenseExpStatus'),
     width: 100,
@@ -207,10 +197,8 @@ export const columnsDataArchiveExpenses: CustomTableColumn<ExpenseArchivedType>[
       params.row?.expense_status?.name ?? '',
   },
   // {
-  //   sortable: false,
   //   disableColumnMenu: true,
   //   field: "action",
-  //   hide: false,
   //   headerName: "مدیریت",
   //   width: 360,
   //   renderCell: (params) => <ArchiveExpensesActions data={params.row} />,

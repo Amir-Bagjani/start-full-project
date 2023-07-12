@@ -14,13 +14,13 @@ import { columnsDataArchiveExpenses as columns } from 'modules/Expense/utils';
 //type
 import { ExpenseArchivedType } from 'services/models';
 
-export type SearchValuType = {
+export type SearchValueType = {
   province: string | number;
   expense_status_code: string | number;
   name: string;
 };
 
-const defaultValue: SearchValuType = {
+const defaultValue: SearchValueType = {
   province: '',
   name: '',
   expense_status_code: '',
@@ -33,11 +33,11 @@ const onError = () => {
 
 export const ArchiveExpenses = () => {
   const [page, setPage] = useState(1);
-  const [filter, filterSet] = useState<SearchValuType>(defaultValue);
+  const [filter, filterSet] = useState<SearchValueType>(defaultValue);
 
   const { includedRole } = useRole();
 
-  const setFilter = useCallback((e: SearchValuType) => filterSet(e), []);
+  const setFilter = useCallback((e: SearchValueType) => filterSet(e), []);
   const pageSet = useCallback((e: number) => setPage(e), []);
 
   const { data: expensesData, isInitialLoading: isExpensesloading } = useExpenseArchiveTableAPI(
@@ -101,11 +101,13 @@ export const ArchiveExpenses = () => {
           loading={isExpensesloading}
           rows={expensesData?.results ?? []}
           columns={numberCol.concat(columns)}
-          dataGridProps={{
-            checkboxSelection: false,
-            stickyHeader: true,
-            height: 800,
-          }}
+          dataGridProps={
+            {
+              // checkboxSelection: false,
+              // stickyHeader: true,
+              // height: 800,
+            }
+          }
           paginatable
           paginationProps={{
             currentPage: page,

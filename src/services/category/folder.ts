@@ -1,11 +1,25 @@
 import { AxiosHandler } from 'services/utils';
 
+//utils
+import { convertValuesToString } from 'utils/helper';
+
 //types
+import {
+  FolderExpenseParams,
+  ContractTypeResponse,
+  FolderExpenseResponse,
+  EditFolderExpenseParams,
+  DeleteFolderExpenseParams,
+  SingleFolderExpenseParams,
+  EditFolderExpenseResponse,
+  SingleFolderExpenseResponse,
+  AddFolderExpenseParams,
+  AddFolderExpenseResponse,
+} from 'services/models';
 import { APIError } from 'models/APImodels';
-import { ContractTypeResponse } from 'services/models';
 
 class Folder {
-  getFolders = async (params: any) => {
+  getFolders = async (params: FolderExpenseParams, signal?: AbortSignal) => {
     const { filter, page = 1 } = params;
     const { name } = filter;
 
@@ -14,26 +28,39 @@ class Folder {
       page,
     };
 
-    const new_params = new URLSearchParams(add_params).toString();
+    const new_params = convertValuesToString(add_params);
 
-    return await AxiosHandler.get(`/darman/expense/folder/?${new_params}`);
+    return await AxiosHandler.get<FolderExpenseResponse, APIError>(
+      `/darman/expense/folder/?${new_params}`,
+      { signal },
+    );
   };
 
-  getSingleFolder = async (params: any) => {
-    return await AxiosHandler.get(`/darman/expense/folder/${params.id}`);
+  getSingleFolder = async (params: SingleFolderExpenseParams, signal?: AbortSignal) => {
+    return await AxiosHandler.get<SingleFolderExpenseResponse, APIError>(
+      `/darman/expense/folder/${params.id}`,
+      { signal },
+    );
   };
 
-  deleteFolder = async (params: any) => {
-    return await AxiosHandler.delete(`/darman/expense/folder/${params.id}`);
+  deleteFolder = async (params: DeleteFolderExpenseParams) => {
+    return await AxiosHandler.delete<{}, APIError>(`/darman/expense/folder/${params.id}`);
   };
 
-  editFolder = async (params: any) => {
+  editFolder = async (params: EditFolderExpenseParams) => {
     const { id, data } = params;
-    return await AxiosHandler.patch(`/darman/expense/folder/${id}`, data);
+    return await AxiosHandler.patch<
+      EditFolderExpenseResponse,
+      APIError,
+      EditFolderExpenseParams['data']
+    >(`/darman/expense/folder/${id}`, data);
   };
 
-  addFolder = async (params: any) => {
-    return await AxiosHandler.post('/darman/expense/folder/', params);
+  addFolder = async (params: AddFolderExpenseParams) => {
+    return await AxiosHandler.post<AddFolderExpenseResponse, APIError, AddFolderExpenseParams>(
+      '/darman/expense/folder/',
+      params,
+    );
   };
 
   getContract = async (params?: {}, signal?: AbortSignal) => {
