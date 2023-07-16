@@ -1,18 +1,11 @@
-import { useMemo } from 'react';
 import { Stack } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 
 //components
-import { useEvalutionAdjustListAPI } from './hooks';
 import { EvaluationContextProvider } from './context/EvaluationContext';
-import { CustomTableColumn, NewDataGridTable } from 'modules/common/components';
-import { EvaluationDeleteModal, EvaluationForm, ExpenseDoc } from './components';
-
-//utils
-import { columnDataEvaluationAdjustList as column } from './utils';
+import { EvaluationForm, ExpenseDoc, ShowAdjustmentList } from './components';
 
 //types
-import { EvaluationDetailType, ExpenseType } from 'services/models';
+import { ExpenseType } from 'services/models';
 
 type EvaluationDetailProps = {
   data: ExpenseType;
@@ -35,30 +28,6 @@ export const EvaluationDetail = (props: EvaluationDetailProps) => {
     updateDataAfterAddAdjustment = undefined,
   } = props;
 
-  const { t } = useTranslation();
-
-  const { data: evalutionAdjustList, isInitialLoading } = useEvalutionAdjustListAPI(
-    {
-      expenseId: data.id,
-    },
-    {
-      enabled: !!data.id,
-    },
-  );
-
-  const actionColumn: CustomTableColumn<EvaluationDetailType>[] = useMemo(
-    () => [
-      {
-        hide: readonly,
-        field: 'action',
-        headerName: t('EvaAdmin'),
-        width: 130,
-        renderCell: (params) => <EvaluationDeleteModal data={params.row} />,
-      },
-    ],
-    [readonly, t],
-  );
-
   return (
     <EvaluationContextProvider
       expense={data}
@@ -73,16 +42,12 @@ export const EvaluationDetail = (props: EvaluationDetailProps) => {
 
         {!readonly && <EvaluationForm />}
 
-        <div>
-          <NewDataGridTable
-            columns={column.concat(actionColumn)}
-            rows={evalutionAdjustList ?? []}
-            loading={isInitialLoading}
-            dataGridProps={{
-              checkboxSelection: false,
-            }}
+        {!pageView && (
+          <ShowAdjustmentList
+            expenseId={data?.id}
+            updateDataAfterAddAdjustment={updateDataAfterAddAdjustment}
           />
-        </div>
+        )}
       </Stack>
     </EvaluationContextProvider>
   );

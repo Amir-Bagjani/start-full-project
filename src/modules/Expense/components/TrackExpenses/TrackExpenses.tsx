@@ -318,11 +318,11 @@ export const TrackExpenses = () => {
             checkboxSelection: false,
             onRowDoubleClick: (params) => {
               if (includedRole([ADJUSTER_R, SUPERADJUSTER_R, TRUSTEDDOCTOR_R, RECEIPTIONICT_R]))
-                navigate(`/expense/detail`, {
+                navigate(ROUTES_NAME.expense.detail, {
                   state: { expenseId: params.row.id },
                   // replace: true,
                 });
-              else navigate(`/expense/${params.row.id}`);
+              // else navigate(`/expense/${params.row.id}`);
             },
           }}
           //   onRowDoubleClick: (params) => {

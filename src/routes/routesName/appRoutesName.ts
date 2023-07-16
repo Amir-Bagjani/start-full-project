@@ -53,7 +53,7 @@ export const ROUTES_NAME = {
     expensedocumenttype: baseExpense + '/expensedocumenttype',
 
     add: baseExpense + '/add',
-    detail: baseExpense + '/detail',
+    detail: baseExpense + '/detail-expense',
     // detail: baseExpense + '/:id',
     print: baseExpense + '/print/:ids',
 

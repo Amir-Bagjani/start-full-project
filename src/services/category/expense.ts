@@ -2,33 +2,39 @@ import { AxiosHandler } from 'services/utils';
 
 //types
 import {
+  ExpenseDocParams,
   LogExpenseParams,
   ExpenseTypeParams,
+  EditExpenseParams,
+  ExpenseDocResponse,
+  CostCenterResponse,
   LogExpenseResponse,
   ExpenseTypeResponse,
+  EditExpenseResponse,
   ActionExpenseParams,
+  ToothNumberResponse,
   ActionExpenseResponse,
+  CalcExpensePriceParams,
   EvaluationDetailParams,
   SampleDescriptionParams,
   TypeExpenseTypeResponse,
+  CalcExpensePriceResponse,
   EvaluationDetailResponse,
   SampleDescriptionResponse,
   ExpenseStatusTypeResponse,
-  ChangeAgencyLocationParams,
-  ChangeAgencyLocationResponse,
-  ExpenseDocResponse,
-  ExpenseDocParams,
-  CostCenterResponse,
-  EditExpenseResponse,
-  EditExpenseParams,
-  DeleteEvaluationAdjustmentParams,
-  CalcExpensePriceResponse,
-  CalcExpensePriceParams,
-  ToothNumberResponse,
-  AddEvaluationAdjustmentResponse,
-  AddEvaluationAdjustmentParams,
   ExpenseArchivedTypeParams,
+  SingleExpenseDetailParams,
+  ChangeAgencyLocationParams,
+  SingleExpenseDetailResponse,
   ExpenseArchivedTypeResponse,
+  ChangeAgencyLocationResponse,
+  AddEvaluationAdjustmentParams,
+  AddEvaluationAdjustmentResponse,
+  DeleteEvaluationAdjustmentParams,
+  InsuredExpenseHistoryParams,
+  InsuredExpenseHistoryResponse,
+  DependantOfInsuredResponse,
+  DependantOfInsuredParams,
 } from 'services/models';
 import { APIError } from 'models/APImodels';
 import { convertValuesToString } from 'utils/helper/convertToString';
@@ -91,6 +97,18 @@ class ExpenseAPI {
     });
   };
 
+  getSingleExpenses = async (params: SingleExpenseDetailParams) => {
+    const { expenseId } = params;
+    return await AxiosHandler.get<SingleExpenseDetailResponse, APIError>(
+      `/darman/expense/${expenseId}/`,
+    );
+  };
+
+  getPrintexpenses = async (params: any) => {
+    const { expenseIds } = params;
+    return await AxiosHandler.get(`/darman/expense/?ids=${expenseIds}`);
+  };
+
   getAllCostCenterType = async (config: {}) => {
     return await AxiosHandler.get<CostCenterResponse, APIError>(
       '/darman/expense/costcentertype/',
@@ -131,6 +149,12 @@ class ExpenseAPI {
   };
 
   getSampleDescription = async (params: SampleDescriptionParams) => {
+    /*
+     * type: 1 => hardcoded value for return
+     * type: 6 => hardcoded value for adjuster comments in adjustment evaluation
+     * type: 7 => hardcoded value for send to trusted doctor
+     * type: 8 => hardcoded value for send to master adjuster(super adjuster)
+     */
     return await AxiosHandler.get<SampleDescriptionResponse, APIError>(
       `/darman/expense/sampledescription/?type=${String(params.type)}`,
     );
@@ -138,10 +162,12 @@ class ExpenseAPI {
 
   actionExpense = async (params: ActionExpenseParams) => {
     /*
-     * actiontype: 1 => hardcoded value for confirm expense
-     * actiontype: 2 => hardcoded value for return expense
-     * actiontype: 5 => hardcoded value for send expense to master
-     * actiontype: 6 => hardcoded value for cancel expense
+     * actiontype: 1 => hardcoded value for confirm expense(تایید)
+     * actiontype: 2 => hardcoded value for return(reject) expense(رد)
+     * actiontype: 3 => hardcoded value for send expense to master(کارشناس ارشد)
+     * actiontype: 4 => hardcoded value for send expense to trusted doctor(پزشک معتمد)
+     * actiontype: 5 => hardcoded value for send expense to adjuster(کارشناس)
+     * actiontype: 6 => hardcoded value for cancel expense(ابطال)
      */
     return await AxiosHandler.post<ActionExpenseResponse, APIError, ActionExpenseParams>(
       '/darman/expense/send/',
@@ -230,7 +256,7 @@ class ExpenseAPI {
     );
   };
 
-  getInsuredAndDependent = async (params: any) => {
+  getInsuredAndDependent = async (params: DependantOfInsuredParams, signal?: AbortSignal) => {
     const { listtype, name = '' } = params;
 
     const add_params = {
@@ -238,9 +264,12 @@ class ExpenseAPI {
       ...(!!name && { name }),
     };
 
-    const new_params = new URLSearchParams(add_params).toString();
+    const new_params = convertValuesToString(add_params);
 
-    return await AxiosHandler.get(`/darman/insured/?${new_params}`);
+    return await AxiosHandler.get<DependantOfInsuredResponse, APIError>(
+      `/darman/insured/?${new_params}`,
+      { signal },
+    );
   };
 
   changeAgencyLocation = async (params: ChangeAgencyLocationParams) => {
@@ -270,7 +299,7 @@ class ExpenseAPI {
     return await AxiosHandler.delete(`/darman/expense/extraapprovedcostprice/${params.id}`);
   };
 
-  getInsuredExpenseHistory = async (params: any) => {
+  getInsuredExpenseHistory = async (params: InsuredExpenseHistoryParams) => {
     const { insured, dependant, date, topic, page = 1 } = params;
 
     const add_params = {
@@ -281,8 +310,10 @@ class ExpenseAPI {
       page,
     };
 
-    const new_params = new URLSearchParams(add_params).toString();
-    return await AxiosHandler.get(`/darman/expense/history/?${new_params}`);
+    const new_params = convertValuesToString(add_params);
+    return await AxiosHandler.get<InsuredExpenseHistoryResponse, APIError>(
+      `/darman/expense/history/?${new_params}`,
+    );
   };
 
   getToothNumbers = async (config: {}) => {

@@ -56,4 +56,9 @@ export const evaluationExpenseLocale = {
   EvaRight: 'راست',
   EvaCancel: 'انصراف',
   EvaBaseInsuranceAmount: 'مبلغ بیمه پایه',
+  EvaTurnRight: 'چرخش به راست',
+  EvaTurnLeft: 'چرخش به چپ',
+  EvaZoomIn: 'بزرگ نمایی',
+  EvaZoomOut: 'کوچک نمایی',
+  EvaInitialState: 'حالت اولیه',
 };

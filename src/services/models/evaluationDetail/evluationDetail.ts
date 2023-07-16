@@ -47,5 +47,9 @@ export type EvaluationDetailType = {
   tooth_number: string | null;
   number_of_sessions: number;
   expense: number;
-  adjuster: null;
+  adjuster: string | null;
+  deduction: number;
+  baseinsurance_amount: number;
+  difference_amount: number;
+  created_by: string | null;
 };

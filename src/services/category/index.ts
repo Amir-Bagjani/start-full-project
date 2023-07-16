@@ -5,6 +5,7 @@ export * from './user';
 export * from './folder';
 export * from './expense';
 export * from './insured';
+export * from './contract';
 export * from './roleAndUsers';
 export * from './transferList';
 export * from './insurancePolicy';

@@ -9,6 +9,7 @@ import { customModalLocale } from 'modules/common/components/CustomModal/locale'
 import { datepickerLocal } from 'modules/common/components/ui/DatePicker/locale';
 import { logExpenseLocale } from 'modules/common/components/LogExpenseModal/locale';
 import { evaluationExpenseLocale } from 'modules/common/components/EvaluationDetail/locale';
+import { expenseDetailLocale } from 'modules/ExpenseDetail/locale';
 
 export const PersianTr = Object.assign(
   {
@@ -30,4 +31,5 @@ export const PersianTr = Object.assign(
   datepickerLocal,
   logExpenseLocale,
   evaluationExpenseLocale,
+  expenseDetailLocale,
 );

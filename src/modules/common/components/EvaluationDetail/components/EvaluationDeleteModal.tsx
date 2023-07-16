@@ -12,7 +12,6 @@ import { Button, CustomModal } from 'modules/common/components';
 //utils
 import { Constants } from 'utils/constants';
 import { useModal } from 'modules/common/hooks';
-import { useEvaluationAdjustmentContext } from '../context/EvaluationContext';
 import { EVALUATION_ADJUST_LIST, useDeleteEvaluationAdjustmentAPI } from '../hooks';
 
 //types
@@ -20,17 +19,22 @@ import { EvaluationDetailType } from 'services/models';
 
 type EvaluationDeleteModalProps = {
   data: EvaluationDetailType;
+  updateDataAfterAddAdjustment?: () => void;
 };
 type DeleteModalProps = {
   data: EvaluationDetailType;
   handleClose: () => void;
+  updateDataAfterAddAdjustment?: () => void;
 };
 
 const onError = () => {
   toast.error(Constants.PublicFetchError);
 };
 
-export const EvaluationDeleteModal = ({ data }: EvaluationDeleteModalProps) => {
+export const EvaluationDeleteModal = ({
+  data,
+  updateDataAfterAddAdjustment,
+}: EvaluationDeleteModalProps) => {
   const { t } = useTranslation();
 
   const { isOpen, onClose, onOpen } = useModal();
@@ -60,10 +64,10 @@ export const EvaluationDeleteModal = ({ data }: EvaluationDeleteModalProps) => {
   );
 };
 
-const DeleteModal = ({ handleClose, data }: DeleteModalProps) => {
+const DeleteModal = ({ handleClose, data, updateDataAfterAddAdjustment }: DeleteModalProps) => {
   const { t } = useTranslation();
 
-  const { updateDataAfterAddAdjustment } = useEvaluationAdjustmentContext();
+  // const { updateDataAfterAddAdjustment } = useEvaluationAdjustmentContext();
 
   const queryClient = useQueryClient();
 

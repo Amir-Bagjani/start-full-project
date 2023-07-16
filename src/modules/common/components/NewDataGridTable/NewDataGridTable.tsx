@@ -17,7 +17,7 @@ export type TypeDataGridTable<T> = {
   paginationProps?: PaginationProps;
   rows: CustomTableProps<T>['rows'];
   loading: CustomTableProps<T>['loading'];
-  dataGridProps: Omit<CustomTableProps<T>, 'loading' | 'rows' | 'columns'>;
+  dataGridProps?: Omit<CustomTableProps<T>, 'loading' | 'rows' | 'columns'>;
 };
 
 export const NewDataGridTable = <T extends { id: string | number }>(

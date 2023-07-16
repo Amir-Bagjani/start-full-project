@@ -6,7 +6,9 @@ import { Dependant, UserInsurance } from '../user';
 import { ExpenseStatusType } from './expenseStatus';
 import { DeliveryAgencyType } from './deliveryAgency';
 import { TypeCostCenterType } from './costCenterType';
+import { EvaluationDetailType } from '../evaluationDetail';
 
+//expense type in expense list
 export type ExpenseType = {
   id: number;
   insured: InsuredType;
@@ -35,6 +37,16 @@ export type ExpenseType = {
   transfer: { id: number; title: string } | null;
   physical_has_received_by: number | null;
   physical_has_received_date: number | null;
+  reject_date: string | null;
+  reject_reason: string | null;
+  reject_by: string | null;
+};
+
+//expense type in detail(single Expense)
+export type SingleExpenseDetailType = Omit<ExpenseType, 'contract'> & {
+  expense_adjusts: EvaluationDetailType[];
+  related_expenses_cnt: number;
+  contract: SingleExpenseContact;
 };
 
 export type ExpenseArchivedType = ExpenseType;
@@ -45,6 +57,8 @@ export type ExpenseTypeResponse = {
   previous: string | null;
   results: ExpenseType[] | [];
 };
+
+export type SingleExpenseDetailResponse = SingleExpenseDetailType;
 
 export type ExpenseArchivedTypeResponse = {
   count: number;
@@ -70,6 +84,10 @@ export type EditExpenseParams = {
   data: {
     expense_type?: string | number;
     cost_center_type?: string | number;
+    amount?: string | number;
+    dependant?: string | number | null;
+    date?: string;
+    topic?: number | string;
   };
 };
 
@@ -105,6 +123,10 @@ export type ExpenseParams = {
   page: number;
 };
 
+export type SingleExpenseDetailParams = {
+  expenseId: number;
+};
+
 export type ExpenseArchivedParams = {
   page: number;
   expense?: string | number;
@@ -116,4 +138,19 @@ export type ExpenseArchivedParams = {
   expense_type?: string | number;
   province?: string | number;
   expense_status_code?: string | number;
+};
+
+//utils type
+type SingleExpenseContact = {
+  id: number;
+  title: string;
+  start_date: string;
+  end_date: string;
+  computer_code: string;
+  insurer: number;
+  organization: number;
+  company: number;
+  contract_type: number;
+  in_contract_register_deadline: number;
+  after_contract_register_deadline: number;
 };

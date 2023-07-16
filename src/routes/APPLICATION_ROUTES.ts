@@ -6,12 +6,14 @@ import { basePageRoutes } from 'modules/Base/routes/basePage.routes';
 import { loginPageRoutes } from 'modules/Login/routes/loginPage.routes';
 import { notFoundPageRoutes } from 'modules/NotFound/routes/notFound.routes';
 import { expensePageRoutes } from 'modules/Expense/routes/expensePage.routes';
+import { expenseDetailPageRoutes } from 'modules/ExpenseDetail/routes/expenseDetail.routes';
 
 export const APPLICATION_ROUTES: CustomRouteObject[] = [
   ...loginPageRoutes,
   ...homePageRoutes,
   ...expensePageRoutes,
   ...basePageRoutes,
+  ...expenseDetailPageRoutes,
   // ...testPagesRoute,
 
   //notFound should located at the end of APPLICATION_ROUTES array list

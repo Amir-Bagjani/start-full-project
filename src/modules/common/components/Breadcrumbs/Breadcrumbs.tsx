@@ -14,6 +14,7 @@ const CrumbsMap: any = {
   base: 'تنظیمات پایه',
   dashboard: 'تنظیمات هزینه',
   'not-found': 'پیدا نشد',
+  'detail-expense': 'جزئیات هزینه',
 };
 
 export const Breadcrumbs = () => {

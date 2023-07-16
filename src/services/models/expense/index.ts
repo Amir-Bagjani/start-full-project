@@ -9,3 +9,4 @@ export * from './deliveryAgency';
 export * from './costCenterType';
 export * from './sampleDescription';
 export * from '../base/provinceType';
+export * from './insuredExpenseHistory';
