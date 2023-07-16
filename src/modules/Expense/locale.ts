@@ -98,4 +98,5 @@ export const expenseLocale = {
   ExSelectContract: 'قرارداد را انتخاب کنید',
   ExDate: 'تاریخ',
   ExFolderName: 'نام پوشه',
+  ExPrint: 'پرینت',
 };

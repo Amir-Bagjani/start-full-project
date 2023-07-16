@@ -33,6 +33,14 @@ export default function CssBaseline(theme: Theme) {
           width: '100%',
           height: '100%',
           WebkitOverflowScrolling: 'touch',
+          '@media print': {
+            '@page': {
+              size: 'landscape',
+            },
+            '.print-text': {
+              minWidth: '360px',
+            },
+          },
         },
         body: {
           width: '100%',
@@ -55,6 +63,12 @@ export default function CssBaseline(theme: Theme) {
               WebkitAppearance: 'none',
             },
           },
+        },
+        table: {
+          borderCollapse: 'collapse',
+          border: `1px solid ${theme.palette.text.disabled}`,
+          '& th': { border: `1px solid ${theme.palette.text.disabled}` },
+          '& td': { border: `1px solid ${theme.palette.text.disabled}` },
         },
         img: {
           display: 'block',

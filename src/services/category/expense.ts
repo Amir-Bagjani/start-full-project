@@ -35,6 +35,10 @@ import {
   InsuredExpenseHistoryResponse,
   DependantOfInsuredResponse,
   DependantOfInsuredParams,
+  PrintExpenseParams,
+  PrintExpenseResponse,
+  PrintExpenseExtraDataResponse,
+  PrintExpenseExtraDataParams,
 } from 'services/models';
 import { APIError } from 'models/APImodels';
 import { convertValuesToString } from 'utils/helper/convertToString';
@@ -104,9 +108,12 @@ class ExpenseAPI {
     );
   };
 
-  getPrintexpenses = async (params: any) => {
+  getPrintexpenses = async (params: PrintExpenseParams, signal?: AbortSignal) => {
     const { expenseIds } = params;
-    return await AxiosHandler.get(`/darman/expense/?ids=${expenseIds}`);
+    return await AxiosHandler.get<PrintExpenseResponse, APIError>(
+      `/darman/expense/?ids=${expenseIds}`,
+      { signal },
+    );
   };
 
   getAllCostCenterType = async (config: {}) => {
@@ -142,9 +149,10 @@ class ExpenseAPI {
     );
   };
 
-  getExtraPrintInfo = async (params: any) => {
-    return await AxiosHandler.get(
-      `/darman/expense/extrainfo/?expenses=${String(params.expenseId)}`,
+  getExtraPrintInfo = async (params: PrintExpenseExtraDataParams, signal?: AbortSignal) => {
+    return await AxiosHandler.get<PrintExpenseExtraDataResponse, APIError>(
+      `/darman/expense/extrainfo/?expenses=${String(params.expenseIds)}`,
+      { signal },
     );
   };
 

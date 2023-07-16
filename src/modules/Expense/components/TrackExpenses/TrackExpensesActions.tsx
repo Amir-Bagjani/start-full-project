@@ -17,10 +17,18 @@ import { TRACK_EXPENSE_ACTION_DATA } from 'modules/Expense/utils';
 
 //types
 import { ExpenseType } from 'services/models';
+import { ROUTES_NAME } from 'routes/routesName';
 
 type TrackExpensesActionsProps = {
   data: ExpenseType;
   printIds: number[];
+};
+
+const handlePrint = (id: number, ids: number[]) => {
+  if (!!id) {
+    localStorage.setItem('id-state', JSON.stringify({ id: !!ids.length ? ids : [id] }));
+    window.open(ROUTES_NAME.expense.print, '_blank', 'noreferrer');
+  }
 };
 
 export const TrackExpensesActions = memo(({ data, printIds }: TrackExpensesActionsProps) => {
@@ -43,8 +51,6 @@ export const TrackExpensesActions = memo(({ data, printIds }: TrackExpensesActio
     onOpen: onOpenExpenseAdjust,
   } = useModal();
   const { isOpen: reject, onClose: onCloseReject, onOpen: onOpenReject } = useModal();
-  // const { isOpen: confirm, onClose: onCloseConfirm, onOpen: onOpenConfirm } = useModal();
-  // const { isOpen: comment, onClose: onCloseComment, onOpen: onOpenComment } = useModal();
 
   const ClickMap: Record<string, any> = {
     log: onOpenLog,
@@ -52,8 +58,7 @@ export const TrackExpensesActions = memo(({ data, printIds }: TrackExpensesActio
     cancellation: onOpenCancellation,
     expenseAdjust: onOpenExpenseAdjust,
     reject: onOpenReject,
-    // confirm: onOpenConfirm,
-    // comment: onOpenComment,
+    print: handlePrint,
   };
 
   return (
@@ -64,10 +69,16 @@ export const TrackExpensesActions = memo(({ data, printIds }: TrackExpensesActio
             includedRole(action.roles) ? (
               //  && (action?.extraCondition?.(data) ?? true)
               <Tooltip title={action.title}>
-                <Box component={action.component} {...action.componentProps(data.id, printIds)}>
+                <Box component={action.component}>
+                  {/* <Box component={action.component} {...action.componentProps(data.id, printIds)}> */}
                   <IconButton
                     sx={{ color: blueGrey[200] }}
-                    onClick={action?.key ? ClickMap[action.key] : undefined}
+                    onClick={
+                      action?.key === 'print'
+                        ? () => ClickMap[action?.key](data.id, printIds)
+                        : ClickMap[action?.key]
+                    }
+                    // onClick={action?.key ? ClickMap[action.key] : undefined}
                   >
                     {action.icon}
                   </IconButton>

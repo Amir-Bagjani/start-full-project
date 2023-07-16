@@ -1,15 +1,17 @@
 import { homeLocal } from 'modules/Home/locale';
 import { baseLocal } from 'modules/Base/locale';
 import { loginLocal } from 'modules/Login/locale';
+import { printLocale } from 'modules/Print/locale';
 import { expenseLocale } from 'modules/Expense/locale';
+import { expenseDetailLocale } from 'modules/ExpenseDetail/locale';
 import { navbarLayoutLocal } from 'modules/common/components/Navbar/local';
-import { appLayoutLocal } from 'modules/common/components/layouts/AppLayout/local';
-import { authLayoutLocal } from 'modules/common/components/layouts/AuthLayout/local';
 import { customModalLocale } from 'modules/common/components/CustomModal/locale';
 import { datepickerLocal } from 'modules/common/components/ui/DatePicker/locale';
+import { appLayoutLocal } from 'modules/common/components/layouts/AppLayout/local';
 import { logExpenseLocale } from 'modules/common/components/LogExpenseModal/locale';
+import { authLayoutLocal } from 'modules/common/components/layouts/AuthLayout/local';
+import { printLayoutLocale } from 'modules/common/components/layouts/PrintLayout/locale';
 import { evaluationExpenseLocale } from 'modules/common/components/EvaluationDetail/locale';
-import { expenseDetailLocale } from 'modules/ExpenseDetail/locale';
 
 export const PersianTr = Object.assign(
   {
@@ -32,4 +34,6 @@ export const PersianTr = Object.assign(
   logExpenseLocale,
   evaluationExpenseLocale,
   expenseDetailLocale,
+  printLayoutLocale,
+  printLocale,
 );

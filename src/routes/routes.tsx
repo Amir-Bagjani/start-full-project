@@ -3,9 +3,8 @@ import { lazy, Suspense } from 'react';
 import { Route, Navigate, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 
 //layouts & pages
-// import { PrintLayout } from 'components/layouts/PrintLayout';
-import { AppLayout, AuthLayout } from 'modules/common/components';
 import ErrorBoundryPage from 'modules/ErrorBoundry/page/ErrorBoundryPage';
+import { AppLayout, AuthLayout, PrintLayout } from 'modules/common/components';
 
 //utils
 import { ROUTES_NAME } from './routesName';
@@ -19,8 +18,6 @@ import type { CustomRouteObject } from 'models';
 const NotActiveContract = lazy(
   () => import(/* webpackPrefetch: true */ 'modules/Home/pages/NotActiveContract'),
 );
-
-const PrintLayout = () => <></>;
 
 const LayoutMap = {
   App: (props: ComponentProps<typeof AppLayout> = {}) => <AppLayout {...props} />,

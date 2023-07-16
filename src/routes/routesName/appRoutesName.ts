@@ -55,10 +55,11 @@ export const ROUTES_NAME = {
     add: baseExpense + '/add',
     detail: baseExpense + '/detail-expense',
     // detail: baseExpense + '/:id',
-    print: baseExpense + '/print/:ids',
+    // print: baseExpense + '/print/:ids',
+    print: baseExpense + '/print',
 
-    navigateToDetail: (id: number) => `${baseExpense}/${id}`,
-    navigateToPrint: (ids: number[]) => `${baseExpense}/print/${ids}`,
+    // navigateToDetail: (id: number) => `${baseExpense}/${id}`,
+    // navigateToPrint: (ids: number[]) => `${baseExpense}/print/${ids}`,
   },
   contract: {
     base: baseContract,

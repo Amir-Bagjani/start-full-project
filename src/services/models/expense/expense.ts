@@ -40,10 +40,15 @@ export type ExpenseType = {
   reject_date: string | null;
   reject_reason: string | null;
   reject_by: string | null;
+  adjusteditem: string | null;
+  adjustername: string | null;
 };
 
 //expense type in detail(single Expense)
-export type SingleExpenseDetailType = Omit<ExpenseType, 'contract'> & {
+export type SingleExpenseDetailType = Omit<
+  ExpenseType,
+  'contract' | 'adjusteditem' | 'adjustername'
+> & {
   expense_adjusts: EvaluationDetailType[];
   related_expenses_cnt: number;
   contract: SingleExpenseContact;
@@ -140,6 +145,19 @@ export type ExpenseArchivedParams = {
   expense_status_code?: string | number;
 };
 
+//print
+export type PrintExpenseResponse = ExpenseType[];
+
+export type PrintExpenseParams = {
+  expenseIds: number | number[];
+};
+
+export type PrintExpenseExtraDataResponse = PrintExpenseExtraDataType[];
+
+export type PrintExpenseExtraDataParams = {
+  expenseIds: number | number[];
+};
+
 //utils type
 type SingleExpenseContact = {
   id: number;
@@ -153,4 +171,16 @@ type SingleExpenseContact = {
   contract_type: number;
   in_contract_register_deadline: number;
   after_contract_register_deadline: number;
+};
+
+export type PrintExpenseExtraDataType = {
+  id: number;
+  insurer: string;
+  organization: string;
+  franchise: number;
+  professinal_technical_cost: number | null;
+  contract_strat_date: string;
+  contract_end_date: string;
+  baseinsurance_amount: number;
+  insurancepolicy_name: string | null;
 };
