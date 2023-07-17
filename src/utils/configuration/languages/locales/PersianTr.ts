@@ -3,6 +3,7 @@ import { baseLocal } from 'modules/Base/locale';
 import { loginLocal } from 'modules/Login/locale';
 import { printLocale } from 'modules/Print/locale';
 import { expenseLocale } from 'modules/Expense/locale';
+import { testSmsLocale } from 'modules/TestSMS/locale';
 import { expenseDetailLocale } from 'modules/ExpenseDetail/locale';
 import { navbarLayoutLocal } from 'modules/common/components/Navbar/local';
 import { customModalLocale } from 'modules/common/components/CustomModal/locale';
@@ -36,4 +37,5 @@ export const PersianTr = Object.assign(
   expenseDetailLocale,
   printLayoutLocale,
   printLocale,
+  testSmsLocale,
 );

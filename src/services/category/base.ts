@@ -10,6 +10,8 @@ import {
   AgenciesResponse,
   HelpMessageParams,
   HelpMessageResponse,
+  SendSmsResponse,
+  SendSmsParams,
 } from 'services/models/base';
 import { APIError } from 'models/APImodels';
 import { ProvinceTypeResponse } from 'services/models';
@@ -41,6 +43,13 @@ class BaseAPI {
   getHelpMessage = async (params: HelpMessageParams) => {
     return await AxiosHandler.get<HelpMessageResponse, APIError>(
       `/base/help/message/?query=${params.query}`,
+    );
+  };
+
+  sendSMS = async (params: any) => {
+    return await AxiosHandler.post<SendSmsResponse, APIError, SendSmsParams>(
+      '/base/sms/send',
+      params,
     );
   };
 }

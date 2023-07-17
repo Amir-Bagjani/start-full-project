@@ -203,16 +203,18 @@ export const Navbar = () => {
               })}
               <Collapse in={openCollapse}>
                 <Stack spacing={0.5} sx={{ p: 0, paddingInlineStart: 5 }}>
-                  {OTHER_OPTIONS.map((option) => (
-                    <ListItem disablePadding key={option.id}>
-                      <NavLink to={option.path} style={{ width: '100%' }}>
-                        <ListItemButton>
-                          <ListItemIcon sx={{ fontSize: '24px' }}>{option.icon}</ListItemIcon>
-                          <ListItemText primary={option.title} />
-                        </ListItemButton>
-                      </NavLink>
-                    </ListItem>
-                  ))}
+                  {OTHER_OPTIONS.map((option) =>
+                    includedRole(option.roles) ? (
+                      <ListItem disablePadding key={option.id}>
+                        <NavLink to={option.path} style={{ width: '100%' }}>
+                          <ListItemButton>
+                            <ListItemIcon sx={{ fontSize: '24px' }}>{option.icon}</ListItemIcon>
+                            <ListItemText primary={option.title} />
+                          </ListItemButton>
+                        </NavLink>
+                      </ListItem>
+                    ) : null,
+                  )}
                 </Stack>
               </Collapse>
             </List>
@@ -246,16 +248,18 @@ export const Navbar = () => {
         }}
       >
         <Stack spacing={0.5} sx={{ px: 1 }}>
-          {OTHER_OPTIONS.map((option) => (
-            <ListItem disablePadding onClick={handleCloseMenu} key={option.id}>
-              <NavLink to={option.path} style={{ width: '100%' }}>
-                <ListItemButton sx={{ '&:hover': { borderRadius: 1 } }}>
-                  <ListItemIcon sx={{ fontSize: '24px' }}>{option.icon}</ListItemIcon>
-                  <ListItemText primary={option.title} />
-                </ListItemButton>
-              </NavLink>
-            </ListItem>
-          ))}
+          {OTHER_OPTIONS.map((option) =>
+            includedRole(option.roles) ? (
+              <ListItem disablePadding onClick={handleCloseMenu} key={option.id}>
+                <NavLink to={option.path} style={{ width: '100%' }}>
+                  <ListItemButton sx={{ '&:hover': { borderRadius: 1 } }}>
+                    <ListItemIcon sx={{ fontSize: '24px' }}>{option.icon}</ListItemIcon>
+                    <ListItemText primary={option.title} />
+                  </ListItemButton>
+                </NavLink>
+              </ListItem>
+            ) : null,
+          )}
         </Stack>
       </Menu>
     </header>

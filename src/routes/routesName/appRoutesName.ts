@@ -26,6 +26,8 @@ export const ROUTES_NAME = {
   help: '/help',
   report: '/report',
   importFile: '/import-file',
+  testSms: '/test-sms',
+  changeStatus: '/change-status',
   profile: '/profile',
   base: {
     base: baseAction,

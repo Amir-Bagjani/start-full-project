@@ -21,4 +21,6 @@ export const navbarLayoutLocal = {
   NavMenFullscreen: 'ابعاد نمایش گر',
   NavMenuFull: 'تمام صفحه',
   NavMenuExitFull: 'خروج از تمام صفحه',
+  NavTestSMS: 'تست پیام کوتاه',
+  NavChangeStatus: 'تغییر وضعیت هزینه',
 };
