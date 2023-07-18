@@ -5,12 +5,23 @@ import { Box, Fab, Stack, Theme, Collapse, useMediaQuery } from '@mui/material';
 
 //components
 import { FiSearch } from 'react-icons/fi';
-import { SearchValuType } from './TrackExpenses';
 import { MdOutlineDeleteSweep } from 'react-icons/md';
 import { BsArrowsCollapse, BsArrowsExpand } from 'react-icons/bs';
 import { Button, DatePicker, Select, TextBox } from 'modules/common/components';
 
 //utils
+import {
+  ROLES,
+  ADMIN_R,
+  EDITOR_R,
+  INSURED_R,
+  COUNTER_R,
+  ADJUSTER_R,
+  REPORTER_R,
+  LOSSADJUSTER_R,
+  TRUSTEDDOCTOR_R,
+  SUPERADJUSTER_R,
+} from 'utils/constants';
 import {
   useRole,
   useTopicAPI,
@@ -22,9 +33,10 @@ import {
   useModal as useCollapse,
 } from 'modules/common/hooks';
 import { DateFormat } from 'utils/helper';
-import { ADMIN_R, COUNTER_R, EDITOR_R, INSURED_R, REPORTER_R, ROLES } from 'utils/constants';
 
 //types
+import { SearchValuType } from './TrackExpenses';
+
 type FilterExpensesProps = {
   loading: boolean;
   setFilter: (e: SearchValuType) => void;
@@ -42,7 +54,13 @@ const resetValue = {
   tdate: null,
   name: '',
   topic: '',
+  contract: '',
+  has_transfer: '',
 };
+const TransferData = [
+  { label: 'دارد', value: 'true' },
+  { label: 'ندارد', value: 'false' },
+];
 
 export const FilterExpeses = ({
   loading,
@@ -109,6 +127,8 @@ export const FilterExpeses = ({
     'fdate',
     'tdate',
     'insurancepolicy',
+    'has_transfer',
+    'contract',
   ]).filter(Boolean).length;
 
   return (
@@ -235,7 +255,23 @@ export const FilterExpeses = ({
               options={contractsData?.map((i) => ({ label: i.title, value: i.id })) || []}
               disabled={!includedRole(ROLES.filter((r) => r !== INSURED_R))}
             />
-            <Box sx={{ display: { zero: 'none', tablet: 'block' } }} />
+
+            <Select.Form
+              name='has_transfer'
+              label={t('ExRemittance')}
+              control={control}
+              defaultSelect={{ label: t('ExAll'), value: '' }}
+              isLoading={isContractsLoading}
+              disabled={includedRole([
+                INSURED_R,
+                ADJUSTER_R,
+                SUPERADJUSTER_R,
+                TRUSTEDDOCTOR_R,
+                LOSSADJUSTER_R,
+              ])}
+              options={TransferData}
+            />
+
             <Box sx={{ display: { zero: 'none', tablet: 'block' } }} />
 
             <Stack direction='row' spacing={2} sx={{ justifyContent: 'flex-end' }}>

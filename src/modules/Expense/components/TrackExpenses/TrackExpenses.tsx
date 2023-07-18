@@ -56,6 +56,8 @@ export type SearchValuType = {
   tdate: null | string;
   name: string;
   topic: string | number;
+  contract: string | number;
+  has_transfer: string;
 };
 
 const PageSize = 30;
@@ -69,8 +71,9 @@ const defaultValue: SearchValuType = {
   tdate: null,
   name: '',
   topic: '',
+  contract: '',
+  has_transfer: '',
 };
-
 const fabStyle = {
   fab: {
     position: 'fixed',

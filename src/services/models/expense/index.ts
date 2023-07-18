@@ -2,6 +2,7 @@ export * from './topic';
 export * from './expense';
 export * from './logExpense';
 export * from './expenseType';
+export * from './changeStatus';
 export * from './expenseStatus';
 export * from './folderExpense';
 export * from './actionExpense';

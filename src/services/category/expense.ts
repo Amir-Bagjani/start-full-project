@@ -39,6 +39,8 @@ import {
   PrintExpenseResponse,
   PrintExpenseExtraDataResponse,
   PrintExpenseExtraDataParams,
+  ChangeExpenseStatusParams,
+  ChangeExpenseStatusResponse,
 } from 'services/models';
 import { APIError } from 'models/APImodels';
 import { convertValuesToString } from 'utils/helper/convertToString';
@@ -329,6 +331,14 @@ class ExpenseAPI {
       '/darman/expense/toothnumbers/',
       config,
     );
+  };
+
+  chnageExpenseStatus = async (params: ChangeExpenseStatusParams) => {
+    return await AxiosHandler.post<
+      ChangeExpenseStatusResponse,
+      APIError,
+      ChangeExpenseStatusParams
+    >('/darman/expense/changeexpensesstatus/', params);
   };
 }
 

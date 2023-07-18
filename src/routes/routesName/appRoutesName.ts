@@ -27,7 +27,6 @@ export const ROUTES_NAME = {
   report: '/report',
   importFile: '/import-file',
   testSms: '/test-sms',
-  changeStatus: '/change-status',
   profile: '/profile',
   base: {
     base: baseAction,
@@ -53,6 +52,7 @@ export const ROUTES_NAME = {
     costcentertype: baseExpense + '/costcentertype',
     sampledescription: baseExpense + '/sampledescription',
     expensedocumenttype: baseExpense + '/expensedocumenttype',
+    changeStatus: baseExpense + '/change-status',
 
     add: baseExpense + '/add',
     detail: baseExpense + '/detail-expense',

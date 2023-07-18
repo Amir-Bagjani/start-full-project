@@ -64,12 +64,6 @@ export default function CssBaseline(theme: Theme) {
             },
           },
         },
-        table: {
-          borderCollapse: 'collapse',
-          border: `1px solid ${theme.palette.text.disabled}`,
-          '& th': { border: `1px solid ${theme.palette.text.disabled}` },
-          '& td': { border: `1px solid ${theme.palette.text.disabled}` },
-        },
         img: {
           display: 'block',
           maxWidth: '100%',

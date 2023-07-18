@@ -35,7 +35,7 @@ export const OTHER_OPTIONS = [
   {
     id: 3,
     title: <Trans t={t}>NavChangeStatus</Trans>,
-    path: ROUTES_NAME.changeStatus,
+    path: ROUTES_NAME.expense.changeStatus,
     icon: <MdChangeCircle />,
     roles: [ADMIN_R],
   },

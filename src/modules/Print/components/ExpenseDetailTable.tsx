@@ -10,6 +10,7 @@ import {
   PrintExpenseExtraDataType,
   PrintExpenseExtraDataResponse,
 } from 'services/models';
+import { Theme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 
 type ExpenseDetailTableProps = {
@@ -25,8 +26,12 @@ type PrintRowProps = {
 
 const styles = {
   container: {
-    // '& table': { border: 1, borderColor: 'text.disabled' },
-    // '& table th': { border: ' text.disabled' },
+    '& table': (theme: Theme) => ({
+      borderCollapse: 'collapse',
+      border: `1px solid ${theme.palette.text.disabled}`,
+      '& th': { border: `1px solid ${theme.palette.text.disabled}` },
+      '& td': { border: `1px solid ${theme.palette.text.disabled}` },
+    }),
     '& table thead tr th': { fontSize: '11px' },
     '& table tbody tr td': { fontSize: '11px' },
     '& table thead tr th:nth-of-type(n + 7)': {
