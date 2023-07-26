@@ -1,21 +1,28 @@
 import { AxiosHandler } from 'services/utils';
+import { convertValuesToString } from 'utils/helper';
+
+//types
+import { APIError } from 'models/APImodels';
+import { UserByRoleParams, UserByRoleResponse } from 'services/models';
 
 class RoleAndUsersAPI {
   getRoles = async (config: any) => {
     return await AxiosHandler.get('/darman/roles/', config);
   };
 
-  getUsersByRole = async (params: any) => {
-    const { role, contract = 9 } = params; //contract 9 =  آموزش و پرورش
+  getUsersByRole = async (params: UserByRoleParams, signal?: AbortSignal) => {
+    const { role, contract } = params;
 
     const add_params = {
-      contract,
       ...(!!role && { role }),
+      ...(!!contract && { contract }),
     };
 
-    const new_params = new URLSearchParams(add_params).toString();
+    const new_params = convertValuesToString(add_params);
 
-    return await AxiosHandler.get(`/darman/users?${new_params}`);
+    return await AxiosHandler.get<UserByRoleResponse, APIError>(`/darman/users?${new_params}`, {
+      signal,
+    });
   };
 }
 

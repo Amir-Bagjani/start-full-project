@@ -81,7 +81,18 @@ class ExpenseAPI {
 
   getAllExpenses = async (params: ExpenseTypeParams, signal?: AbortSignal) => {
     const { filter, mode = '', transfer = '', page = 1 } = params;
-    const { name, expense_status, province, fdate, tdate, expense_type, insurancepolicy } = filter;
+    const {
+      topic,
+      has_transfer,
+      contract,
+      name,
+      expense_status,
+      province,
+      fdate,
+      tdate,
+      expense_type,
+      insurancepolicy,
+    } = filter;
 
     const add_params = {
       ...(name && { name }),
@@ -93,6 +104,9 @@ class ExpenseAPI {
       ...(expense_type && { expense_type }),
       ...(expense_status && { expense_status }),
       ...(insurancepolicy && { insurancepolicy }),
+      ...(topic && { topic }),
+      ...(contract && { contract }),
+      ...(has_transfer && { has_transfer }),
       page,
     };
 

@@ -75,8 +75,8 @@ export type ExpenseArchivedTypeResponse = {
 export type ExpenseTypeParams = {
   page: number;
   filter: Omit<ExpenseParams, 'page' | 'transfer' | 'mode'>;
-  transfer?: Pick<ExpenseParams, 'transfer'>;
-  mode?: Pick<ExpenseParams, 'mode'>;
+  transfer?: ExpenseParams['transfer'];
+  mode?: ExpenseParams['mode'];
 };
 
 export type ExpenseArchivedTypeParams = {
@@ -126,6 +126,9 @@ export type ExpenseParams = {
   expense_type?: string | number;
   expense_status?: string | number;
   page: number;
+  topic?: number | string;
+  has_transfer?: Exclude<string, 'true' | 'false'>;
+  contract?: number | string;
 };
 
 export type SingleExpenseDetailParams = {

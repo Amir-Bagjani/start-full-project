@@ -17,6 +17,6 @@ export type InsurancePolicyType = {
 export type InsurancePolicyResponse = InsurancePolicyType[];
 
 export type InsurancePlicyParams = {
-  contract?: number;
-  province?: number;
+  contract?: number | string;
+  province?: number | string;
 };

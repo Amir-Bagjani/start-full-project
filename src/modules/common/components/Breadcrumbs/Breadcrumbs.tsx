@@ -16,6 +16,8 @@ const CrumbsMap: any = {
   'not-found': 'پیدا نشد',
   'detail-expense': 'جزئیات هزینه',
   'test-sms': 'تست پیام کوتاه',
+  'change-status': 'تغییر وضعیت هزینه',
+  transfer: 'لیست ارسال به مالی',
 };
 
 export const Breadcrumbs = () => {

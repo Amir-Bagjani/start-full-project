@@ -8,15 +8,19 @@ export const useCookieState = <V extends unknown>(
 ) => {
   const [value, setValue] = useState<V>(() => {
     if (typeof window !== 'undefined') {
-      const savedValue = Cookies.get(key);
-      if (!!savedValue) {
-        return JSON.parse(savedValue);
-      } else {
-        if (typeof initialValue === 'function') {
-          return (initialValue as () => V)();
+      try {
+        const savedValue = Cookies.get(key);
+        if (!!savedValue) {
+          return JSON.parse(savedValue);
         } else {
-          return initialValue;
+          if (typeof initialValue === 'function') {
+            return (initialValue as () => V)();
+          } else {
+            return initialValue;
+          }
         }
+      } catch (r) {
+        return initialValue;
       }
     }
 

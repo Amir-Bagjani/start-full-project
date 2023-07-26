@@ -152,19 +152,40 @@ export const Table = <T extends { id: string | number }>(
     [keepNonExistentRowsSelected, newSelectionModel, onSelectionModelChange],
   );
 
-  // const handleAllSelectionModelChange = useCallback((e) => {
-  //   let arr = [...newSelectionModel];
-  //   if (onSelectionModelChange) {
-  //     if (e.target.checked) {
-  //       // arr.push(id)
-  //     } else {
-  //       // arr = arr.filter((s) => s !== id);
-  //     }
-  //     if (keepNonExistentRowsSelected) allSelected.current = arr;
-  //     setNewSelectionModel(arr)
-  //     onSelectionModelChange(arr);
-  //   }
-  // }, [keepNonExistentRowsSelected, newSelectionModel, onSelectionModelChange]);
+  const handleAllSelectionModelChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (onSelectionModelChange) {
+        let result = [];
+        let arr = [...newSelectionModel];
+        const ids = rows.map((row) => getId(row));
+
+        if (e.target.checked) {
+          result = arr.concat(ids);
+        } else {
+          result = arr.filter((num) => !ids.includes(num));
+        }
+
+        if (keepNonExistentRowsSelected) allSelected.current = result;
+        setNewSelectionModel(result);
+        onSelectionModelChange(result);
+      }
+    },
+    [getId, keepNonExistentRowsSelected, newSelectionModel, onSelectionModelChange, rows],
+  );
+
+  const checkIndeterminate = () => {
+    let count = 0;
+    const ids = rows.map((row) => getId(row));
+
+    ids.forEach((number) => {
+      if (newSelectionModel.includes(number)) {
+        count++;
+      }
+    });
+
+    if (count === 0) return undefined;
+    return count !== 30;
+  };
 
   const generateTools: GenerateToolsFn<T> = useCallback(
     (row) => {
@@ -189,9 +210,10 @@ export const Table = <T extends { id: string | number }>(
               {checkboxSelection && (
                 <TableCell sx={{ px: 0.2, width: 18 }}>
                   <Checkbox
-                    // checked={ }
-                    // onChange={handleAllSelectionModelChange}
-                    disabled
+                    indeterminate={checkIndeterminate()}
+                    // checked={false}
+                    onChange={handleAllSelectionModelChange}
+                    // disabled
                   />
                 </TableCell>
               )}

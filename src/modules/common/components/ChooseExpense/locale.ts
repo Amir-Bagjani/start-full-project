@@ -1,0 +1,15 @@
+export const choosexpenseLocale = {
+  ChSearch: 'جستجو',
+  ChRemoveFilter: 'حذف فیلتر',
+  ChFullName: 'نام، نام خانوادگی، کدملی',
+  ChTopicName: 'بیماری',
+  ChNumber: 'ردیف',
+  ChNameLabel: 'نام و نام خانوادگی',
+  ChAmountToRial: 'مبلغ (ریال)',
+  ChAdjusterPrice: 'مبلغ پرداختی',
+  ChDeduction: 'کسورات',
+  ChExpenseType: 'نوع هزینه',
+  ChCostCenterType: 'مرکز هزینه',
+  ChExpenseStatus: 'وضعیت هزینه',
+  ChDate: 'تاریخ',
+};

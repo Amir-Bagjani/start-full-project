@@ -8,6 +8,7 @@ import { loginPageRoutes } from 'modules/Login/routes/loginPage.routes';
 import { notFoundPageRoutes } from 'modules/NotFound/routes/notFound.routes';
 import { testSmsPageRoutes } from 'modules/TestSMS/routes/testSmsPage.routes';
 import { expensePageRoutes } from 'modules/Expense/routes/expensePage.routes';
+import { transferPageRoutes } from 'modules/Transfer/routes/transferPage.routes';
 import { expenseDetailPageRoutes } from 'modules/ExpenseDetail/routes/expenseDetail.routes';
 import { changeExpenseStatusRoutes } from 'modules/ChangeExpenseStatus/routes/changeExpenseStatus.routes';
 
@@ -20,6 +21,7 @@ export const APPLICATION_ROUTES: CustomRouteObject[] = [
   ...printPageRoutes,
   ...testSmsPageRoutes,
   ...changeExpenseStatusRoutes,
+  ...transferPageRoutes,
   // ...testPagesRoute,
 
   //notFound should located at the end of APPLICATION_ROUTES array list
